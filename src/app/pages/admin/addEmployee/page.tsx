@@ -102,7 +102,7 @@ export default function Home() {
                 <SelectContent>
                   <SelectItem value="cashier">Cashier</SelectItem>
                   <SelectItem value="manager">Manager</SelectItem>
-                  <SelectItem value="manager">kitchen</SelectItem>
+                  <SelectItem value="kitchen">Kitchen</SelectItem>
                 </SelectContent>
               </Select>
 

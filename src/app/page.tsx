@@ -4,29 +4,34 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { backendUrl } from "./utils/url";
 import { useRouter } from "next/navigation";
+import useUserStore from "./store/user.store";
 
 export default function Home() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const { setUser } = useUserStore()
 
   const router = useRouter()
 
   const mutation = useMutation({
     mutationFn : (data : {username : string, password : string}) => axios.post(backendUrl("login"), data),
     onSuccess : (res) => {
-      
       const { fullname, role, branch,token } = res.data
-      console.log("success")
-      localStorage.setItem("token", token);
-      localStorage.setItem("fullname", fullname);
-      localStorage.setItem("role", role);
-      localStorage.setItem("branch", branch);
-
+      setUser({ fullname, role, branch})
       if (token) {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      }
+
+      switch(role)
+      {
+        case "admin":
+          router.push("/pages/admin/home")
+        case "manager":
+          router.push("/pages/manager/home")
       }
   
-      router.push("/pages/admin/home")
+    
     },
     onError : (err : { response : { data : string }}) => {
       console.log(err.response.data)      
