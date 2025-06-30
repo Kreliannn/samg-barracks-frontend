@@ -18,8 +18,9 @@ import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { backendUrl } from "@/app/utils/url"
 import { ImageIcon, Upload } from "lucide-react"
+import { getIngredientsInterface } from "../page"
 
-export function AddButton() {
+export function AddButton({ setIngredients } : { setIngredients : React.Dispatch<React.SetStateAction<getIngredientsInterface[]>>}) {
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const [productName, setProductName] = useState("")
@@ -31,6 +32,7 @@ export function AddButton() {
       axios.post(backendUrl("ingredients"), formData, { headers: { "Content-Type": "multipart/form-data" } }),
     onSuccess: (response) => {
       alert("success")
+      setIngredients(response.data)
     },
     onError: (err) => {
       alert(err)
