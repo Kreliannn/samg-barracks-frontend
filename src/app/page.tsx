@@ -18,17 +18,21 @@ export default function Home() {
     mutationFn : (data : {username : string, password : string}) => axios.post(backendUrl("login"), data),
     onSuccess : (res) => {
       const { fullname, role, branch,token } = res.data
+      localStorage.setItem("token", token)
       setUser({ fullname, role, branch})
+      
       if (token) {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
       }
 
       switch(role)
       {
         case "admin":
           router.push("/pages/admin/home")
+        break;
         case "manager":
           router.push("/pages/manager/home")
+        break;
       }
   
     

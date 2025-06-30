@@ -7,31 +7,23 @@ import { backendUrl } from "@/app/utils/url";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { AdminSideBar } from "@/components/ui/adminSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-
+import useUserStore from "@/app/store/user.store";
 
 
 export default function Home() {
+
+  const {user} = useUserStore()
   
-  const [branchName, setBranch] = useState("");
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");  
 
-  useEffect(() => {
-    const branch = localStorage.getItem("branch")
-    if(branch)
-    {
-      setBranch(branch)
-    }
-  }, [])
-
-
 
   const mutation = useMutation({
     mutationFn: async () => {
       const payload = {
-        branch: branchName,
+        branch: user?.branch,
         fullname,
         username,
         password,

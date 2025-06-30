@@ -2,7 +2,7 @@
 
 import { Calendar, Home, Building, Search, UserPlus2, User, FileText, BarChart3, Building2, LogOut } from "lucide-react"
 import { useState, useEffect } from "react"
-
+import useUserStore from "@/app/store/user.store"
 import {
   Sidebar,
   SidebarContent,
@@ -30,15 +30,16 @@ const navigationItems = [
     icon: UserPlus2,
   },
   {
-    title: "Branch",
-    url: "/pages/admin/addBranch",
-    icon: Building,
-  },
-  {
     title: "Analytics",
     url: "/analytics",
     icon: BarChart3,
   },
+  {
+    title: "Branch",
+    url: "/pages/admin/addBranch",
+    icon: Building,
+  },
+
  
 ]
 
@@ -55,15 +56,7 @@ interface AppSidebarProps {
 }
 
 export function AdminSideBar({ className }: AppSidebarProps) {
-    const [branch, setBranch] = useState("")
-
-    useEffect(() => {
-        const branch = localStorage.getItem("branch")
-        if(branch){
-            setBranch(branch)
-        }
-    }, [])
-    
+    const { user } = useUserStore()
   return (
     <Sidebar className={className}>
       <SidebarHeader>
@@ -76,7 +69,7 @@ export function AdminSideBar({ className }: AppSidebarProps) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">The Barracks</span>
-                  <span className="truncate text-xs text-sidebar-foreground/70">{branch}</span>
+                  <span className="truncate text-xs text-sidebar-foreground/70">{user?.branch}</span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -91,7 +84,7 @@ export function AdminSideBar({ className }: AppSidebarProps) {
             <SidebarMenu>
               {navigationItems.map((item) => {
 
-                if(branch != "Main Branch" && item.title == "Branch") return null
+                if(user?.branch != "Main Branch" && item.title == "Branch") return null
 
                 return(
                     <SidebarMenuItem key={item.title}>
