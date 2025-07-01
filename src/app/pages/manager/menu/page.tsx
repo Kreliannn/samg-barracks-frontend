@@ -5,9 +5,11 @@ import { getMenuInterface } from "@/app/types/menu.type";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { backendUrl } from "@/app/utils/url";
-import { Edit, Package } from "lucide-react";
+import { Edit, Package, Utensils } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import { AddButton } from "./components/addButton";
+import { EditButton } from "./components/editButton";
 
 export interface getIngredientsInterface {
     _id: string,
@@ -32,65 +34,75 @@ export default function Home() {
 
 
     return (
-        <div className="">
-            <SidebarProvider>
-                <ManagerSideBar />
-                <div className="h-dvh w-full">
-
-                    <div className="w-full h-5/6 bg-stone-50 overflow-auto p-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {menu.map((item) => (
-                                <div 
-                                    key={item._id} 
-                                    className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-200"
-                                >
-                                    {/* Image Section */}
-                                    <div className="h-48 bg-gray-100 relative overflow-hidden">
-                                        {item.img ? (
-                                            <img 
-                                                src={item.img} 
-                                                alt={item.name}
-                                                className="w-full h-full object-cover"
-                                                onError={(e) => {
-                                                    const target = e.target as HTMLImageElement;
-                                                    target.style.display = 'none';
-                                                    target.nextElementSibling?.classList.remove('hidden');
-                                                }}
-                                            />
-                                        ) : null}
-                                        <div className={`absolute inset-0 flex items-center justify-center ${item.img ? 'hidden' : ''}`}>
-                                            <Package className="w-16 h-16 text-gray-400" />
-                                        </div>
-                                      
-                                    </div>
-
-                                    {/* Content Section */}
-                                    <div className="p-4">
-                                        <h3 className="font-semibold text-lg text-gray-900 mb-2 truncate">
-                                            {item.name}
-                                        </h3>
-
-                                        <h3 className="font-semibold text-lg text-gray-900 mb-2 truncate">
-                                            {item.price}
-                                        </h3>   
-                                       
-                                    </div>
-                                </div>
-                            ))}
+        <div className="bg-gray-50 min-h-screen">
+          <SidebarProvider>
+            <ManagerSideBar />
+            <div className="h-dvh w-full flex flex-col">
+      
+              {/* Header with Add Button */}
+              <div className="w-full h-1/6 bg-white border-b shadow-sm flex items-center justify-between px-6">
+                <h1 className="text-2xl font-bold text-gray-800">Food Menu</h1>
+                <AddButton setMenu={setMenu} />
+              </div>
+      
+              {/* Content */}
+              <div className="w-full h-5/6 bg-gray-100 overflow-auto p-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+      
+                  {menu.map((item) => (
+                    <div
+                      key={item._id}
+                      className="bg-white rounded-2xl shadow hover:shadow-lg border border-gray-200 overflow-hidden transition-all duration-200 group"
+                    >
+                      {/* Image Section */}
+                      <div className="h-48 bg-gray-100 relative overflow-hidden">
+                        {item.img ? (
+                          <img
+                            src={item.img}
+                            alt={item.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              target.nextElementSibling?.classList.remove('hidden');
+                            }}
+                          />
+                        ) : null}
+      
+                        {/* Placeholder Icon */}
+                        <div className={`absolute inset-0 flex items-center justify-center text-gray-400 ${item.img ? 'hidden' : ''}`}>
+                          <Package className="w-12 h-12" />
                         </div>
-                        
-                        {/* Empty State */}
-                        {menu.length === 0 && (
-                            <div className="flex flex-col items-center justify-center h-64 text-gray-500">
-                                <Package className="w-16 h-16 mb-4" />
-                                <p className="text-lg font-medium">No menu found</p>
-                                <p className="text-sm">Add some menu to get started</p>
-                            </div>
-                        )}
-                    </div>
+                      </div>
+      
+                      {/* Content */}
+                      <div className="p-4 space-y-1">
+                        <h3 className="font-semibold text-lg text-gray-900 truncate">
+                          {item.name}
+                        </h3>
+                        <p className="text-sm text-gray-500">₱ {item.price}</p>
+                        <EditButton menu={item} setMenu={setMenu} />
+                      </div>
 
+                     
+                    </div>
+                  ))}
+      
                 </div>
-            </SidebarProvider>
+      
+                {/* Empty State */}
+                {menu.length === 0 && (
+                  <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+                    <Utensils className="w-16 h-16 mb-4" />
+                    <p className="text-xl font-semibold">No Menu Found</p>
+                    <p className="text-sm">Add items to populate your food menu.</p>
+                  </div>
+                )}
+              </div>
+      
+            </div>
+          </SidebarProvider>
         </div>
-    );
+      );
+      
 }

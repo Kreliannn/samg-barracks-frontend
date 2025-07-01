@@ -2,7 +2,7 @@
 
 import { PackagePlus , Home, Building, Search, UserPlus2, User, FileText, BarChart3, Building2, LogOut } from "lucide-react"
 import { useState, useEffect } from "react"
-
+import { Utensils } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -28,6 +28,11 @@ const navigationItems = [
     title: "Ingredients",
     url: "/pages/manager/ingredients",
     icon: PackagePlus,
+  },
+  {
+    title: "Menu",
+    url: "/pages/manager/menu",
+    icon: Utensils,
   },
 
  
