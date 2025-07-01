@@ -23,6 +23,14 @@ import { getIngredientsInterface } from "@/app/types/ingredient.type"
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Item } from "@radix-ui/react-select"
 
+interface dataType  {
+    id : string,
+    name : string,
+    price : number,
+    type : string,
+    ingredients : menuIngredientsInterface[],
+}
+
 
 export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMenu : React.Dispatch<React.SetStateAction<getMenuInterface[]>>}) {
   const [open, setOpen] = useState(false)
@@ -49,15 +57,12 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
   }, [data])
 
   const mutation = useMutation({
-    mutationFn: (data: FormData) =>
+    mutationFn: (data: dataType) =>
       axios.put(backendUrl("menu"), data),
     onSuccess: (response) => {
       alert("success")
       setMenu(response.data)
-      setProductName("")
-      setPrice(0)
-      setType("all")
-      setIngredients([])
+ 
     },
     onError: (err) => {
       alert(err)
@@ -93,7 +98,16 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
   
 
   const handleSubmit = async () => {
- 
+    if ( !productName || !price || type == "all") return alert("emptty")
+
+    const data = {
+        id : menu._id,
+        name : productName,
+        price : price,
+        ingredients : ingredients,
+        type : type
+    }
+    mutation.mutate(data)
   }
 
   return (
@@ -214,7 +228,7 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
             disabled={mutation.isPending}
             className="w-full"
           >
-            {mutation.isPending ? "Saving..." : "Save Menu"}
+            {mutation.isPending ? "Saving..." : "Save Changes"}
           </Button>
         </SheetFooter>
       </SheetContent>

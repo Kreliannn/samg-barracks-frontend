@@ -109,7 +109,7 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
   
 
   const handleSubmit = async () => {
-    if (!file || !productName || !price || type != "all") return alert("emptty")
+    if (!file || !productName || !price || type == "all") return alert("emptty")
 
     const formData = new FormData()
     formData.append("file", file)
