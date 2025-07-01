@@ -72,13 +72,13 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
       <SheetTrigger onClick={() => setOpen(true)} asChild>
         <Button variant="outline">Add Ingredients</Button>
       </SheetTrigger>
-      <SheetContent className="sm:max-w-md">
+      <SheetContent className="sm:max-w-md ">
         <SheetHeader>
           <SheetTitle>Add New Ingredient</SheetTitle>
           <SheetDescription>Fill in the details below to add a new ingredient to your inventory.</SheetDescription>
         </SheetHeader>
 
-        <div className="rounded-lg  bg-card  w-full mx-auto h-[500px] overflow-auto p-6 space-y-6">
+        <div className="rounded-lg  bg-card   mx-auto h-[500px] overflow-auto p-6 space-y-6">
           {/* Product Name */}
           <div className="space-y-2">
             <h1  className="text-sm font-medium">
