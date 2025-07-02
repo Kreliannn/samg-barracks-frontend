@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Package, X } from "lucide-react";
 import useOrderStore from "@/app/store/cart.store";
+import { PlaceOrder } from "./placeOrder";
 
 export function Cart() {
   const { orders: cartItems , removeOrder} = useOrderStore();
@@ -12,13 +13,7 @@ export function Cart() {
   const totalDiscount = cartItems.reduce((sum, item) => sum + (item.price * item.discount / 100), 0);
   const grandTotal = subtotal - totalDiscount;
 
-  console.log(cartItems)
 
-  const handlePlaceOrder = () => {
-    // Implement place order logic here
-    console.log("Placing order with items:", cartItems);
-    // You can add your order placement logic here
-  };
 
   return (
     <div className="h-full flex flex-col bg-stone-200">
@@ -116,14 +111,7 @@ export function Cart() {
             </div>
           </div>
 
-          {/* Place Order Button */}
-          <Button 
-            onClick={handlePlaceOrder} 
-            className="w-full"
-            size="lg"
-          >
-            Place Order
-          </Button>
+          <PlaceOrder />
         </div>
       )}
     </div>

@@ -17,6 +17,7 @@ import { Plus, Minus } from "lucide-react";
 import { orderInterface } from "@/app/types/orders.type";
 import useOrderStore from "@/app/store/cart.store";
 
+
 export function AddCart({ menu }: { menu: getMenuInterface }) {
   const [open, setOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);

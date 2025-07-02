@@ -1,6 +1,6 @@
-import { menuInterface } from "./menu.type";
+import { menuInterface , getMenuInterface} from "./menu.type";
 
-export interface orderInterface extends menuInterface {
+export interface orderInterface extends getMenuInterface {
     discount : number,
     discountType : string,
     qty : number,
