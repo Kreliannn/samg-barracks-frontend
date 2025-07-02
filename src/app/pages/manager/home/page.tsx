@@ -11,7 +11,7 @@ export default function Home() {
         <SidebarProvider>
           <ManagerSideBar />
           <div>
-            <h1> welcome admin</h1>
+            <h1> welcome Manger</h1>
           </div>
         </SidebarProvider>
     </div>

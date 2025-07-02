@@ -48,8 +48,8 @@ export default function POS() {
         <div className="h-dvh w-full flex">
           <div className="h-full w-4/6 bg-stone-100">
 
-                <div className="h-[10%] w-full bg-stone-300 flex justify-center items-center">
-                    <h1 className="text-3xl text-center font-bold"> The Barracks Menu </h1>
+                <div className="h-[10%] w-full bg-stone-800  shadow-lg flex justify-center items-center">
+                    <h1 className="text-3xl text-center font-bold text-white"> The Barracks Menu </h1>
                 </div>
 
                 <div className="w-full h-[80%] bg-gray-100 overflow-auto p-6">
@@ -108,9 +108,9 @@ export default function POS() {
               </div>
 
 
-                <div className="h-[10%] w-full bg-stone-300 flex justify-center items-center gap-5">
+                <div className="h-[10%] w-full bg-stone-800  flex justify-center items-center gap-5">
                     {types.map((type) => (
-                        <Button  key={type} size={"lg"} onClick={() => filterHandler(type)}> {type} </Button>
+                        <Button className="bg-white text-stone-800  hover:bg-stone-200 hover:text-black"  key={type} size={"lg"} onClick={() => filterHandler(type)}> {type} </Button>
                     ))}
                 </div>
           </div>

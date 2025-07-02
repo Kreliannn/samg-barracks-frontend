@@ -22,6 +22,7 @@ import { getMenuInterface, menuIngredientsInterface } from "@/app/types/menu.typ
 import { getIngredientsInterface } from "@/app/types/ingredient.type"
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Item } from "@radix-ui/react-select"
+import { errorAlert, successAlert } from "@/app/utils/alert";
 
 interface dataType  {
     id : string,
@@ -60,12 +61,12 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
     mutationFn: (data: dataType) =>
       axiosInstance.put("/menu", data),
     onSuccess: (response) => {
-      alert("success")
+      successAlert("save changes")
       setMenu(response.data)
  
     },
     onError: (err) => {
-      alert(err)
+      errorAlert("error")
     },
   })
 
@@ -98,7 +99,7 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
   
 
   const handleSubmit = async () => {
-    if ( !productName || !price || type == "all") return alert("emptty")
+    if ( !productName || !price || type == "all") return errorAlert("empty field")
 
     const data = {
         id : menu._id,
@@ -152,8 +153,12 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem  value={"all"}> select Type </SelectItem>
-                    <SelectItem  value={"food"}> food </SelectItem>
-                    <SelectItem  value={"drinks"}> drinks </SelectItem>
+                    <SelectItem  value={"Ala carte"}> Ala carte </SelectItem>
+                    <SelectItem  value={"Sizzling"}> Sizzling </SelectItem>
+                    <SelectItem  value={"Beverage"}> Beverage </SelectItem>
+                    <SelectItem  value={"Pulutan"}> Pulutan </SelectItem>
+                    <SelectItem  value={"Unli"}> Unli </SelectItem>
+                    <SelectItem  value={"Others"}> Others </SelectItem>
                 </SelectContent>
               </Select>
           </div>

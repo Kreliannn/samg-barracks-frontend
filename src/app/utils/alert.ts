@@ -1,4 +1,5 @@
 import Swal from "sweetalert2"
+import { toast } from "sonner"
 
 export const confirmAlert = (text : string, buttonText : string, callback : () => void) => {
     Swal.fire({
@@ -16,29 +17,16 @@ export const confirmAlert = (text : string, buttonText : string, callback : () =
       })
 } 
 
-export const successAlert = (text : string) => {
-    Swal.fire({
-        title: 'Success!',
-        text: text,
-        icon: 'success',
-        confirmButtonColor: '#22c55e', // Tailwind's green-500 hex
-        confirmButtonText: 'OK',
-        customClass: {
-            confirmButton: 'w-40' // Tailwind: width of 10rem
-          }
-      });
-}
+export const successAlert = (text: string) => {
+    toast.success("Success", {
+      description: text,
+    });
+  };
+  
 
 export const errorAlert = (text : string) => {
-    Swal.fire({
-        title: 'Error!',
-        text: text,
-        icon: 'error',
-        confirmButtonColor: '#22c55e', // Tailwind's green-500 hex
-        confirmButtonText: 'OK',
-        customClass: {
-            confirmButton: 'w-40' // Tailwind: width of 10rem
-          }
+    toast.error("Error", {
+        description: text,
       });
 }
 

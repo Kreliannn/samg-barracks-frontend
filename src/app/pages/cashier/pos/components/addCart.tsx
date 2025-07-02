@@ -63,9 +63,9 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
         ></Button>
       </DialogTrigger>
       <DialogHeader>
-          <DialogTitle>Title</DialogTitle>
+          <DialogTitle></DialogTitle>
           <DialogDescription>   
-           Description
+           
           </DialogDescription>
         </DialogHeader>
       <DialogContent className="sm:max-w-[600px]">

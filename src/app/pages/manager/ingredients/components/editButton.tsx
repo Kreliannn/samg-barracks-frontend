@@ -19,6 +19,7 @@ import axiosInstance from "@/app/utils/axios"
 import { backendUrl } from "@/app/utils/url"
 import { ImageIcon, Upload } from "lucide-react"
 import { getIngredientsInterface } from "../page"
+import { errorAlert, successAlert } from "@/app/utils/alert";
 
 export function EditButton({ setIngredients, ingredient } : { ingredient : getIngredientsInterface, setIngredients : React.Dispatch<React.SetStateAction<getIngredientsInterface[]>>}) {
   const [open, setOpen] = useState(false)
@@ -29,19 +30,19 @@ export function EditButton({ setIngredients, ingredient } : { ingredient : getIn
   const mutation = useMutation({
     mutationFn: (data: {id : string, name: string, stocks: number}) => axiosInstance.put("/ingredients", data),
     onSuccess: (response) => {
-      alert("success")
+      successAlert("success")
       setIngredients(response.data)
       setOpen(false)
     },
     onError: (err) => {
-      alert(err)
+      errorAlert("error")
     },
   })
 
   
 
   const handleSubmit = async () => {
-    if ( !productName || !initialStocks) return alert("emptty")
+    if ( !productName || !initialStocks) return errorAlert("empty field")
 
     mutation.mutate({id : ingredient._id, name: productName, stocks: initialStocks})
 

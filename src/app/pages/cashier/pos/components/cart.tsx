@@ -19,7 +19,7 @@ export function Cart() {
     <div className="h-full flex flex-col bg-stone-200">
       {/* Header */}
       <div className="p-4 bg-white border-b">
-        <h2 className="text-xl font-bold flex items-center gap-2">
+        <h2 className="text-xl font-bold flex items-center gap-2 ">
           <ShoppingCart className="w-5 h-5" />
           Cart ({cartItems.length})
         </h2>
@@ -111,7 +111,7 @@ export function Cart() {
             </div>
           </div>
 
-          <PlaceOrder />
+          <PlaceOrder subTotal={subtotal} grandTotal={grandTotal} totalDiscount={totalDiscount}/>
         </div>
       )}
     </div>

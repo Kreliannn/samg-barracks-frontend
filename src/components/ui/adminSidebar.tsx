@@ -30,11 +30,6 @@ const navigationItems = [
     icon: UserPlus2,
   },
   {
-    title: "Analytics",
-    url: "/analytics",
-    icon: BarChart3,
-  },
-  {
     title: "Branch",
     url: "/pages/admin/addBranch",
     icon: Building,

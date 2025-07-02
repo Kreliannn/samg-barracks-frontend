@@ -21,6 +21,7 @@ import { ImageIcon, Upload, Utensils, X } from "lucide-react"
 import { getMenuInterface, menuIngredientsInterface } from "@/app/types/menu.type"
 import { getIngredientsInterface } from "@/app/types/ingredient.type"
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import { errorAlert, successAlert } from "@/app/utils/alert";
 
 export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStateAction<getMenuInterface[]>>}) {
   const [open, setOpen] = useState(false)
@@ -50,7 +51,7 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
     mutationFn: (formData: FormData) =>
       axiosInstance.post("/menu", formData, { headers: { "Content-Type": "multipart/form-data" } }),
     onSuccess: (response) => {
-      alert("success")
+      successAlert("menu added")
       setMenu(response.data)
       setProductName("")
       setPrice(0)
@@ -61,7 +62,7 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
       setOpen(false)
     },
     onError: (err) => {
-      alert(err)
+      errorAlert("error")
     },
   })
 
@@ -111,7 +112,7 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
   
 
   const handleSubmit = async () => {
-    if (!file || !productName || !price || type == "all") return alert("emptty")
+    if (!file || !productName || !price || type == "all") return errorAlert("empty field")
 
     const formData = new FormData()
     formData.append("file", file)
@@ -125,7 +126,7 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger onClick={() => setOpen(true)} asChild>
-        <Button variant="outline">Add Menu</Button>
+        <Button >Add Menu</Button>
       </SheetTrigger>
   
       <SheetContent className="sm:max-w-md">

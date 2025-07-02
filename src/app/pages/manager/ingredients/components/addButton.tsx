@@ -19,6 +19,8 @@ import axiosInstance from "@/app/utils/axios"
 import { backendUrl } from "@/app/utils/url"
 import { ImageIcon, Upload } from "lucide-react"
 import { getIngredientsInterface } from "../page"
+import { errorAlert, successAlert } from "@/app/utils/alert";
+import { error } from "console"
 
 export function AddButton({ setIngredients } : { setIngredients : React.Dispatch<React.SetStateAction<getIngredientsInterface[]>>}) {
   const [open, setOpen] = useState(false)
@@ -31,7 +33,7 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
     mutationFn: (formData: FormData) =>
       axiosInstance.post("/ingredients", formData, { headers: { "Content-Type": "multipart/form-data" } }),
     onSuccess: (response) => {
-      alert("success")
+      successAlert("ingredient added")
       setProductName("")
       setInitialStocks(0)
       setFile(null)
@@ -41,7 +43,7 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
       
     },
     onError: (err) => {
-      alert(err)
+      errorAlert("error")
     },
   })
 
@@ -64,7 +66,7 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
   
 
   const handleSubmit = async () => {
-    if (!file || !productName || !initialStocks) return alert("emptty")
+    if (!file || !productName || !initialStocks) return errorAlert("empty field")
 
     const formData = new FormData()
     formData.append("file", file)
@@ -76,7 +78,7 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger onClick={() => setOpen(true)} asChild>
-        <Button variant="outline">Add Ingredients</Button>
+        <Button >Add Ingredients</Button>
       </SheetTrigger>
       <SheetContent className="sm:max-w-md ">
         <SheetHeader>
