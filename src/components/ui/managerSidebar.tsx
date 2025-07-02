@@ -16,6 +16,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import useUserStore from "@/app/store/user.store";
 
 // Navigation items
 const navigationItems = [
@@ -51,14 +52,7 @@ interface AppSidebarProps {
 }
 
 export function ManagerSideBar({ className }: AppSidebarProps) {
-    const [branch, setBranch] = useState("")
-
-    useEffect(() => {
-        const branch = localStorage.getItem("branch")
-        if(branch){
-            setBranch(branch)
-        }
-    }, [])
+  const { user } = useUserStore()
     
   return (
     <Sidebar className={className}>
@@ -72,7 +66,7 @@ export function ManagerSideBar({ className }: AppSidebarProps) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">The Barracks</span>
-                  <span className="truncate text-xs text-sidebar-foreground/70">{branch}</span>
+                  <span className="truncate text-xs text-sidebar-foreground/70">{user?.branch}</span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -87,7 +81,7 @@ export function ManagerSideBar({ className }: AppSidebarProps) {
             <SidebarMenu>
               {navigationItems.map((item) => {
 
-                if(branch != "Main Branch" && item.title == "Branch") return null
+                if(user?.branch != "Main Branch" && item.title == "Branch") return null
 
                 return(
                     <SidebarMenuItem key={item.title}>

@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { backendUrl } from "@/app/utils/url";
 import { Edit, Package, Utensils } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
+import axiosInstance from "@/app/utils/axios";
 import { AddButton } from "./components/addButton";
 import { EditButton } from "./components/editButton";
 
@@ -25,7 +25,7 @@ export default function Home() {
 
     const { data } = useQuery({
         queryKey: ["menu"],
-        queryFn: () => axios.get(backendUrl("menu"))
+        queryFn: () => axiosInstance.get("/menu")
     })
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export default function Home() {
       
               {/* Content */}
               <div className="w-full h-5/6 bg-gray-100 overflow-auto p-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2">
       
                   {menu.map((item) => (
                     <div
@@ -55,7 +55,7 @@ export default function Home() {
                       className="bg-white rounded-2xl shadow hover:shadow-lg border border-gray-200 overflow-hidden transition-all duration-200 group"
                     >
                       {/* Image Section */}
-                      <div className="h-48 bg-gray-100 relative overflow-hidden">
+                      <div className="h-64 bg-gray-100 relative overflow-hidden">
                         {item.img ? (
                           <img
                             src={item.img}
@@ -81,6 +81,7 @@ export default function Home() {
                           {item.name}
                         </h3>
                         <p className="text-sm text-gray-500">₱ {item.price}</p>
+                        <p className="text-sm text-gray-500"> {item.type}</p>
                         <EditButton menu={item} setMenu={setMenu} />
                       </div>
 

@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useMutation , useQuery} from "@tanstack/react-query"
-import axios from "axios"
+import axiosInstance from "@/app/utils/axios"
 import { backendUrl } from "@/app/utils/url"
 import { ImageIcon, Upload, Utensils, X } from "lucide-react"
 import { getMenuInterface, menuIngredientsInterface } from "@/app/types/menu.type"
@@ -49,7 +49,7 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
 
   const { data } = useQuery({
       queryKey: ["ingredients"],
-      queryFn: () => axios.get(backendUrl("ingredients"))
+      queryFn: () => axiosInstance.get("/ingredients")
   })
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
 
   const mutation = useMutation({
     mutationFn: (data: dataType) =>
-      axios.put(backendUrl("menu"), data),
+      axiosInstance.put("/menu", data),
     onSuccess: (response) => {
       alert("success")
       setMenu(response.data)

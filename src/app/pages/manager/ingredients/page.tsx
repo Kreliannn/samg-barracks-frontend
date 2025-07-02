@@ -8,7 +8,7 @@ import { backendUrl } from "@/app/utils/url";
 import { Edit, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EditButton } from "./components/editButton";
-import axios from "axios";
+import axiosInstance from "@/app/utils/axios";
 
 export interface getIngredientsInterface {
     _id: string,
@@ -24,7 +24,7 @@ export default function Home() {
 
     const { data } = useQuery({
         queryKey: ["ingredients"],
-        queryFn: () => axios.get(backendUrl("ingredients"))
+        queryFn: () => axiosInstance.get("/ingredients")
     })
 
     useEffect(() => {
@@ -42,7 +42,10 @@ export default function Home() {
                 <ManagerSideBar />
                 <div className="h-dvh w-full">
 
-                    <div className="w-full h-1/6 bg-stone-100">
+                  
+
+                    <div className="w-full h-1/6 bg-white border-b shadow-sm flex items-center justify-between px-6">
+                        <h1 className="text-2xl font-bold text-gray-800">Ingredients Inventory</h1>
                         <AddButton setIngredients={setIngredients}/>
                     </div>
 

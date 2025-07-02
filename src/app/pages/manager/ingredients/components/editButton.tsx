@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useMutation } from "@tanstack/react-query"
-import axios from "axios"
+import axiosInstance from "@/app/utils/axios"
 import { backendUrl } from "@/app/utils/url"
 import { ImageIcon, Upload } from "lucide-react"
 import { getIngredientsInterface } from "../page"
@@ -27,10 +27,11 @@ export function EditButton({ setIngredients, ingredient } : { ingredient : getIn
 
 
   const mutation = useMutation({
-    mutationFn: (data: {id : string, name: string, stocks: number}) => axios.put(backendUrl("ingredients"), data),
+    mutationFn: (data: {id : string, name: string, stocks: number}) => axiosInstance.put("/ingredients", data),
     onSuccess: (response) => {
       alert("success")
       setIngredients(response.data)
+      setOpen(false)
     },
     onError: (err) => {
       alert(err)

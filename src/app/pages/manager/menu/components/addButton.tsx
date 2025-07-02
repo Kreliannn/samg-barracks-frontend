@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useMutation , useQuery} from "@tanstack/react-query"
-import axios from "axios"
+import axiosInstance from "@/app/utils/axios"
 import { backendUrl } from "@/app/utils/url"
 import { ImageIcon, Upload, Utensils, X } from "lucide-react"
 import { getMenuInterface, menuIngredientsInterface } from "@/app/types/menu.type"
@@ -39,7 +39,7 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
 
   const { data } = useQuery({
       queryKey: ["ingredients"],
-      queryFn: () => axios.get(backendUrl("ingredients"))
+      queryFn: () => axiosInstance.get("/ingredients")
   })
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
 
   const mutation = useMutation({
     mutationFn: (formData: FormData) =>
-      axios.post(backendUrl("menu"), formData, { headers: { "Content-Type": "multipart/form-data" } }),
+      axiosInstance.post("/menu", formData, { headers: { "Content-Type": "multipart/form-data" } }),
     onSuccess: (response) => {
       alert("success")
       setMenu(response.data)
@@ -57,6 +57,8 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
       setType("all")
       setIngredients([])
       setFile(null)
+      setImagePreview(null)
+      setOpen(false)
     },
     onError: (err) => {
       alert(err)
@@ -160,8 +162,12 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem  value={"all"}> select Type </SelectItem>
-                    <SelectItem  value={"food"}> food </SelectItem>
-                    <SelectItem  value={"drinks"}> drinks </SelectItem>
+                    <SelectItem  value={"Ala carte"}> Ala carte </SelectItem>
+                    <SelectItem  value={"Sizzling"}> Sizzling </SelectItem>
+                    <SelectItem  value={"Beverage"}> Beverage </SelectItem>
+                    <SelectItem  value={"Pulutan"}> Pulutan </SelectItem>
+                    <SelectItem  value={"Unli"}> Unli </SelectItem>
+                    <SelectItem  value={"Others"}> Others </SelectItem>
                 </SelectContent>
               </Select>
           </div>

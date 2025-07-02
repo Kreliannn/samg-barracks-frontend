@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "@/app/utils/axios";
 import { useMutation } from "@tanstack/react-query";
 import { backendUrl } from "@/app/utils/url";
 import { AdminSideBar } from "@/components/ui/adminSidebar";
@@ -22,7 +22,7 @@ export default function Home() {
         password,
         role: "admin",  
       };
-      await axios.post(backendUrl("branch"), payload);
+      await axiosInstance.post("/branch", payload);
     },
     onSuccess: () => {
       alert("Branch created successfully!");

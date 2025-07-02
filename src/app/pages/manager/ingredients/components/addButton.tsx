@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useMutation } from "@tanstack/react-query"
-import axios from "axios"
+import axiosInstance from "@/app/utils/axios"
 import { backendUrl } from "@/app/utils/url"
 import { ImageIcon, Upload } from "lucide-react"
 import { getIngredientsInterface } from "../page"
@@ -29,10 +29,16 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
 
   const mutation = useMutation({
     mutationFn: (formData: FormData) =>
-      axios.post(backendUrl("ingredients"), formData, { headers: { "Content-Type": "multipart/form-data" } }),
+      axiosInstance.post("/ingredients", formData, { headers: { "Content-Type": "multipart/form-data" } }),
     onSuccess: (response) => {
       alert("success")
+      setProductName("")
+      setInitialStocks(0)
+      setFile(null)
+      setOpen(false)
+      setImagePreview(null);
       setIngredients(response.data)
+      
     },
     onError: (err) => {
       alert(err)

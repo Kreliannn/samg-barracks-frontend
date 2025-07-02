@@ -1,14 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "@/app/utils/axios";
 import { useMutation } from "@tanstack/react-query";
 import { backendUrl } from "@/app/utils/url";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { AdminSideBar } from "@/components/ui/adminSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import useUserStore from "@/app/store/user.store";
-
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { getAccountInterface } from "@/app/types/employee.type";
 
 export default function Home() {
 
@@ -18,6 +21,17 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");  
+  const [employee, setEmployee] = useState<getAccountInterface[]>([])
+
+
+  const { data } = useQuery({
+    queryKey: ["account"],
+    queryFn: () => axiosInstance.get("/account")
+  })
+
+  useEffect(() => {
+      if(data?.data) setEmployee(data?.data)
+  }, [data])
 
 
   const mutation = useMutation({
@@ -29,9 +43,10 @@ export default function Home() {
         password,
         role,
       };
-      await axios.post(backendUrl("register"), payload);
+      await axiosInstance.post("/register", payload);
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
+      
       alert("Employee added successfully!");
       setFullname("");
       setUsername("");
@@ -51,62 +66,94 @@ export default function Home() {
     mutation.mutate();
   };
 
-  return (
-    <div className="">
-       <SidebarProvider>
-          <AdminSideBar />
-          <div>
-            
-            <h1 className="text-2xl font-bold mb-4">Add New Employee</h1>
+ 
+return (
+  <div className="bg-gray-50 min-h-screen p-6">
+    <SidebarProvider>
+      <AdminSideBar />
 
-            <div className="flex flex-col gap-4 max-w-sm">
+      {/* Page Title */}
+     
 
+      {/* Employee Form */}
+      <div className="bg-white rounded-lg shadow p-6 max-w-md space-y-4 mb-10">
 
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={fullname}
-                onChange={(e) => setFullname(e.target.value)}
-                className="border p-2 rounded"
-              />
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">Add New Employee</h1>
+          <p className="text-sm text-gray-500">Fill in the details to add a new staff member.</p>
+        </div>
 
-              <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="border p-2 rounded"
-              />
+        <input
+          type="text"
+          placeholder="Full Name"
+          value={fullname}
+          onChange={(e) => setFullname(e.target.value)}
+          className="border px-3 py-2 rounded w-full text-sm"
+        />
 
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="border p-2 rounded"
-              />
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="border px-3 py-2 rounded w-full text-sm"
+        />
 
-              {/* Select for Role */}
-              <Select value={role} onValueChange={setRole}>
-                <SelectTrigger className="border p-2 rounded">
-                  <SelectValue placeholder="Select Role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="cashier">Cashier</SelectItem>
-                  <SelectItem value="manager">Manager</SelectItem>
-                  <SelectItem value="kitchen">Kitchen</SelectItem>
-                </SelectContent>
-              </Select>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="border px-3 py-2 rounded w-full text-sm"
+        />
 
-              <button
-                onClick={handleSubmit}
-                className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-              >
-                  Add employee
-              </button>
-            </div>
-          </div>
-        </SidebarProvider>
-    </div>
-  );
+        {/* Role Selector */}
+        <Select value={role} onValueChange={setRole}>
+          <SelectTrigger className="border px-3 py-2 rounded text-sm">
+            <SelectValue placeholder="Select Role" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="cashier">Cashier</SelectItem>
+            <SelectItem value="manager">Manager</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {/* Submit Button */}
+        <Button onClick={handleSubmit} className="w-full">
+          Add Employee
+        </Button>
+      </div>
+
+      {/* Employee List Table */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-xl font-semibold mb-4">Employee List</h2>
+
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-left">Name</TableHead>
+              <TableHead className="text-left">Username</TableHead>
+              <TableHead className="text-left">Role</TableHead>
+              <TableHead className="text-left">Branch</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {employee?.map((emp) => (
+              <TableRow key={emp._id}>
+                <TableCell>{emp.fullname}</TableCell>
+                <TableCell>{emp.username}</TableCell>
+                <TableCell className="capitalize">{emp.role}</TableCell>
+                <TableCell>{emp.branch}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
+        {employee.length === 0 && (
+          <p className="text-center text-sm text-gray-500 mt-4">No employees found.</p>
+        )}
+      </div>
+    </SidebarProvider>
+  </div>
+);
 }
