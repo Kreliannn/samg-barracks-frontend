@@ -9,7 +9,9 @@ import { useQuery } from "@tanstack/react-query";
 import { backendUrl } from "@/app/utils/url";
 import axiosInstance from "@/app/utils/axios";
 import { Package, Utensils } from "lucide-react";
-
+import { AddCart } from "./components/addCart";
+import { orderInterface } from "@/app/types/orders.type";
+import { Cart } from "./components/cart";
 
 const types = [ "All", "Ala carte", "Unli", "Sizzling", "Pulutan", "Beverage", "Others"]
 
@@ -56,10 +58,10 @@ export default function POS() {
                     {menu.map((item) => (
                         <div
                         key={item._id}
-                        className="bg-white rounded-2xl shadow hover:shadow-lg border border-gray-200 overflow-hidden transition-all duration-200 group"
+                        className="bg-white relative  rounded-2xl shadow hover:shadow-lg border border-gray-200 overflow-hidden transition-all duration-200 group"
                         >
                         {/* Image Section */}
-                        <div className="h-48 bg-gray-100 relative overflow-hidden">
+                        <div className="h-48 bg-gray-100   overflow-hidden">
                             {item.img ? (
                             <img
                                 src={item.img}
@@ -86,6 +88,7 @@ export default function POS() {
                             </h3>
                             <p className="text-sm text-gray-500">₱ {item.price}</p>
                             <p className="text-sm text-gray-500">{item.type}</p>
+                            <AddCart menu={item} />
                         </div>
 
                         
@@ -113,8 +116,9 @@ export default function POS() {
           </div>
           
           <div className="h-full w-2/6 bg-stone-200">
-            {/* Right content area */}
+            <Cart />
           </div>
+
         </div>
       </SidebarProvider>
     </div>

@@ -54,7 +54,7 @@ export default function Home() {
                             {ingredients.map((ingredient) => (
                                 <div 
                                     key={ingredient._id} 
-                                    className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-200"
+                                    className="bg-white relative rounded-lg shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-200"
                                 >
                                     {/* Image Section */}
                                     <div className="h-48 bg-gray-100 relative overflow-hidden">

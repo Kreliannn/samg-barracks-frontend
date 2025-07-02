@@ -52,7 +52,7 @@ export default function Home() {
                   {menu.map((item) => (
                     <div
                       key={item._id}
-                      className="bg-white rounded-2xl shadow hover:shadow-lg border border-gray-200 overflow-hidden transition-all duration-200 group"
+                      className="bg-white relative rounded-2xl shadow hover:shadow-lg border border-gray-200 overflow-hidden transition-all duration-200 group"
                     >
                       {/* Image Section */}
                       <div className="h-64 bg-gray-100 relative overflow-hidden">

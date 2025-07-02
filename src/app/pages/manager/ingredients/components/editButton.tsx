@@ -50,7 +50,9 @@ export function EditButton({ setIngredients, ingredient } : { ingredient : getIn
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger onClick={() => setOpen(true)} asChild>
-        <Button variant="outline" className="w-full">Edit</Button>
+                  <Button className=" absolute w-full h-full top-0 left-0 opacity-0 "  onClick={() => setOpen(true)}>
+                    
+                  </Button>
       </SheetTrigger>
       <SheetContent className="sm:max-w-md ">
         <SheetHeader>
