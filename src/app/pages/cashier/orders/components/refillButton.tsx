@@ -23,7 +23,7 @@ import { getIngredientsInterface, ingredientsInterface } from "@/app/types/ingre
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { errorAlert, successAlert } from "@/app/utils/alert";
 
-export function RefillButton() {
+export function RefillButton({ table } : { table : string}) {
  
   const [open, setOpen] = useState(false)
 
@@ -45,11 +45,14 @@ export function RefillButton() {
   }, [data])
 
   const mutation = useMutation({
-    mutationFn: (formData: FormData) =>
-      axiosInstance.post("/menu", formData, { headers: { "Content-Type": "multipart/form-data" } }),
+    mutationFn: (data: { id : string, qty : number}[]) =>
+      axiosInstance.put("/ingredients/refill", data),
     onSuccess: (response) => {
-      successAlert("menu added")
-     
+      successAlert("success")
+      setIngredients([])
+      setIquantity(1)
+      setIngredientSelect("all")
+      setOpen(false)
     },
     onError: (err) => {
       errorAlert("error")
@@ -94,6 +97,11 @@ export function RefillButton() {
   }
   
 
+  const refillHandler = () => {
+    if(!ingredients) return errorAlert("empty item")
+    mutation.mutate(ingredients)
+  }
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger onClick={() => setOpen(true)} asChild>
@@ -102,9 +110,9 @@ export function RefillButton() {
   
       <SheetContent className="sm:max-w-md">
         <SheetHeader>
-          <SheetTitle className="text-xl font-bold">Add New Menu</SheetTitle>
+          <SheetTitle className="text-xl font-bold">Refill For {table}</SheetTitle>
           <SheetDescription className="text-sm text-gray-500">
-            Fill in the details below to add a new food item to your menu.
+                select refill item
           </SheetDescription>
         </SheetHeader>
   
@@ -113,7 +121,7 @@ export function RefillButton() {
         <div className="rounded-lg bg-white mx-auto max-h-[500px] overflow-auto p-6 space-y-6 border h-[500px]">
           {/* Ingredients Selection */}
           <div className="space-y-2">
-            <h1 className="text-sm font-medium text-gray-700">Menu Ingredients</h1>
+            <h1 className="text-sm font-medium text-gray-700">Refill Option</h1>
             <div className="flex flex-wrap gap-2">
               <Select value={ingredientSelect} onValueChange={setIngredientSelect}>
                 <SelectTrigger className="border px-3 py-2 rounded bg-white text-sm w-47">
@@ -178,7 +186,7 @@ export function RefillButton() {
           </SheetClose>
           <Button
             type="submit"
-            onClick={() => {}}
+            onClick={refillHandler}
             disabled={mutation.isPending}
             className="w-full"
           >

@@ -40,7 +40,7 @@ export default function Home() {
                                     {/* Header */}
                                     <div className="bg-stone-900 text-white p-4 flex items-center justify-between">
                                         <h2 className="text-xl font-bold">{order.table}</h2>
-                                        <RefillButton />
+                                        <RefillButton table={order.table}/>
                                     </div>
 
                                     

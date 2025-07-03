@@ -25,8 +25,7 @@ export default function Home() {
     const { data, isLoading } = useQuery({
         queryKey: ["ingredients"],
         queryFn: () => axiosInstance.get("/ingredients"),
-        staleTime: 1000 * 60 * 5, 
-        refetchOnWindowFocus: false, 
+        refetchInterval: 1000 * 60, 
     })
 
     useEffect(() => {
