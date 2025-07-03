@@ -22,9 +22,11 @@ export default function Home() {
     
     const [ingredients, setIngredients] = useState<getIngredientsInterface[]>([])
 
-    const { data } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["ingredients"],
-        queryFn: () => axiosInstance.get("/ingredients")
+        queryFn: () => axiosInstance.get("/ingredients"),
+        staleTime: 1000 * 60 * 5, 
+        refetchOnWindowFocus: false, 
     })
 
     useEffect(() => {
@@ -36,11 +38,12 @@ export default function Home() {
         console.log("Edit ingredient:", ingredient);
     }
 
+    if(isLoading) return <h1> loading........ </h1>
+
     return (
-        <div className="">
-            <SidebarProvider>
-                <ManagerSideBar />
-                <div className="h-dvh w-full">
+   
+               
+                <div className="h-dvh w-full ">
 
                   
 
@@ -117,7 +120,6 @@ export default function Home() {
                     </div>
 
                 </div>
-            </SidebarProvider>
-        </div>
+      
     );
 }

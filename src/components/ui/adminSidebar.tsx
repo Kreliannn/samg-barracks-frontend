@@ -1,5 +1,5 @@
 "use client"
-
+import Link from "next/link"
 import { Calendar, Home, Building, Search, UserPlus2, User, FileText, BarChart3, Building2, LogOut } from "lucide-react"
 import { useState, useEffect } from "react"
 import useUserStore from "@/app/store/user.store"
@@ -84,10 +84,10 @@ export function AdminSideBar({ className }: AppSidebarProps) {
                 return(
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
-                        <a href={item.url}>
+                        <Link href={item.url}>
                           <item.icon />
                           <span>{item.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   )
@@ -102,10 +102,10 @@ export function AdminSideBar({ className }: AppSidebarProps) {
           {accountItems.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
-                <a href={item.url}>
+                <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

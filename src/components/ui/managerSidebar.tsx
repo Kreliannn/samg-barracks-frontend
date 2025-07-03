@@ -1,5 +1,5 @@
 "use client"
-
+import Link from "next/link";
 import { PackagePlus , Home, Building, Search, UserPlus2, User, FileText, BarChart3, Building2, LogOut } from "lucide-react"
 import { useState, useEffect } from "react"
 import { Utensils } from "lucide-react";
@@ -86,10 +86,10 @@ export function ManagerSideBar({ className }: AppSidebarProps) {
                 return(
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
-                        <a href={item.url}>
+                        <Link href={item.url}>
                           <item.icon />
                           <span>{item.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   )
@@ -104,10 +104,10 @@ export function ManagerSideBar({ className }: AppSidebarProps) {
           {accountItems.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
-                <a href={item.url}>
+                <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

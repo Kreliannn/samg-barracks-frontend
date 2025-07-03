@@ -28,6 +28,8 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
   const [productName, setProductName] = useState("")
   const [initialStocks, setInitialStocks] = useState<number>(0)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [type, setType] = useState("none");
+
 
   const mutation = useMutation({
     mutationFn: (formData: FormData) =>
@@ -40,7 +42,7 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
       setOpen(false)
       setImagePreview(null);
       setIngredients(response.data)
-      
+      setType("none")
     },
     onError: (err) => {
       errorAlert("error")
@@ -72,6 +74,7 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
     formData.append("file", file)
     formData.append("name", productName)
     formData.append("stocks", initialStocks.toString())
+    formData.append("type", type)
     mutation.mutate(formData)
   }
 
@@ -117,6 +120,37 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
               min="0"
             />
           </div>
+
+
+          {/* For Refill? Radio Button */}
+          <div className="space-y-2">
+            <h1 className="text-sm font-medium">For Refill?</h1>
+            <div className="flex items-center space-x-4">
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  name="for-refill"
+                  value="yes"
+                  checked={type === "unli"}
+                  onChange={() => setType("unli")}
+                  className="accent-stone-900"
+                />
+                <span>Yes</span>
+              </label>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  name="for-refill"
+                  value="no"
+                  checked={type === "none"}
+                  onChange={() => setType("none")}
+                  className="accent-stone-900"
+                />
+                <span>No</span>
+              </label>
+            </div>
+          </div>
+
 
           {/* File Upload */}
           <div className="space-y-2">

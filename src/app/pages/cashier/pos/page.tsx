@@ -46,9 +46,6 @@ export default function POS() {
     if(!table) return <TableGrid  />
 
   return (
-    <div className="">
-      <SidebarProvider>
-        <CashierSideBar />
         <div className="h-dvh w-full flex">
           <div className="h-full w-4/6 bg-stone-100">
 
@@ -131,7 +128,5 @@ export default function POS() {
           </div>
 
         </div>
-      </SidebarProvider>
-    </div>
   );
 }

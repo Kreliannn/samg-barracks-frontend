@@ -1,5 +1,5 @@
 "use client"
-
+import Link from "next/link";
 import { PackagePlus, Home, Building, Search, UserPlus2, User, FileText, BarChart3, Building2, LogOut, Menu, X } from "lucide-react"
 import { useState, useEffect } from "react"
 import { Utensils } from "lucide-react";
@@ -127,10 +127,10 @@ export function CashierSideBar({ className }: AppSidebarProps) {
                   return (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
-                        <a href={item.url} onClick={() => setIsOpen(false)}>
+                        <Link href={item.url} onClick={() => setIsOpen(false)}>
                           <item.icon />
                           <span>{item.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   )
@@ -145,10 +145,10 @@ export function CashierSideBar({ className }: AppSidebarProps) {
             {accountItems.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
-                  <a href={item.url} onClick={() => setIsOpen(false)}>
+                  <Link href={item.url} onClick={() => setIsOpen(false)}>
                     <item.icon />
                     <span>{item.title}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}

@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
+import { useState } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,15 +17,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Create a single query client for the app
-const queryClient = new QueryClient();
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
- 
+  // ✅ Only create once per client session
+  const [queryClient] = useState(() => new QueryClient());
+
   return (
     <html lang="en">
       <body
@@ -32,9 +32,10 @@ export default function RootLayout({
       >
         <QueryClientProvider client={queryClient}>
           {children}
-          <Toaster  position="top-right" richColors  /> 
+          <Toaster position="top-right" richColors />
         </QueryClientProvider>
       </body>
     </html>
   );
 }
+

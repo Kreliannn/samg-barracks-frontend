@@ -68,11 +68,7 @@ export default function Home() {
 
  
 return (
-  <div className="bg-gray-50 min-h-screen p-6">
-    <SidebarProvider>
-      <AdminSideBar />
 
-      {/* Page Title */}
 
       <div className="flex gap-5 w-full">
           {/* Employee Form */}
@@ -156,8 +152,6 @@ return (
       </div>
      
 
-    
-    </SidebarProvider>
-  </div>
+
 );
 }

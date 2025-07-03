@@ -3,7 +3,8 @@ export interface ingredientsInterface {
     name : string,
     stocks : number,
     branch : string,
-    img : string
+    img : string,
+    type : string
 }
 
 export interface getIngredientsInterface {
@@ -11,5 +12,6 @@ export interface getIngredientsInterface {
     name : string,
     stocks : number,
     branch : string,
-    img : string
+    img : string,
+    type : string
 }

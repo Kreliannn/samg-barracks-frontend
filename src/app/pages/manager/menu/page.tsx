@@ -1,6 +1,5 @@
 "use client";
-import { ManagerSideBar } from "@/components/ui/managerSidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+
 import { getMenuInterface } from "@/app/types/menu.type";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
@@ -34,9 +33,9 @@ export default function Home() {
 
 
     return (
-        <div className="bg-gray-50 min-h-screen">
-          <SidebarProvider>
-            <ManagerSideBar />
+        
+         
+           
             <div className="h-dvh w-full flex flex-col">
       
               {/* Header with Add Button */}
@@ -102,8 +101,8 @@ export default function Home() {
               </div>
       
             </div>
-          </SidebarProvider>
-        </div>
+         
+       
       );
       
 }

@@ -5,13 +5,10 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function Home() {
   return (
-    <div className="">
-      <SidebarProvider>
-        <CashierSideBar />
+   
         <div className="h-dvh w-full flex">
          
         </div>
-      </SidebarProvider>
-    </div>
+  
   );
 }

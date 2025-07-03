@@ -3,7 +3,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { CashierSideBar } from '@/components/ui/cashierSidebar';
 import useTableStore from '@/app/store/table.store';
 
-const tables = Array.from({ length: 15 }, (_, i) => `Table ${i + 1}`);
+const tables = Array.from({ length: 15 }, (_, i) => `Table #${i + 1}`);
 
 const TableGrid = () => {
     const { setTable } = useTableStore()

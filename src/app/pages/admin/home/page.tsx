@@ -7,14 +7,9 @@ export default function Home() {
  
 
   return (
-    <div className="">
-        <SidebarProvider>
-          <AdminSideBar />
-          <div>
-            <h1> welcome admin</h1>
-          </div>
-        </SidebarProvider>
-    </div>
+      <div className="w-full h-dvh">
+          <h1> welcome admin</h1>
+      </div>
   );
 }
 

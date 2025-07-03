@@ -6,6 +6,8 @@ import { ordersInterface } from "@/app/types/orders.type";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/app/utils/axios";
+import { Button } from "@/components/ui/button";
+import { RefreshCcw } from "lucide-react";
 
 export default function Home() {
     const [orders, setOrders] = useState<ordersInterface[]>([]);
@@ -25,12 +27,9 @@ export default function Home() {
     };
 
     return (
-        <div className="">
-            <SidebarProvider>
-                <CashierSideBar />
                 <div className="h-dvh w-full flex flex-col">
-                    <div className="h-[10%] w-full bg-stone-100 flex items-center px-6">
-                        <h1 className="text-2xl font-bold text-gray-800">Orders</h1>
+                    <div className="h-[10%] w-full bg-stone-100 flex items-center justify-center     px-6">
+                        <h1 className="text-2xl font-bold text-gray-800 text-center">Orders</h1>
                     </div>
                     
                     <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
@@ -38,9 +37,11 @@ export default function Home() {
                             {orders.map((order, index) => (
                                 <div key={index} className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
                                     {/* Header */}
-                                    <div className="bg-stone-900 text-white p-4">
+                                    <div className="bg-stone-900 text-white p-4 flex items-center justify-between">
                                         <h2 className="text-xl font-bold">{order.table}</h2>
+                                        <Button variant="outline" className="text-black">Refill</Button>
                                     </div>
+
                                     
                                     {/* Order Info */}
                                     <div className="p-4 space-y-3">
@@ -139,7 +140,5 @@ export default function Home() {
                         )}
                     </div>
                 </div>
-            </SidebarProvider>
-        </div>
     );
 }
