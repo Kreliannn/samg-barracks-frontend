@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { CashierSideBar } from "@/components/ui/cashierSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { getMenuInterface } from "@/app/types/menu.type";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { backendUrl } from "@/app/utils/url";
 import axiosInstance from "@/app/utils/axios";
@@ -12,10 +12,14 @@ import { Package, Utensils } from "lucide-react";
 import { AddCart } from "./components/addCart";
 import { orderInterface } from "@/app/types/orders.type";
 import { Cart } from "./components/cart";
+import TableGrid from "./components/tables";
+import useTableStore from "@/app/store/table.store";
 
 const types = [ "All", "Ala carte", "Unli", "Sizzling", "Pulutan", "Beverage", "Others"]
 
 export default function POS() {
+
+    const { table, setTable } = useTableStore()
 
     const [menuData, setMenuData] = useState<getMenuInterface[]>([])
     const [menu, setMenu] = useState<getMenuInterface[]>([])
@@ -39,7 +43,7 @@ export default function POS() {
     }
 
 
-
+    if(!table) return <TableGrid  />
 
   return (
     <div className="">
@@ -48,9 +52,16 @@ export default function POS() {
         <div className="h-dvh w-full flex">
           <div className="h-full w-4/6 bg-stone-100">
 
-                <div className="h-[10%] w-full bg-stone-800  shadow-lg flex justify-center items-center">
-                    <h1 className="text-3xl text-center font-bold text-white"> The Barracks Menu </h1>
+                <div className="h-[10%] w-full bg-stone-800 shadow-lg flex items-center relative px-4">
+                    <h1 className="absolute left-1/2 -translate-x-1/2 text-3xl font-bold text-white">
+                        {table}
+                    </h1>
+          
+                    <Button  variant="outline" className="ml-auto" onClick={() => setTable("")}>
+                        Switch Table
+                    </Button>
                 </div>
+
 
                 <div className="w-full h-[80%] bg-gray-100 overflow-auto p-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-3">
@@ -116,7 +127,7 @@ export default function POS() {
           </div>
           
           <div className="h-full w-2/6 bg-stone-200">
-            <Cart />
+            <Cart table={table} />
           </div>
 
         </div>

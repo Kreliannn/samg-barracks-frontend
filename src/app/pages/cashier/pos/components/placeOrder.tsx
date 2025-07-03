@@ -17,15 +17,19 @@ import { useMutation } from "@tanstack/react-query";
 import { ordersInterface , orderInterface} from "@/app/types/orders.type";
 import axiosInstance from "@/app/utils/axios";
 import { successAlert } from "@/app/utils/alert";
+import useTableStore from "@/app/store/table.store";
 
-export function PlaceOrder({subTotal, grandTotal, totalDiscount} : {subTotal : number, grandTotal : number , totalDiscount : number}) {
+
+export function PlaceOrder({  subTotal, grandTotal, totalDiscount} : { subTotal : number, grandTotal : number , totalDiscount : number}) {
 
   const { orders, clearOrders } = useOrderStore()
   const { user } = useUserStore()
 
   const [open, setOpen] = useState(false);
   const [orderType, setOrderType] = useState("dine in")
-  const [table, setTable] = useState("Table #1")
+
+  const { table, setTable } = useTableStore()
+ 
 
   const mutation = useMutation({
     mutationFn : (data  : ordersInterface) => axiosInstance.post("/order", data),
@@ -49,12 +53,12 @@ export function PlaceOrder({subTotal, grandTotal, totalDiscount} : {subTotal : n
         grandTotal : grandTotal,
         totalDiscount : totalDiscount,
         orderType : orderType,
-        table : table,
+        table : table,  
         cashier : user.fullname ,
         branch : user.branch ,
         date : formattedDate.toString()
     }
-
+    setTable("")
     mutation.mutate(orderData)
   }
 
@@ -104,24 +108,9 @@ export function PlaceOrder({subTotal, grandTotal, totalDiscount} : {subTotal : n
               </Select>
             </div>
 
-            {/* Table Number Select */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Table Number</label>
-              <Select  value={table} onValueChange={setTable}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select table number" />
-                </SelectTrigger>
-                <SelectContent>
-                  {Array.from({ length: 10 }, (_, i) => (
-                    <SelectItem key={i + 1} value={`Table #${i + 1}`}>
-                      Table #{i + 1}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
           
-            <Button onClick={handlePlaceOrder} className="w-full">Submit</Button>
+          
+            <Button onClick={handlePlaceOrder} className="w-full">Place Order</Button>
           </div>
         </DialogContent>
       </Dialog>

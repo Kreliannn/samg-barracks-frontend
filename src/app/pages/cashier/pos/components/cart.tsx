@@ -5,7 +5,7 @@ import { ShoppingCart, Package, X } from "lucide-react";
 import useOrderStore from "@/app/store/cart.store";
 import { PlaceOrder } from "./placeOrder";
 
-export function Cart() {
+export function Cart({ table } : { table : string}) {
   const { orders: cartItems , removeOrder} = useOrderStore();
 
   // Calculate totals
@@ -111,7 +111,7 @@ export function Cart() {
             </div>
           </div>
 
-          <PlaceOrder subTotal={subtotal} grandTotal={grandTotal} totalDiscount={totalDiscount}/>
+          <PlaceOrder  subTotal={subtotal} grandTotal={grandTotal} totalDiscount={totalDiscount}/>
         </div>
       )}
     </div>
