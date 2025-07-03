@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/app/utils/axios";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
+import { RefillButton } from "./components/refillButton";
 
 export default function Home() {
     const [orders, setOrders] = useState<ordersInterface[]>([]);
@@ -39,7 +40,7 @@ export default function Home() {
                                     {/* Header */}
                                     <div className="bg-stone-900 text-white p-4 flex items-center justify-between">
                                         <h2 className="text-xl font-bold">{order.table}</h2>
-                                        <Button variant="outline" className="text-black">Refill</Button>
+                                        <RefillButton />
                                     </div>
 
                                     
