@@ -10,6 +10,7 @@ export interface orderInterface extends getMenuInterface {
 
 export interface ordersInterface {
     orders: orderInterface[];
+    vat : number,
     subTotal: number;
     totalDiscount: number;
     grandTotal: number;
@@ -18,4 +19,14 @@ export interface ordersInterface {
     orderType: string;
     cashier: string;
     date : string
+  }
+
+
+
+  export interface orderInformation {
+    totalWithVat : number,
+    totalDiscount : number,
+    discountedTotal : number,
+    subTotal : number,
+    vat : number,
   }

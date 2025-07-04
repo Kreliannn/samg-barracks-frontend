@@ -18,9 +18,9 @@ import { ordersInterface , orderInterface} from "@/app/types/orders.type";
 import axiosInstance from "@/app/utils/axios";
 import { successAlert } from "@/app/utils/alert";
 import useTableStore from "@/app/store/table.store";
+import { orderInformation } from "@/app/types/orders.type";
 
-
-export function PlaceOrder({  subTotal, grandTotal, totalDiscount} : { subTotal : number, grandTotal : number , totalDiscount : number}) {
+export function PlaceOrder({ orderInfo } : { orderInfo : orderInformation}) {
 
   const { orders, clearOrders } = useOrderStore()
   const { user } = useUserStore()
@@ -47,11 +47,14 @@ export function PlaceOrder({  subTotal, grandTotal, totalDiscount} : { subTotal 
   const handlePlaceOrder = () => {
     if(!user?.fullname || !user?.branch) return alert("no user")
     const formattedDate = new Date().toISOString().split('T')[0];
+  
     const orderData = {
         orders : orders,
-        subTotal : subTotal,
-        grandTotal : grandTotal,
-        totalDiscount : totalDiscount,
+        total : orderInfo.totalWithVat,
+        vat : orderInfo.vat,
+        subTotal : orderInfo.subTotal,
+        grandTotal : orderInfo.discountedTotal,
+        totalDiscount : orderInfo.totalDiscount,
         orderType : orderType,
         table : table,  
         cashier : user.fullname ,

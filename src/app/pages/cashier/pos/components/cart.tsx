@@ -4,15 +4,31 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, Package, X } from "lucide-react";
 import useOrderStore from "@/app/store/cart.store";
 import { PlaceOrder } from "./placeOrder";
+import { orderInformation } from "@/app/types/orders.type";
 
 export function Cart({ table } : { table : string}) {
   const { orders: cartItems , removeOrder} = useOrderStore();
 
-  // Calculate totals
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
-  const totalDiscount = cartItems.reduce((sum, item) => sum + (item.price * item.discount / 100), 0);
-  const grandTotal = subtotal - totalDiscount;
+  const totalWithVat = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0); //1
+  const totalDiscount = cartItems.reduce((sum, item) => {
+    const priceWithoutVAT = item.price / 1.12; // remove 12% VAT
+    const discountAmount = priceWithoutVAT * (item.discount / 100);
+    return sum + discountAmount;
+  }, 0);
+  const vatRate = 0.12
 
+  const discountedTotal = totalWithVat - totalDiscount //3
+  const subTotal = discountedTotal / (1 + vatRate) //4
+  const vat = discountedTotal - subTotal //5
+
+
+  const orderInfo : orderInformation = {
+    totalWithVat,
+    totalDiscount,
+    discountedTotal,
+    subTotal,
+    vat
+  }
 
 
   return (
@@ -93,25 +109,31 @@ export function Cart({ table } : { table : string}) {
         <div className="p-4 bg-white border-t space-y-3">
           {/* Bill Summary */}
           <div className="space-y-2">
+
             <div className="flex justify-between text-sm">
-              <span>Subtotal:</span>
-              <span>₱{subtotal.toFixed(2)}</span>
+              <span>total (VAT included):</span>
+              <span>₱{totalWithVat.toFixed(2)}</span>
             </div>
+
             {totalDiscount > 0 && (
               <div className="flex justify-between text-sm text-green-600">
                 <span>Total Discount:</span>
                 <span>-₱{totalDiscount.toFixed(2)}</span>
               </div>
             )}
+
+           
+        
             <div className="border-t pt-2">
               <div className="flex justify-between font-bold text-lg">
                 <span>Total Bill:</span>
-                <span>₱{grandTotal.toFixed(2)}</span>
+                <span>₱{discountedTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
 
-          <PlaceOrder  subTotal={subtotal} grandTotal={grandTotal} totalDiscount={totalDiscount}/>
+          <PlaceOrder orderInfo={orderInfo}/>
+          
         </div>
       )}
     </div>
