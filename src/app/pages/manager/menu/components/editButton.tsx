@@ -63,7 +63,7 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
     onSuccess: (response) => {
       successAlert("save changes")
       setMenu(response.data)
- 
+      setOpen(false)
     },
     onError: (err) => {
       errorAlert("error")

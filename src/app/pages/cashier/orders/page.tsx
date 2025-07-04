@@ -2,13 +2,14 @@
 
 import { CashierSideBar } from "@/components/ui/cashierSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { ordersInterface } from "@/app/types/orders.type";
+import { orderInterface, ordersInterface } from "@/app/types/orders.type";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/app/utils/axios";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 import { RefillButton } from "./components/refillButton";
+import { print2ndReceipt, print3rdReceipt } from "@/app/utils/receiptConsole";
 
 export default function Home() {
     const [orders, setOrders] = useState<ordersInterface[]>([]);
@@ -22,10 +23,8 @@ export default function Home() {
         if(data?.data) setOrders(data?.data);
     }, [data]);
 
-    const handleProceedToPayment = (orderIndex: number) => {
-        // Handle payment logic here
-        console.log("Proceeding to payment for order:", orders[orderIndex]);
-    };
+
+      
 
     return (
                 <div className="h-dvh w-full flex flex-col">
@@ -117,13 +116,13 @@ export default function Home() {
                                     {/* Footer */}
                                     <div className="p-4 bg-gray-50 border-t flex gap-2">
                                         <button 
-                                            onClick={() => handleProceedToPayment(index)}
+                                            onClick={() => print2ndReceipt(order)}
                                             className="w-[30%] bg-stone-800 hover:bg-stone-900 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200"
                                         >
                                             Bill Out 
                                         </button>
                                         <button 
-                                            onClick={() => handleProceedToPayment(index)}
+                                            onClick={() => print3rdReceipt(order, 5000)}
                                             className="w-[70%] bg-green-700 hover:bg-green-800 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200"
                                         >
                                             Proceed to Payment

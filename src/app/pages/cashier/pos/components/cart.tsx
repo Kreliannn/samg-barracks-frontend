@@ -8,19 +8,35 @@ import { orderInformation } from "@/app/types/orders.type";
 
 export function Cart({ table } : { table : string}) {
   const { orders: cartItems , removeOrder} = useOrderStore();
+  
+  const vatRate = 0.12;
 
-  const totalWithVat = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0); //1
-  const totalDiscount = cartItems.reduce((sum, item) => {
-    const priceWithoutVAT = item.price / 1.12; // remove 12% VAT
-    const discountAmount = priceWithoutVAT * (item.discount / 100);
-    return sum + discountAmount;
+  // 1. Compute total VAT-exclusive subtotal (before discount)
+  const subTotalBeforeDiscount = cartItems.reduce((sum, item) => {
+    const priceWithoutVAT = item.price / (1 + vatRate);
+    return sum + (priceWithoutVAT * item.qty);
   }, 0);
-  const vatRate = 0.12
-
-  const discountedTotal = totalWithVat - totalDiscount //3
-  const subTotal = discountedTotal / (1 + vatRate) //4
-  const vat = discountedTotal - subTotal //5
-
+  
+  // 2. Compute total discount (from VAT-exclusive prices)
+  const totalDiscount = cartItems.reduce((sum, item) => {
+    const priceWithoutVAT = item.price / (1 + vatRate);
+    const discountAmount = priceWithoutVAT * (item.discount / 100);
+    return sum + (discountAmount * item.qty);
+  }, 0);
+  
+  // 3. Get discounted subtotal (still VAT-exclusive)
+  const subTotal = subTotalBeforeDiscount - totalDiscount;
+  
+  // 4. Compute VAT on discounted subtotal
+  const vat = subTotal * vatRate;
+  
+  // 5. Grand total (what customer will pay)
+  const discountedTotal = subTotal + vat;
+  
+  // 6. For display, you can still show:
+  const totalWithVat = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+  
+  
 
   const orderInfo : orderInformation = {
     totalWithVat,
