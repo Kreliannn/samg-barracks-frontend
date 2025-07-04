@@ -29,12 +29,18 @@ export function Cart({ table } : { table : string}) {
   
   // 4. Compute VAT on discounted subtotal
   const vat = subTotal * vatRate;
+
+
+  const serviceFee = subTotal * 0.10
   
   // 5. Grand total (what customer will pay)
-  const discountedTotal = subTotal + vat;
+  const discountedTotal =  (subTotal + vat) + serviceFee;
+
   
   // 6. For display, you can still show:
   const totalWithVat = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+
   
   
 
@@ -43,7 +49,8 @@ export function Cart({ table } : { table : string}) {
     totalDiscount,
     discountedTotal,
     subTotal,
-    vat
+    vat,
+    serviceFee
   }
 
 

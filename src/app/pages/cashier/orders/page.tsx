@@ -2,7 +2,7 @@
 
 import { CashierSideBar } from "@/components/ui/cashierSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { orderInterface, ordersInterface } from "@/app/types/orders.type";
+import { getOrdersInterface } from "@/app/types/orders.type";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/app/utils/axios";
@@ -10,13 +10,14 @@ import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 import { RefillButton } from "./components/refillButton";
 import { print2ndReceipt, print3rdReceipt } from "@/app/utils/receiptConsole";
+import { PaymentButton } from "./components/paymentButton";
 
 export default function Home() {
-    const [orders, setOrders] = useState<ordersInterface[]>([]);
+    const [orders, setOrders] = useState<getOrdersInterface[]>([]);
 
     const { data } = useQuery({
         queryKey: ["order"],
-        queryFn: () => axiosInstance.get("/order")
+        queryFn: () => axiosInstance.get("/order/active")
     });
 
     useEffect(() => {
@@ -69,7 +70,7 @@ export default function Home() {
                                         <div className="flex justify-between items-center">
                                             <span className="text-sm font-medium text-gray-600">Date:</span>
                                             <span className="text-sm font-semibold text-gray-800">
-                                                {order.date}
+                                                {order.time}  {order.date} 
                                             </span>
                                         </div>
                                     </div>
@@ -121,12 +122,7 @@ export default function Home() {
                                         >
                                             Bill Out 
                                         </button>
-                                        <button 
-                                            onClick={() => print3rdReceipt(order, 5000)}
-                                            className="w-[70%] bg-green-700 hover:bg-green-800 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200"
-                                        >
-                                            Proceed to Payment
-                                        </button>
+                                       <PaymentButton order={order} setOrders={setOrders} />
                                     </div>
                                 </div>
                             ))}

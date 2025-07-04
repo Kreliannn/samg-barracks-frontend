@@ -19,8 +19,11 @@ import axiosInstance from "@/app/utils/axios";
 import { successAlert } from "@/app/utils/alert";
 import useTableStore from "@/app/store/table.store";
 import { orderInformation } from "@/app/types/orders.type";
+import useActiveTableStore from "@/app/store/activeTable.store";
 
 export function PlaceOrder({ orderInfo } : { orderInfo : orderInformation}) {
+
+  const {addTable} = useActiveTableStore()
 
   const { orders, clearOrders } = useOrderStore()
   const { user } = useUserStore()
@@ -29,6 +32,17 @@ export function PlaceOrder({ orderInfo } : { orderInfo : orderInformation}) {
   const [orderType, setOrderType] = useState("dine in")
 
   const { table, setTable } = useTableStore()
+
+
+  const now = new Date();
+  const time = now.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+
+
+
  
 
   const mutation = useMutation({
@@ -55,12 +69,16 @@ export function PlaceOrder({ orderInfo } : { orderInfo : orderInformation}) {
         subTotal : orderInfo.subTotal,
         grandTotal : orderInfo.discountedTotal,
         totalDiscount : orderInfo.totalDiscount,
+        serviceFee : orderInfo.serviceFee,
         orderType : orderType,
         table : table,  
         cashier : user.fullname ,
         branch : user.branch ,
-        date : formattedDate.toString()
+        date : formattedDate.toString(),
+        time : time,
+        status : "active"
     }
+    addTable(table)
     setTable("")
     mutation.mutate(orderData)
   }

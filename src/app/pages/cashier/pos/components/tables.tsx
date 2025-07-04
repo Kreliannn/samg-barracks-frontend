@@ -2,11 +2,13 @@ import React from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { CashierSideBar } from '@/components/ui/cashierSidebar';
 import useTableStore from '@/app/store/table.store';
+import useActiveTableStore from '@/app/store/activeTable.store';
 
 const tables = Array.from({ length: 15 }, (_, i) => `Table #${i + 1}`);
 
 const TableGrid = () => {
     const { setTable } = useTableStore()
+    const { activeTables } = useActiveTableStore()
   return (
     <div className="">
     <SidebarProvider>
@@ -17,7 +19,7 @@ const TableGrid = () => {
                 {tables.map((table, index) => (
                     <div
                     key={index}
-                    className="bg-white hover:bg-stone-600 hover:text-white shadow-lg rounded-2xl flex items-center justify-center h-32 text-lg font-semibold text-gray-800"
+                    className={` ${activeTables.includes(table) ? "bg-green-500 hover:bg-green-600 text-white" : "bg-white hover:bg-stone-600 hover:text-white "}  shadow-lg rounded-2xl flex items-center justify-center h-32 text-lg font-semibold text-gray-800`}
                     onClick={() => setTable(table)}
                     >
                     {table}

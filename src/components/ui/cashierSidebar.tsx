@@ -37,6 +37,11 @@ const navigationItems = [
     url: "/pages/cashier/orders",
     icon: PackagePlus,
   },
+  {
+    title: "Transaction",
+    url: "/pages/cashier/transaction",
+    icon: PackagePlus,
+  },
 ]
 
 const accountItems = [
