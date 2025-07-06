@@ -35,6 +35,11 @@ const navigationItems = [
     url: "/pages/manager/menu",
     icon: Utensils,
   },
+  {
+    title: "Tables",
+    url: "/pages/manager/table",
+    icon: Utensils,
+  },
 
  
 ]

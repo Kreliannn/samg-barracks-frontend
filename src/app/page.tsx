@@ -15,8 +15,6 @@ export default function Home() {
 
   const router = useRouter();
 
-  
-
   const mutation = useMutation({
     mutationFn: (data: { username: string; password: string }) =>
       axiosInstance.post("/login", data),
@@ -37,12 +35,21 @@ export default function Home() {
     <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
-          <p className="mt-2 text-sm text-gray-600">Enter your credentials below</p>
+          <h2 className="text-3xl font-extrabold text-gray-900">
+            Sign in to your account
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Enter your credentials below
+          </p>
         </div>
-        <form onSubmit={handleLogin} className="bg-white shadow-md rounded-2xl p-8 space-y-6">
+        <form
+          onSubmit={handleLogin}
+          className="bg-white shadow-md rounded-2xl p-8 space-y-6"
+        >
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Username
+            </label>
             <input
               type="text"
               value={username}
@@ -53,7 +60,9 @@ export default function Home() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
             <input
               type="password"
               value={password}
