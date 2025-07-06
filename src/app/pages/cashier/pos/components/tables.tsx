@@ -1,37 +1,63 @@
-import React from 'react';
-import { SidebarProvider } from '@/components/ui/sidebar';
-import { CashierSideBar } from '@/components/ui/cashierSidebar';
-import useTableStore from '@/app/store/table.store';
-import useActiveTableStore from '@/app/store/activeTable.store';
+"use client";
 
-const tables = Array.from({ length: 15 }, (_, i) => `Table #${i + 1}`);
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { CashierSideBar } from "@/components/ui/cashierSidebar";
+import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "@/app/utils/axios";
+import { useEffect, useState } from "react";
+import useTableStore from "@/app/store/table.store";
+import useActiveTableStore from "@/app/store/activeTable.store";
 
-const TableGrid = () => {
-    const { setTable } = useTableStore()
-    const { activeTables } = useActiveTableStore()
-  return (
-    <div className="">
-    <SidebarProvider>
-      <CashierSideBar />
-      <div className="h-dvh w-full flex bg-stone-50">
-        <div className='w-5/6 m-auto '>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-10 p-4 w-full h-full">
-                {tables.map((table, index) => (
-                    <div
-                    key={index}
-                    className={` ${activeTables.includes(table) ? "bg-green-500 hover:bg-green-600 text-white" : "bg-white hover:bg-stone-600 hover:text-white "}  shadow-lg rounded-2xl flex items-center justify-center h-32 text-lg font-semibold text-gray-800`}
-                    onClick={() => setTable(table)}
-                    >
-                    {table}
-                    </div>
-                ))}
-            </div>
-        </div>
-      </div>
-    </SidebarProvider>
-  </div>
-   
-  );
+type TableData = {
+  table: string;
+  x: number;
+  y: number;
 };
 
-export default TableGrid;
+export default function TableView() {
+  const [positions, setPositions] = useState<TableData[]>([]);
+
+  const { setTable } = useTableStore()
+  const { activeTables } = useActiveTableStore()
+
+  const { data } = useQuery({
+    queryKey: ["tables"],
+    queryFn: () => axiosInstance.get("/branch/tables"),
+    refetchInterval: 1000 * 60,
+  });
+
+  useEffect(() => {
+    if (data?.data) setPositions(data?.data);
+  }, [data]);
+
+  return (
+    <SidebarProvider>
+      <CashierSideBar />
+      <div className="relative w-full h-screen bg-stone-50 overflow-hidden">
+        {positions.map((item) => (
+          <div
+            key={item.table}
+            style={{
+              position: "absolute",
+              left: item.x,
+              top: item.y,
+              width: 100,
+              height: 100,
+              
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 8,
+              boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+              fontWeight: 600,
+            }}
+            className={` ${activeTables.includes(item.table) ? "bg-green-500 text-white " : "bg-white   "} `}
+            onClick={() => setTable(item.table)}
+          >
+            {item.table}
+          </div>
+        ))}
+      </div>
+    </SidebarProvider>
+  );
+}

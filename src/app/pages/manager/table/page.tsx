@@ -119,9 +119,10 @@ export default function RestoLayout() {
       };
       setPositions((prev) => [...prev, newTable]);
     };
-
+    
     const removeTable = (table :  string) => {
         setPositions((prev) => prev.filter((item) => item.table != table))
+        setPositions((prev) => prev.map((item, index) => ({ ...item, table : `Table #${index + 1}`})))
     }
 
     const saveChanges = () => { 

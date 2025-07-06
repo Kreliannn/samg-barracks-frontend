@@ -18,11 +18,13 @@ import { orderInterface } from "@/app/types/orders.type";
 import useOrderStore from "@/app/store/cart.store";
 import { print3rdReceipt } from "@/app/utils/receiptConsole";
 import { ordersInterface , getOrdersInterface} from "@/app/types/orders.type";
-
+import Image from "next/image";
 import { successAlert, errorAlert } from "@/app/utils/alert";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/app/utils/axios";
 import useActiveTableStore from "@/app/store/activeTable.store";
+
+const money = [20, 50, 100, 200, 500, 1000]
 
 export function PaymentButton({ order, setOrders }: { order: getOrdersInterface, setOrders :  React.Dispatch<React.SetStateAction<getOrdersInterface[]>> }) {
     const [open, setOpen] = useState(false);
@@ -37,6 +39,7 @@ export function PaymentButton({ order, setOrders }: { order: getOrdersInterface,
     onSuccess: (response) => {
       successAlert("success")
       setOrders(response.data)
+      setPayment(0)
       setOpen(false)
     },
     onError: (err) => {
@@ -48,6 +51,10 @@ export function PaymentButton({ order, setOrders }: { order: getOrdersInterface,
         if(payment < order.grandTotal) return errorAlert("too low")
         removeTable(order.table)
         mutation.mutate({ id : order._id })
+    }
+
+    const addMoney = (amount : number) => {
+      setPayment((prev) => prev += amount)
     }
 
   return (
@@ -68,9 +75,23 @@ export function PaymentButton({ order, setOrders }: { order: getOrdersInterface,
         </DialogHeader>
       <DialogContent className="sm:max-w-[600px]">
         <div className="p-5">
-            <h1>Bill {order.grandTotal}</h1>
-            <h1> Enter Payment</h1>
-            <Input type="number" className="mb-4"  value={payment} onChange={(e) => setPayment(Number(e.target.value))} /> 
+            <h1 className="text-3xl font-bold">Bill :  <span className="text-green-500"> ₱ {order.grandTotal.toFixed(2)} </span></h1>
+
+            <div className="w-full  grid grid-cols-2 gap-3 mt-3 mb-3">
+                {money.map((money) => (
+                  <div key={money} className="h-24 bg-red-100 shadow-lg relative" onClick={() => addMoney(money)}>
+                    <Image
+                      src={`/money/${money}.jpg`}
+                      alt={`Money ${money}`}
+                      fill
+                      className="object-cover rounded"
+                    />
+                  </div>
+                ))}
+            </div>
+
+            <h1 className="mb-2"> Customer Cash:  </h1>
+            <Input type="number" className="mb-4 p-5 text-2xl font-bold  text-green-500"  value={payment} onChange={(e) => setPayment(Number(e.target.value))} /> 
             <Button className="w-full " onClick={completeOrder}> Pay </Button>
         </div>
 
