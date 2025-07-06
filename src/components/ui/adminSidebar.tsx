@@ -21,7 +21,7 @@ import {
 const navigationItems = [
   {
     title: "Dashboard",
-    url: "/pages/admin/home",
+    url: "/pages/admin/das",
     icon: Home,
   },
   {
