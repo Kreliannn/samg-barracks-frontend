@@ -3,7 +3,7 @@ import { CardTempalte } from "./components/cardTemplate";
 import { CategoryPieChart } from "./components/categoryPieChart";
 import { MonthlyChart } from "./components/montlyGraph";
 import { YearlyBarChart } from "./components/yearlyGraph";
-
+import { MenuyBarChart } from "./components/menuChart";
 
 export default function Home() {
   return (
@@ -11,16 +11,16 @@ export default function Home() {
       {/* First row: 1 row 4 boxes */}
       <div className="grid grid-cols-4 gap-4">
         <div className="h-32 bg-gray-100 rounded" >
-            <CardTempalte />
+            <CardTempalte  title={"Total Sales"} value={12000}/>
         </div>
         <div className="h-32 bg-gray-100 rounded" >
-            <CardTempalte />
+            <CardTempalte  title={"July Sales"} value={5000}/>
         </div>
         <div className="h-32 bg-gray-100 rounded" >
-            <CardTempalte />
+            <CardTempalte  title={"Product Sold"} value={48}/>
         </div>
         <div className="h-32 bg-gray-100 rounded" >
-            <CardTempalte />
+            <CardTempalte  title={"Branch"} value={3}/>
         </div>
       </div>
 
@@ -39,7 +39,7 @@ export default function Home() {
           <YearlyBarChart />  
         </div>
         <div className="col-span-2 h-64 bg-gray-100 rounded" >
-          <YearlyBarChart />  
+          <MenuyBarChart />  
         </div>
       </div>
     </div>

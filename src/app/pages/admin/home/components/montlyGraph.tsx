@@ -56,7 +56,7 @@ const chartData = [
 const chartConfig = {
   desktop: {
     label: "Desktop",
-    color: "var(--chart-1)",
+    color: "#9ca3af",
   },
 } satisfies ChartConfig
 
@@ -64,9 +64,9 @@ export function MonthlyChart() {
   return (
     <Card className="h-full">
         <CardHeader className="pb-2">
-        <CardTitle className="text-sm">Area Chart</CardTitle>
+        <CardTitle className="text-sm"> Monthly Sales Chart</CardTitle>
         <CardDescription className="text-xs">
-            Showing total visitors for the last 6 months
+            Showing sales History for the last 30 days
         </CardDescription>
         </CardHeader>
         <CardContent className="h-[calc(100%-4rem)] p-2">

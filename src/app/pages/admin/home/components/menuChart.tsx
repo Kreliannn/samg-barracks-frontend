@@ -24,19 +24,13 @@ import {
 } from "@/components/ui/chart"
 
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 537 },
-  { month: "April", desktop: 763 },
-  { month: "May", desktop: 300 },
-  { month: "June", desktop: 214 },
-  { month: "July", desktop: 665 },
-  { month: "Agaust", desktop: 355 },
-  { month: "September", desktop: 337 },
-  { month: "October", desktop: 473 },
-  { month: "November", desktop: 700 },
-  { month: "December", desktop: 214 },
-  
+  { month: "unli wings", desktop: 100 },
+  { month: "meal 1", desktop: 200 },
+  { month: "sisig", desktop: 400 },
+  { month: "chicken", desktop: 500 },
+  { month: "cola", desktop: 600 },
+  { month: "bbq", desktop: 700 },
+  { month: "adobo", desktop: 800 },
 ]
 
 const chartConfig = {
@@ -46,12 +40,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function YearlyBarChart() {
+export function MenuyBarChart() {
   return (
     <Card className="h-full w-full flex flex-col">
       <CardHeader className="px-4 pb-1">
-        <CardTitle className="text-sm"> Yearly Sales </CardTitle>
-        <CardDescription className="text-xs">Jan - december 2025</CardDescription>
+        <CardTitle className="text-sm">Top Sales Menu</CardTitle>
+        <CardDescription className="text-xs">from lowest to highest</CardDescription>
       </CardHeader>
 
       {/* Set specific height to let everything fit */}
@@ -79,6 +73,7 @@ export function YearlyBarChart() {
                   dataKey="desktop"
                   fill="var(--color-desktop)"
                   radius={[6, 6, 0, 0]} // keep your rounded corners
+                  barSize={100}
               />
             </BarChart>
           </ResponsiveContainer>

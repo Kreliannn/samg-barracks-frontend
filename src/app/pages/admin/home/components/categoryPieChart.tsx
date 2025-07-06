@@ -21,44 +21,44 @@ import {
 export const description = "A pie chart with a custom label"
 
 const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+  { browser: "Sizzling", visitors: 275, fill: "var(--color-chrome)" },
+  { browser: "Unli", visitors: 200, fill: "var(--color-safari)" },
   { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
+  { browser: "Pulutan", visitors: 173, fill: "var(--color-edge)" },
+  { browser: "Drinks", visitors: 90, fill: "var(--color-other)" },
 ]
-
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "var(--chart-1)",
-  },
-  safari: {
-    label: "Safari",
-    color: "var(--chart-2)",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "var(--chart-3)",
-  },
-  edge: {
-    label: "Edge",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
-  },
-} satisfies ChartConfig
+    visitors: {
+      label: "Visitors",
+    },
+    chrome: {
+      label: "Sizzling",
+      color: "#d1d5db", // gray-300
+    },
+    safari: {
+      label: "Unli",
+      color: "#9ca3af", // gray-400
+    },
+    firefox: {
+      label: "Pulutan",
+      color: "#6b7280", // gray-500
+    },
+    edge: {
+      label: "Drinks",
+      color: "#4b5563", // gray-600
+    },
+    other: {
+      label: "Other",
+      color: "#374151", // gray-700
+    },
+  } satisfies ChartConfig
+  
 
 export function CategoryPieChart() {
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="items-center pb-1">
-        <CardTitle className="text-sm">Pie Chart - Custom Label</CardTitle>
+        <CardTitle className="text-sm"> Category Pie Chart </CardTitle>
       </CardHeader>
 
       <CardContent className="flex-1 px-2 py-0">
@@ -83,7 +83,7 @@ export function CategoryPieChart() {
                   fill="hsla(var(--foreground))"
                   fontSize={12}
                 >
-                  {payload.visitors}
+                  {payload.browser}
                 </text>
               )}
               nameKey="browser"
