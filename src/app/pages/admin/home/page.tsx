@@ -3,7 +3,7 @@ import { CardTempalte } from "./components/cardTemplate";
 import { CategoryPieChart } from "./components/categoryPieChart";
 import { MonthlyChart } from "./components/montlyGraph";
 import { YearlyBarChart } from "./components/yearlyGraph";
-import { MenuyBarChart } from "./components/menuChart";
+import MenuBarChart from "./components/menuChart";
 
 export default function Home() {
   return (
@@ -39,7 +39,7 @@ export default function Home() {
           <YearlyBarChart />  
         </div>
         <div className="col-span-2 h-64 bg-gray-100 rounded" >
-          <MenuyBarChart />  
+          <MenuBarChart />  
         </div>
       </div>
     </div>

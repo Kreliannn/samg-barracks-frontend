@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
   Card,
@@ -18,44 +18,24 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { ResponsiveContainer } from "recharts"
-export const description = "A simple area chart"
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
+const mockUpData = () => {
+  const chartData = [];
+
+  for (let day = 1; day <= 30; day++) {
+    const date = new Date(2025, 6, day); // July = 6 (0-based)
+    const formattedDate = date.toISOString().split("T")[0];
+    const sales = parseFloat((Math.random() * 3000).toFixed(2)); // random sales up to 3000
+
+    chartData.push({ date: formattedDate, sales });
+  }
+
+  return chartData
+}
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  sales: {
+    label: "Sales",
     color: "#9ca3af",
   },
 } satisfies ChartConfig
@@ -64,39 +44,45 @@ export function MonthlyChart() {
   return (
     <Card className="h-full">
         <CardHeader className="pb-2">
-        <CardTitle className="text-sm"> Monthly Sales Chart</CardTitle>
+        <CardTitle className="text-sm">Monthly Sales Chart</CardTitle>
         <CardDescription className="text-xs">
-            Showing sales History for the last 30 days
+            Showing sales history for the last 30 days
         </CardDescription>
         </CardHeader>
         <CardContent className="h-[calc(100%-4rem)] p-2">
         <ChartContainer config={chartConfig} className="h-full w-full">
             <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartData} margin={{ left: 12, right: 12 }}>
+            <AreaChart data={mockUpData()} margin={{ left: 12, right: 12 }}>
                 <CartesianGrid vertical={false} />
                 <XAxis
-                dataKey="month"
+                dataKey="date"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                tickFormatter={(value: string) => value.slice(0, 3)}
+                interval={2}
+                tick={{ fontSize: 11 }}
+                tickFormatter={(value: string) => {
+                  const date = new Date(value);
+                  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                }}
                 />
                 <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent indicator="line" />}
                 />
                 <Area
-                dataKey="desktop"
+                dataKey="sales"
                 type="natural"
-                fill="var(--color-desktop)"
+                fill="var(--color-sales)"
                 fillOpacity={0.4}
-                stroke="var(--color-desktop)"
+                stroke="var(--color-sales)"
                 />
             </AreaChart>
             </ResponsiveContainer>
         </ChartContainer>
         </CardContent>
      </Card>
-  
   )
 }
+
+export default MonthlyChart

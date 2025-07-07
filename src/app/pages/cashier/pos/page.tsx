@@ -69,7 +69,7 @@ export default function POS() {
                         className="bg-white relative  rounded-2xl shadow hover:shadow-lg border border-gray-200 overflow-hidden transition-all duration-200 group"
                         >
                         {/* Image Section */}
-                        <div className="h-48 bg-gray-100   overflow-hidden">
+                        <div className="h-62 bg-gray-100   overflow-hidden">
                             {item.img ? (
                             <img
                                 src={item.img}
