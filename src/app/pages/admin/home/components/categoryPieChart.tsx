@@ -20,79 +20,119 @@ import {
 
 export const description = "A pie chart with a custom label"
 
-const chartData = [
-  { browser: "Sizzling", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "Unli", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "Pulutan", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "Drinks", visitors: 90, fill: "var(--color-other)" },
+// Your dynamic data
+const salesData = [
+  {
+    "category": "Sizzling",
+    "sold": 5
+  },
+  {
+    "category": "Ala carte",
+    "sold": 4
+  },
+  {
+    "category": "Beverage",
+    "sold": 8
+  },
+  {
+    "category": "Pulutan",
+    "sold": 4
+  },
+  {
+    "category": "Others",
+    "sold": 3
+  },
+  {
+    "category": "Unli",
+    "sold": 6
+  }
 ]
-const chartConfig = {
-    visitors: {
-      label: "Visitors",
-    },
-    chrome: {
-      label: "Sizzling",
-      color: "#d1d5db", // gray-300
-    },
-    safari: {
-      label: "Unli",
-      color: "#9ca3af", // gray-400
-    },
-    firefox: {
-      label: "Pulutan",
-      color: "#6b7280", // gray-500
-    },
-    edge: {
-      label: "Drinks",
-      color: "#4b5563", // gray-600
-    },
-    other: {
-      label: "Other",
-      color: "#374151", // gray-700
-    },
-  } satisfies ChartConfig
-  
+
+// Color palette for categories
+const colors = [
+  "#f9fafb", // gray-50
+  "#f3f4f6", // gray-100
+  "#e5e7eb", // gray-200
+  "#d1d5db", // gray-300
+  "#9ca3af", // gray-400
+  "#6b7280", // gray-500
+  "#4b5563", // gray-600
+  "#374151", // gray-700
+  "#1f2937", // gray-800
+  "#111827", // gray-900
+]
+
+// Transform data and create config dynamically
+const chartData = salesData.map((item, index) => ({
+  category: item.category,
+  sold: item.sold,
+  fill: colors[index % colors.length]
+}))
+
+const chartConfig = salesData.reduce((config, item, index) => {
+  const colorKey = item.category.toLowerCase().replace(/\s+/g, '_')
+  return {
+    ...config,
+    [colorKey]: {
+      label: item.category,
+      color: colors[index % colors.length]
+    }
+  }
+}, {
+  sold: {
+    label: "Items Sold",
+  },
+}) satisfies ChartConfig
 
 export function CategoryPieChart() {
+  const totalSold = salesData.reduce((sum, item) => sum + item.sold, 0)
+  
   return (
     <Card className="h-full flex flex-col">
-      <CardHeader className="items-center pb-1">
-        <CardTitle className="text-sm"> Category Pie Chart </CardTitle>
+      <CardHeader className="items-center pb-">
+        <CardTitle className="text-sm">Sales by Category</CardTitle>
+        <CardDescription className="text-xs">
+          Total items sold: {totalSold}
+        </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex-1 px-2 py-0">
-        <ChartContainer config={chartConfig} className="h-full w-full">
+      <CardContent className="flex-1 px-2 py-0 overflow-visible  ">
+        <ChartContainer config={chartConfig} className="h-full w-full  overflow-visibl">
           <PieChart width={256} height={200}>
             <ChartTooltip
-              content={<ChartTooltipContent nameKey="visitors" hideLabel />}
+              content={<ChartTooltipContent nameKey="sold" hideLabel />}
             />
-            <Pie
-              data={chartData}
-              dataKey="visitors"
-              outerRadius="80%"
-              labelLine={false}
-              label={({ payload, ...props }) => (
+          <Pie
+            data={chartData}
+            dataKey="sold"
+            outerRadius="80%" // restore to your desired full size
+            labelLine={false}
+            label={({ payload, cx = 0, cy = 0, midAngle = 0, outerRadius = 0 }) => {
+              const RADIAN = Math.PI / 180
+              const labelRadius = outerRadius + 15 // default is ~outerRadius + 20, so this moves it closer
+              const x = cx + labelRadius * Math.cos(-midAngle * RADIAN)
+              const y = cy + labelRadius * Math.sin(-midAngle * RADIAN)
+            
+              return (
                 <text
-                  cx={props.cx}
-                  cy={props.cy}
-                  x={props.x}
-                  y={props.y}
-                  textAnchor={props.textAnchor}
-                  dominantBaseline={props.dominantBaseline}
+                  x={x}
+                  y={y}
                   fill="hsla(var(--foreground))"
-                  fontSize={12}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fontSize={10}
                 >
-                  {payload.browser}
+                  {payload.category}
                 </text>
-              )}
-              nameKey="browser"
-            />
+              )
+            }}
+            
+            nameKey="category"
+          />
+
           </PieChart>
         </ChartContainer>
       </CardContent>
-
-    
     </Card>
   )
 }
