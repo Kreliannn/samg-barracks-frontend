@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-
+import useUserStore from "@/app/store/user.store"
 import { useState, type ChangeEvent, useEffect } from "react"
 import {
   Sheet,
@@ -29,6 +29,8 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
   const [productName, setProductName] = useState("")
   const [type, setType] = useState("all")
   const [price, setPrice] = useState<number>(0)
+
+  const { user } = useUserStore()
   
   const [ingredients, setIngredients] = useState<menuIngredientsInterface[]>([])
   const [imagePreview, setImagePreview] = useState<string | null>(null)
@@ -123,6 +125,10 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
 
     mutation.mutate(formData)
   }
+
+
+  if(user?.branch != "Main Branch") return null
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger onClick={() => setOpen(true)} asChild>

@@ -1,8 +1,6 @@
 "use client";
-import { ManagerSideBar } from "@/components/ui/managerSidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
 
-export default function Tables() {
+export default function Page() {
     
     
 

@@ -36,6 +36,11 @@ const navigationItems = [
     icon: Utensils,
   },
   {
+    title: "Request",
+    url: "/pages/manager/request",
+    icon: Utensils,
+  },
+  {
     title: "Tables",
     url: "/pages/manager/table",
     icon: Utensils,

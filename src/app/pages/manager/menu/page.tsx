@@ -54,7 +54,7 @@ export default function Home() {
                       className="bg-white relative rounded-2xl shadow hover:shadow-lg border border-gray-200 overflow-hidden transition-all duration-200 group"
                     >
                       {/* Image Section */}
-                      <div className="h-64 bg-gray-100 relative overflow-hidden">
+                      <div className="h-72 bg-gray-100 relative overflow-hidden">
                         {item.img ? (
                           <img
                             src={item.img}
@@ -80,7 +80,6 @@ export default function Home() {
                           {item.name}
                         </h3>
                         <p className="text-sm text-gray-500">₱ {item.price}</p>
-                        <p className="text-sm text-gray-500"> {item.type}</p>
                         <EditButton menu={item} setMenu={setMenu} />
                       </div>
 

@@ -23,6 +23,7 @@ import { getIngredientsInterface } from "@/app/types/ingredient.type"
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Item } from "@radix-ui/react-select"
 import { errorAlert, successAlert } from "@/app/utils/alert";
+import useUserStore from "@/app/store/user.store"
 
 interface dataType  {
     id : string,
@@ -42,6 +43,7 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
   
   const [ingredients, setIngredients] = useState<menuIngredientsInterface[]>(menu.ingredients)
   
+  const { user }  = useUserStore()
 
   const [ingredientsData, setIngredientsData] = useState<getIngredientsInterface[]>([])
 
@@ -110,6 +112,10 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
     }
     mutation.mutate(data)
   }
+
+
+
+  if(user?.branch != "Main Branch") return null
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
