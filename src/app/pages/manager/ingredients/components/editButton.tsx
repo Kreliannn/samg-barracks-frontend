@@ -18,13 +18,16 @@ import { useMutation } from "@tanstack/react-query"
 import axiosInstance from "@/app/utils/axios"
 import { backendUrl } from "@/app/utils/url"
 import { ImageIcon, Upload } from "lucide-react"
-import { getIngredientsInterface } from "../page"
+import { getIngredientsInterface } from "@/app/types/ingredient.type"
 import { errorAlert, successAlert } from "@/app/utils/alert";
+import useUserStore from "@/app/store/user.store"
 
-export function EditButton({ setIngredients, ingredient } : { ingredient : getIngredientsInterface, setIngredients : React.Dispatch<React.SetStateAction<getIngredientsInterface[]>>}) {
+export function EditButton({ setIngredients, ingredient, index } : {index : number,  ingredient : getIngredientsInterface, setIngredients : React.Dispatch<React.SetStateAction<getIngredientsInterface[]>>}) {
   const [open, setOpen] = useState(false)
   const [productName, setProductName] = useState(ingredient.name)
-  const [initialStocks, setInitialStocks] = useState<number>(ingredient.stocks)
+  const [initialStocks, setInitialStocks] = useState<number>(ingredient.stocks[index].stock)
+
+  const { user } = useUserStore()
 
 
   const mutation = useMutation({
@@ -74,18 +77,19 @@ export function EditButton({ setIngredients, ingredient } : { ingredient : getIn
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
               className="w-full"
+              disabled={user?.branch != "Main Branch"}
             />
           </div>
 
           {/* Initial Stocks */}
           <div className="space-y-2">
             <h1  className="text-sm font-medium">
-              Initial Stock Quantity
+               Stock Quantity
             </h1>
             <Input
               id="initial-stocks"
               type="number"
-              placeholder="Enter initial stock quantity"
+              placeholder="Enter new stock quantity"
               value={initialStocks}
               onChange={(e) => setInitialStocks(Number(e.target.value))}
               className="w-full"

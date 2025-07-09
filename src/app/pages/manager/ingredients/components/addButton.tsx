@@ -18,17 +18,20 @@ import { useMutation } from "@tanstack/react-query"
 import axiosInstance from "@/app/utils/axios"
 import { backendUrl } from "@/app/utils/url"
 import { ImageIcon, Upload } from "lucide-react"
-import { getIngredientsInterface } from "../page"
+import { getIngredientsInterface } from "@/app/types/ingredient.type"
 import { errorAlert, successAlert } from "@/app/utils/alert";
 import { error } from "console"
+import useUserStore from "@/app/store/user.store"
+
 
 export function AddButton({ setIngredients } : { setIngredients : React.Dispatch<React.SetStateAction<getIngredientsInterface[]>>}) {
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const [productName, setProductName] = useState("")
-  const [initialStocks, setInitialStocks] = useState<number>(0)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [type, setType] = useState("none");
+
+  const { user } = useUserStore()
 
 
   const mutation = useMutation({
@@ -37,7 +40,6 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
     onSuccess: (response) => {
       successAlert("ingredient added")
       setProductName("")
-      setInitialStocks(0)
       setFile(null)
       setOpen(false)
       setImagePreview(null);
@@ -68,15 +70,17 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
   
 
   const handleSubmit = async () => {
-    if (!file || !productName || !initialStocks) return errorAlert("empty field")
+    if (!file || !productName ) return errorAlert("empty field")
 
     const formData = new FormData()
     formData.append("file", file)
     formData.append("name", productName)
-    formData.append("stocks", initialStocks.toString())
     formData.append("type", type)
     mutation.mutate(formData)
   }
+
+
+  if(user?.branch != "Main Branch") return null
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -105,21 +109,7 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
             />
           </div>
 
-          {/* Initial Stocks */}
-          <div className="space-y-2">
-            <h1  className="text-sm font-medium">
-              Initial Stock Quantity
-            </h1>
-            <Input
-              id="initial-stocks"
-              type="number"
-              placeholder="Enter initial stock quantity"
-              value={initialStocks}
-              onChange={(e) => setInitialStocks(Number(e.target.value))}
-              className="w-full"
-              min="0"
-            />
-          </div>
+       
 
 
           {/* For Refill? Radio Button */}

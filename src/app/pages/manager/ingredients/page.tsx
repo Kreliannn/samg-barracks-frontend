@@ -9,18 +9,18 @@ import { Edit, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EditButton } from "./components/editButton";
 import axiosInstance from "@/app/utils/axios";
+import useUserStore from "@/app/store/user.store";
+import { getIngredientsInterface } from "@/app/types/ingredient.type";
 
-export interface getIngredientsInterface {
-    _id: string,
-    name: string,
-    stocks: number,
-    branch: string,
-    img: string
-}
 
 export default function Home() {
     
     const [ingredients, setIngredients] = useState<getIngredientsInterface[]>([])
+
+    const [index, setIndex] = useState(0)
+
+    const { user } = useUserStore()
+    
 
     const { data, isLoading } = useQuery({
         queryKey: ["ingredients"],
@@ -28,8 +28,19 @@ export default function Home() {
         refetchInterval: 1000 * 60, 
     })
 
+  
+
     useEffect(() => {
-        if(data?.data) setIngredients(data?.data)
+        if(data?.data){
+            setIngredients(data?.data)
+            data?.data.forEach((ingredient : getIngredientsInterface) => {
+               ingredient.stocks.forEach((item, index) => {
+                    if(item.branch == user?.branch){
+                        setIndex(index)
+                    }
+               })
+            })
+        } 
     }, [data])
 
     const handleEdit = (ingredient: getIngredientsInterface) => {
@@ -59,7 +70,7 @@ export default function Home() {
                                     className="bg-white relative rounded-lg shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-200"
                                 >
                                     {/* Image Section */}
-                                    <div className="h-48 bg-gray-100 relative overflow-hidden">
+                                    <div className="h-62 bg-gray-100 relative overflow-hidden">
                                         {ingredient.img ? (
                                             <img 
                                                 src={ingredient.img} 
@@ -89,18 +100,18 @@ export default function Home() {
                                             <div className="flex justify-between items-center">
                                                 <span className="text-sm text-gray-600">Stock:</span>
                                                 <span className={`text-sm font-medium px-2 py-1 rounded-full ${
-                                                    ingredient.stocks > 50 
+                                                    ingredient.stocks[index].stock > 50 
                                                         ? 'bg-green-100 text-green-800' 
-                                                        : ingredient.stocks > 20 
+                                                        : ingredient.stocks[index].stock > 20 
                                                         ? 'bg-yellow-100 text-yellow-800' 
                                                         : 'bg-red-100 text-red-800'
                                                 }`}>
-                                                    {ingredient.stocks}
+                                                    {ingredient.stocks[index].stock}
                                                 </span>
                                             </div>
                                             
                                             <div className="flex justify-between items-center">
-                                               <EditButton ingredient={ingredient} setIngredients={setIngredients}/>
+                                               <EditButton ingredient={ingredient} setIngredients={setIngredients} index={index}/>
                                             </div>
                                         </div>
                                     </div>
