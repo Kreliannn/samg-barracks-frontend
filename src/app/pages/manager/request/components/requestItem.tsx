@@ -13,7 +13,11 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
-
+  import { requestInterface } from "@/app/types/request.type";
+  import { Button } from "@/components/ui/button";
+  import { Input } from "@/components/ui/input";
+import useUserStore from "@/app/store/user.store";
+import { confirmAlert } from "@/app/utils/alert";
 
 interface SelectedIngredient {
   _id: string;
@@ -21,6 +25,8 @@ interface SelectedIngredient {
   quantity: number;
   price: number;
 }
+
+
 
 export default function RequestItem() {
 
@@ -30,6 +36,8 @@ export default function RequestItem() {
     const [selectedIngredient, setSelectedIngredient] = useState<getIngredientsInterface | null>(null)
     const [quantity, setQuantity] = useState(1)
 
+    const  {user} = useUserStore()
+
     const { data } = useQuery({
         queryKey: ["ingredients"],
         queryFn: () => axiosInstance.get("/ingredients")
@@ -38,6 +46,19 @@ export default function RequestItem() {
     useEffect(() => {
         if(data?.data) setIngredients(data?.data)
     }, [data])
+
+    const mutation = useMutation({
+        mutationFn: (data : requestInterface) => axiosInstance.post("/request", data),
+        onSuccess: (response) => {
+            successAlert("succes")
+            setSelectedIngredients([])
+        },
+        onError: (err) => {
+          errorAlert("error")
+        },
+      })
+    
+      
 
     const handleIngredientClick = (ingredient: getIngredientsInterface) => {
         setSelectedIngredient(ingredient)
@@ -78,6 +99,21 @@ export default function RequestItem() {
 
     const removeSelectedIngredient = (id: string) => {
         setSelectedIngredients(selectedIngredients.filter(item => item._id !== id))
+    }
+
+    const handleSubmit = () => {
+        if(!selectedIngredients || !user?.branch) return errorAlert("empty")
+        confirmAlert("are you sure you want to request?", "Reqiest Order", () => {
+            const formattedDate = new Date().toISOString().split('T')[0];
+            const requestData = {
+                branch : user?.branch ,
+                request : selectedIngredients,
+                total : selectedIngredients.reduce((total, item) => total + (item.quantity * item.price), 0),
+                date : formattedDate.toString(),
+                status :  "pending"
+            }
+            mutation.mutate(requestData)
+        })
     }
 
   return (
@@ -172,8 +208,10 @@ export default function RequestItem() {
             </div>
         </div>
 
-        <div className="h-[10%] w-full bg-stone-100 shadow rounded">
-
+        <div className="h-[10%] w-full bg-stone-100 shadow rounded flex justify-center items-center p-2">
+            <Button className="w-full h-full" onClick={handleSubmit}>
+               Send Request To Main Branch
+            </Button>
         </div>
 
         {/* Quantity Modal */}
@@ -186,29 +224,29 @@ export default function RequestItem() {
                     </div>
                     <p className="text-gray-600 mb-4">How many {selectedIngredient?.name} do you want to request?</p>
                     
-                    <input
+                    <Input
                         type="number"
                         value={quantity}
                         onChange={(e) => setQuantity(Number(e.target.value))}
                         placeholder="Enter quantity"
-                        className="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="mb-5"
                         min="1"
                         autoFocus
                     />
                     
                     <div className="flex justify-end gap-3">
-                        <button
+                        <Button
                             onClick={() => setShowQuantityModal(false)}
-                            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-200"
+                            
                         >
                             Cancel
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             onClick={handleQuantitySubmit}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
+                            className=""
                         >
                             Add
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
