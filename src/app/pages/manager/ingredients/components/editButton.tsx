@@ -26,12 +26,12 @@ export function EditButton({ setIngredients, ingredient, index } : {index : numb
   const [open, setOpen] = useState(false)
   const [productName, setProductName] = useState(ingredient.name)
   const [initialStocks, setInitialStocks] = useState<number>(ingredient.stocks[index].stock)
-
+  const [price, setPrice] = useState<number>(ingredient.price)
   const { user } = useUserStore()
 
 
   const mutation = useMutation({
-    mutationFn: (data: {id : string, name: string, stocks: number}) => axiosInstance.put("/ingredients", data),
+    mutationFn: (data: {id : string, name: string, stocks: number, price : number}) => axiosInstance.put("/ingredients", data),
     onSuccess: (response) => {
       successAlert("success")
       setIngredients(response.data)
@@ -45,9 +45,9 @@ export function EditButton({ setIngredients, ingredient, index } : {index : numb
   
 
   const handleSubmit = async () => {
-    if ( !productName || !initialStocks) return errorAlert("empty field")
+    if ( !productName || !initialStocks || !price) return errorAlert("empty field")
 
-    mutation.mutate({id : ingredient._id, name: productName, stocks: initialStocks})
+    mutation.mutate({id : ingredient._id, name: productName, stocks: initialStocks, price : price})
 
   }
 
@@ -76,6 +76,22 @@ export function EditButton({ setIngredients, ingredient, index } : {index : numb
               placeholder="Enter Ingredients name"
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
+              className="w-full"
+              disabled={user?.branch != "Main Branch"}
+            />
+          </div>
+
+
+          <div className="space-y-2">
+            <h1  className="text-sm font-medium">
+                Ingredients price
+            </h1>
+            <Input
+              id="Ingredients-price"
+              type="text"
+              placeholder="Enter Ingredients price"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
               className="w-full"
               disabled={user?.branch != "Main Branch"}
             />

@@ -28,7 +28,7 @@ export default function RequestItem() {
     const [selectedIngredients, setSelectedIngredients] = useState<SelectedIngredient[]>([])
     const [showQuantityModal, setShowQuantityModal] = useState(false)
     const [selectedIngredient, setSelectedIngredient] = useState<getIngredientsInterface | null>(null)
-    const [quantity, setQuantity] = useState("")
+    const [quantity, setQuantity] = useState(1)
 
     const { data } = useQuery({
         queryKey: ["ingredients"],
@@ -42,7 +42,7 @@ export default function RequestItem() {
     const handleIngredientClick = (ingredient: getIngredientsInterface) => {
         setSelectedIngredient(ingredient)
         setShowQuantityModal(true)
-        setQuantity("")
+        setQuantity(1)
     }
 
     const handleQuantitySubmit = () => {
@@ -55,7 +55,7 @@ export default function RequestItem() {
             _id: selectedIngredient._id,
             name: selectedIngredient.name,
             quantity: Number(quantity),
-            price: 10
+            price: selectedIngredient.price
         }
 
         // Check if ingredient already exists in selected list
@@ -73,7 +73,7 @@ export default function RequestItem() {
 
         setShowQuantityModal(false)
         setSelectedIngredient(null)
-        setQuantity("")
+        setQuantity(1)
     }
 
     const removeSelectedIngredient = (id: string) => {
@@ -117,7 +117,7 @@ export default function RequestItem() {
                 {/* Info */}
                 <div className="h-[40%] px-2 py-1 flex flex-col justify-center">
                 <h1 className="text-sm font-medium text-gray-700 truncate">Name: {ingredient.name}</h1>
-                <h1 className="text-sm text-gray-500">Price: ₱17</h1>
+                <h1 className="text-sm text-gray-500">Price: ₱{ingredient.price}</h1>
                 </div>
             </div>
             ))}
@@ -180,13 +180,16 @@ export default function RequestItem() {
         {showQuantityModal && (
             <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50">
                 <div className="bg-white rounded-xl shadow-xl p-6 w-96 border">
-                    <h2 className="text-xl font-bold mb-4 text-gray-800">Enter Quantity</h2>
+                    <div className="flex justify-between">
+                        <h2 className="text-xl font-bold mb-4 text-gray-800">Enter Quantity</h2>
+                        <h2 className="text-xl font-bold mb-4 text-gray-800">total : <span className="text-green-500">  ₱{ (selectedIngredient?.price) ? selectedIngredient?.price * quantity : 0} </span></h2>
+                    </div>
                     <p className="text-gray-600 mb-4">How many {selectedIngredient?.name} do you want to request?</p>
                     
                     <input
                         type="number"
                         value={quantity}
-                        onChange={(e) => setQuantity(e.target.value)}
+                        onChange={(e) => setQuantity(Number(e.target.value))}
                         placeholder="Enter quantity"
                         className="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         min="1"

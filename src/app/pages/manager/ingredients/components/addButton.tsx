@@ -30,6 +30,7 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
   const [productName, setProductName] = useState("")
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [type, setType] = useState("none");
+  const [price, setPrice] = useState(0);
 
   const { user } = useUserStore()
 
@@ -76,6 +77,7 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
     formData.append("file", file)
     formData.append("name", productName)
     formData.append("type", type)
+    formData.append("price", price.toString())
     mutation.mutate(formData)
   }
 
@@ -105,6 +107,22 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
               placeholder="Enter Ingredients name"
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
+              className="w-full"
+            />
+          </div>
+
+
+
+          <div className="space-y-2">
+            <h1  className="text-sm font-medium">
+                Ingredients price
+            </h1>
+            <Input
+              id="Ingredients-price"
+              type="text"
+              placeholder="Enter Ingredients price"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
               className="w-full"
             />
           </div>

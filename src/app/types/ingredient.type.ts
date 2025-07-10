@@ -12,7 +12,8 @@ export interface ingredientsInterface {
     stocks : branchStockInterface[],
     branch : string,
     img : string,
-    type : string
+    type : string,
+    price : number
 }
 
 export interface getIngredientsInterface {
@@ -21,5 +22,6 @@ export interface getIngredientsInterface {
     stocks : branchStockInterface[],
     branch : string,
     img : string,
-    type : string
+    type : string,
+    price : number
 }
