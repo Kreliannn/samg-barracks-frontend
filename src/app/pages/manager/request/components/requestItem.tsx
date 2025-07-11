@@ -130,7 +130,7 @@ export default function RequestItem() {
             {ingredients.map((ingredient) => (
             <div
                 key={ingredient._id}
-                className="h-48 bg-white rounded-xl shadow hover:shadow-md transition duration-200 flex flex-col overflow-hidden cursor-pointer"
+                className="h-32 bg-white rounded-xl shadow hover:shadow-md transition duration-200 flex flex-col overflow-hidden cursor-pointer"
                 onClick={() => handleIngredientClick(ingredient)}
             >
                 {/* Image */}
