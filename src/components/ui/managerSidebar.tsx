@@ -26,17 +26,17 @@ const navigationItems = [
     icon: Home,
   },
   {
-    title: "Ingredients",
+    title: "Manage Ingredients",
     url: "/pages/manager/ingredients",
     icon: PackagePlus,
   },
   {
-    title: "Menu",
+    title: "Manage Menu",
     url: "/pages/manager/menu",
     icon: Utensils,
   },
   {
-    title: "Request",
+    title: "Order Request",
     url: "/pages/manager/request",
     icon: Utensils,
   },

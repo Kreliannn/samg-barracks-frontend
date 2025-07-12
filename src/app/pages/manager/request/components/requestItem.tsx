@@ -110,7 +110,8 @@ export default function RequestItem() {
                 request : selectedIngredients,
                 total : selectedIngredients.reduce((total, item) => total + (item.quantity * item.price), 0),
                 date : formattedDate.toString(),
-                status :  "pending"
+                status :  "pending",
+                manager : user.fullname
             }
             mutation.mutate(requestData)
         })

@@ -51,9 +51,9 @@ export default function OrderRequest({request} : {request : getRequestInterface[
                     {filteredData.map((item) => (
                         <TableRow key={item._id}>
                             <TableCell className="font-medium">{item.date}</TableCell>
-                            <TableCell className="font-medium">krelian quimson</TableCell>
+                            <TableCell className="font-medium">{item.manager}</TableCell>
                             <TableCell className="font-medium">{item.request.length}</TableCell>
-                            <TableCell className="font-medium text-green-500">{item.total}</TableCell>
+                            <TableCell className="font-medium text-green-500">₱{item.total}</TableCell>
                             <TableCell className="font-medium text-center">  <CustomBadge status={item.status} />   </TableCell>
                             <TableCell className="font-medium text-center">
                                 <Button size={"icon"}  className="bg-yellow-500 hover:bg-yellow-600">  <Eye /> </Button>
