@@ -138,6 +138,11 @@ export function Cart({ table } : { table : string}) {
               <span>₱{totalWithVat.toFixed(2)}</span>
             </div>
 
+            <div className="flex justify-between text-sm">
+              <span>Service Fee (10%):</span>
+              <span>₱{serviceFee.toFixed(2)}</span>
+            </div>
+
             {totalDiscount > 0 && (
               <div className="flex justify-between text-sm text-green-600">
                 <span>Total Discount:</span>

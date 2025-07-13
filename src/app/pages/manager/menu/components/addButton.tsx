@@ -117,11 +117,17 @@ export function AddButton({ setMenu } : { setMenu : React.Dispatch<React.SetStat
     if (!file || !productName || !price || type == "all") return errorAlert("empty input field")
 
     const formData = new FormData()
+
+    const variant = {
+      variant : "regular",
+      price : price,
+      ingredients : ingredients
+    }
+
     formData.append("file", file)
     formData.append("name", productName)
     formData.append("type", type)
-    formData.append("price", price.toString())
-    formData.append("ingredients", JSON.stringify(ingredients))
+    formData.append("variants", JSON.stringify(variant))
 
     mutation.mutate(formData)
   }

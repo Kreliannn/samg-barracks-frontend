@@ -94,7 +94,7 @@ export default function POS() {
                             <h3 className="font-semibold text-lg text-gray-900 truncate">
                             {item.name}
                             </h3>
-                            <p className="text-sm text-gray-500">₱ {item.price}</p>
+                            <p className="text-sm text-gray-500">₱ {item.variants[0].price}</p>
                             <p className="text-sm text-gray-500">{item.type}</p>
                             <AddCart menu={item} />
                         </div>

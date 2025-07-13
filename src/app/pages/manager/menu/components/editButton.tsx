@@ -29,19 +29,22 @@ interface dataType  {
     id : string,
     name : string,
     price : number,
-    type : string,
     ingredients : menuIngredientsInterface[],
+    index : number
 }
 
 
 export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMenu : React.Dispatch<React.SetStateAction<getMenuInterface[]>>}) {
   const [open, setOpen] = useState(false)
 
+  const [index, setIndex] = useState(0)
+
   const [productName, setProductName] = useState(menu.name)
-  const [type, setType] = useState(menu.type)
-  const [price, setPrice] = useState<number>(menu.price)
+  const [price, setPrice] = useState<number>(menu.variants[index].price)
+
+  const [variant, setVariant] = useState("regular")
   
-  const [ingredients, setIngredients] = useState<menuIngredientsInterface[]>(menu.ingredients)
+  const [ingredients, setIngredients] = useState<menuIngredientsInterface[]>(menu.variants[index].ingredients)
   
   const { user }  = useUserStore()
 
@@ -58,6 +61,16 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
   useEffect(() => {
       if(data?.data) setIngredientsData(data?.data)
   }, [data])
+
+  useEffect(() => {
+    menu.variants.forEach((item, index) => {
+      if(item.variant == variant){
+        setIndex(index)
+        setPrice(item.price)
+        setIngredients(item.ingredients)
+      } 
+    })
+  }, [variant])
 
   const mutation = useMutation({
     mutationFn: (data: dataType) =>
@@ -101,14 +114,14 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
   
 
   const handleSubmit = async () => {
-    if ( !productName || !price || type == "all") return errorAlert("empty field")
+    if ( !productName || !price ) return errorAlert("empty field")
 
     const data = {
         id : menu._id,
         name : productName,
         price : price,
         ingredients : ingredients,
-        type : type
+        index : index
     }
     mutation.mutate(data)
   }
@@ -134,6 +147,23 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
         </SheetHeader>
   
         <div className="rounded-lg bg-white mx-auto max-h-[500px] overflow-auto p-6 space-y-6 border">
+
+        <div className="space-y-1">
+            <label htmlFor="menu-type" className="text-sm font-medium text-gray-700">
+              Menu Variants
+            </label>
+            <Select value={variant} onValueChange={setVariant}>
+                <SelectTrigger className="border px-3 py-2 rounded bg-white text-sm w-full">
+                  <SelectValue placeholder="Select Ingredient" />
+                </SelectTrigger>
+                <SelectContent>
+                    {menu.variants.map((item, index) => (
+                       <SelectItem key={index} value={item.variant}> {item.variant} </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+          </div>
+
           {/* Menu Name */}
           <div className="space-y-1">
             <label htmlFor="menu-name" className="text-sm font-medium text-gray-700">
@@ -147,27 +177,7 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
               onChange={(e) => setProductName(e.target.value)}
             />
           </div>
-  
-          {/* Menu Type */}
-          <div className="space-y-1">
-            <label htmlFor="menu-type" className="text-sm font-medium text-gray-700">
-              Menu Type
-            </label>
-            <Select value={type} onValueChange={setType}>
-                <SelectTrigger className="border px-3 py-2 rounded bg-white text-sm w-full">
-                  <SelectValue placeholder="Select Ingredient" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem  value={"all"}> select Type </SelectItem>
-                    <SelectItem  value={"Ala carte"}> Ala carte </SelectItem>
-                    <SelectItem  value={"Sizzling"}> Sizzling </SelectItem>
-                    <SelectItem  value={"Beverage"}> Beverage </SelectItem>
-                    <SelectItem  value={"Pulutan"}> Pulutan </SelectItem>
-                    <SelectItem  value={"Unli"}> Unli </SelectItem>
-                    <SelectItem  value={"Others"}> Others </SelectItem>
-                </SelectContent>
-              </Select>
-          </div>
+ 
   
           {/* Price */}
           <div className="space-y-1">

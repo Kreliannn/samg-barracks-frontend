@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { getMenuInterface } from "@/app/types/menu.type";
 import { Plus, Minus } from "lucide-react";
 import { orderInterface } from "@/app/types/orders.type";
@@ -23,17 +23,33 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
   const [quantity, setQuantity] = useState(1);
   const [discount, setDiscount] = useState("none");
 
+  const [variant, setVariant] = useState("regular");
+  const [index, setIndex] = useState(0);
+
   const {addOrder} = useOrderStore()
+
+
+  useEffect(() => {
+    menu.variants.forEach((item, index) => {
+      if(item.variant == variant)setIndex(index)
+    })
+  }, [variant])
 
   const addCartHandler = () => {
         const discountTemp = (discount != "none") ? 20 : 0
 
         const order : orderInterface = {
-            ...menu,
+             _id : menu._id,
+            name : menu.name,
+            type : menu.type,
+            branch : menu.branch,
+            img : menu.img,
+            ingredients : menu.variants[index].ingredients,
+            price :  menu.variants[index].price,
             qty : quantity,
             discount : discountTemp,
             discountType : discount,
-            total : menu.price * quantity
+            total : menu.variants[index].price * quantity
         }
         addOrder(order)
         setOpen(false)
@@ -81,11 +97,52 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
 
           {/* Second Column - Details */}
           <div className="space-y-4">
+
             {/* Name */}
             <div className="flex gap-10">
               <h2 className="text-xl font-semibold">{menu.name}</h2> 
-              <p className="text-xl font-medium text-green-600">₱{menu.price}</p>
+              <p className="text-xl font-medium text-green-600">₱{menu.variants[index].price}</p>
             </div>
+
+            <div className="grid grid-cols-2 gap-2"> 
+     
+              <div className="space-y-1">
+                <label htmlFor="menu-type" className="text-sm font-medium text-gray-700">
+                  Menu Variants
+                </label>
+                <Select value={variant} onValueChange={setVariant}>
+                    <SelectTrigger className="border px-3 py-2 rounded bg-white text-sm w-full">
+                      <SelectValue placeholder="Select Ingredient" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {menu.variants.map((item, index) => (
+                          <SelectItem key={index} value={item.variant}> {item.variant} </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+              </div>
+
+
+
+              <div className="space-y-1">
+                <label htmlFor="menu-type" className="text-sm font-medium text-gray-700">
+                  Discount
+                </label>
+                <Select value={discount} onValueChange={setDiscount}>
+                    <SelectTrigger className="border px-3 py-2 rounded bg-white text-sm w-full">
+                      <SelectValue placeholder="Select Ingredient" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">Discount</SelectItem>
+                      <SelectItem value="senior">Senior</SelectItem>
+                      <SelectItem value="pwd">PWD</SelectItem>
+                    </SelectContent>
+                  </Select>
+              </div>
+
+            </div>
+
+           
 
 
             {/* Quantity */}
@@ -119,19 +176,7 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
             </div>
 
             {/* Discount */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">Discount Type</h3>
-              <Select value={discount} onValueChange={setDiscount}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select discount" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">Discount</SelectItem>
-                  <SelectItem value="senior">Senior</SelectItem>
-                  <SelectItem value="pwd">PWD</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+        
 
             <div className="space-y-2">
                 <Button className="w-full" onClick={addCartHandler}> Add To Cart </Button>
