@@ -17,7 +17,7 @@ export default function Home() {
             <CardTempalte  title={"July Sales"} value={5000}/>
         </div>
         <div className="h-32 bg-gray-100 rounded" >
-            <CardTempalte  title={"Product Sold"} value={48}/>
+            <CardTempalte  title={"Today Sales"} value={48}/>
         </div>
         <div className="h-32 bg-gray-100 rounded" >
             <CardTempalte  title={"Branch"} value={3}/>

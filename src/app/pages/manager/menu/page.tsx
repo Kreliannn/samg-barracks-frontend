@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import axiosInstance from "@/app/utils/axios";
 import { AddButton } from "./components/addButton";
 import { EditButton } from "./components/editButton";
+import { AddVariant } from "./components/addVariants";
 
 export interface getIngredientsInterface {
     _id: string,
@@ -81,6 +82,7 @@ export default function Home() {
                         </h3>
                         <p className="text-sm text-gray-500">₱ {item.variants[0].price}</p>
                         <EditButton menu={item} setMenu={setMenu} />
+                        <AddVariant menu={item} setMenu={setMenu} />
                       </div>
 
                      
