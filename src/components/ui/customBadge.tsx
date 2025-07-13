@@ -14,6 +14,10 @@ export const CustomBadge = ({status} : {status : string}) => {
             return <Badge className="bg-green-500 shadow"> {status} </Badge>
         break;
 
+        case "rejected":
+            return <Badge className="bg-red-500 shadow"> {status} </Badge>
+        break;
+
         default:
             return null
     }

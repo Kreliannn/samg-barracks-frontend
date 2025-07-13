@@ -1,8 +1,6 @@
 "use client"
 import Link from "next/link";
-import { PackagePlus , Home, Building, Search, UserPlus2, User, FileText, BarChart3, Building2, LogOut } from "lucide-react"
 import { useState, useEffect } from "react"
-import { Utensils } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -17,6 +15,16 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import useUserStore from "@/app/store/user.store";
+import {
+  PackagePlus,
+  Home,
+  Building2,
+  LogOut,
+  Utensils,
+  ClipboardList,
+  ShoppingCart,
+  Table,
+} from "lucide-react";
 
 // Navigation items
 const navigationItems = [
@@ -28,7 +36,7 @@ const navigationItems = [
   {
     title: "Manage Ingredients",
     url: "/pages/manager/ingredients",
-    icon: PackagePlus,
+    icon: PackagePlus, // Optional alternative: Boxes
   },
   {
     title: "Manage Menu",
@@ -38,16 +46,19 @@ const navigationItems = [
   {
     title: "Order Request",
     url: "/pages/manager/request",
-    icon: Utensils,
+    icon: ClipboardList,
+  },
+  {
+    title: "Branch Order Request",
+    url: "/pages/manager/branchOrderRequest",
+    icon: ShoppingCart,
   },
   {
     title: "Tables",
     url: "/pages/manager/table",
-    icon: Utensils,
+    icon: Table,
   },
-
- 
-]
+];
 
 const accountItems = [
   {
@@ -92,6 +103,8 @@ export function ManagerSideBar({ className }: AppSidebarProps) {
               {navigationItems.map((item) => {
 
                 if(user?.branch != "Main Branch" && item.title == "Branch") return null
+                if(user?.branch == "Main Branch" && item.title == "Order Request") return null
+                if(user?.branch != "Main Branch" && item.title == "Branch Order Request") return null
 
                 return(
                     <SidebarMenuItem key={item.title}>

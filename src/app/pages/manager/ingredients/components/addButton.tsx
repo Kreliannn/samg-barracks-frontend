@@ -46,6 +46,7 @@ export function AddButton({ setIngredients } : { setIngredients : React.Dispatch
       setImagePreview(null);
       setIngredients(response.data)
       setType("none")
+      setPrice(0)
     },
     onError: (err) => {
       errorAlert("error")

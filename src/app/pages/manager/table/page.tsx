@@ -133,9 +133,12 @@ export default function RestoLayout() {
     return (
       <div style={{ width: "100%", height: "100vh", position: "relative" }}>
 
-        <Button onClick={addTable}>Add Table</Button>
-        <Button onClick={saveChanges}>save changes</Button>
-       
+        <div className="flex justify-end gap-2 p-5">
+          <Button onClick={addTable}>Add Table</Button>
+          <Button onClick={saveChanges}>save changes</Button>
+        </div>
+
+
   
         <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
           {positions.map((item) => (
