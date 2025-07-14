@@ -36,6 +36,18 @@ export default function OrderRequest({ request }: { request: getRequestInterface
         setShowModal(true);
     };
 
+
+    const mutation = useMutation({
+        mutationFn: (data : { id: string }) =>
+          axiosInstance.patch(`/request/completed`, data ),
+        onSuccess: () => {
+            successAlert("Status Changed")
+        },
+        onError : () => {
+            errorAlert("error")
+        }
+      });
+
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -50,7 +62,7 @@ export default function OrderRequest({ request }: { request: getRequestInterface
                 <h1 className="text-2xl font-bold text-gray-800"> Branch Order Request </h1>
             </div>
 
-            <div className="h-[80%] overflow-auto">
+            <div className="h-[80%] overflow-auto max-h-[300px]">
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -82,7 +94,7 @@ export default function OrderRequest({ request }: { request: getRequestInterface
                                     </Button>
                                 </TableCell>
                                 <TableCell className="font-medium text-right">
-                                    <Button className="bg-green-500 hover:bg-green-600 shadow" disabled={item.status == "pending"}> Received </Button>
+                                    <Button onClick={() => mutation.mutate({ id : item._id})} className="bg-green-500 hover:bg-green-600 shadow" disabled={item.status == "pending"}> Received </Button>
                                 </TableCell>
                             </TableRow>
                         ))}

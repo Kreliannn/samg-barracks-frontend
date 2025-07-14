@@ -52,7 +52,7 @@ export default function OrderRequest({request} : {request : getRequestInterface[
             <h1 className="text-2xl font-bold text-gray-800"> Order Request History </h1>
         </div>
 
-        <div className="h-[85%] overflow-auto ">
+        <div className="h-[85%] overflow-auto max-h-[300px]">
             <Table>
                 <TableHeader>
                     <TableRow>
