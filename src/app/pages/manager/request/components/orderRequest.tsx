@@ -23,7 +23,7 @@ import { Eye, X, Calendar, User, Building2, DollarSign } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CustomBadge } from "@/components/ui/customBadge";
 
-export default function OrderRequest({ request }: { request: getRequestInterface[] }) {
+export default function OrderRequest({ request , setRequest}: { request: getRequestInterface[] , setRequest :  React.Dispatch<React.SetStateAction<getRequestInterface[]>>}) {
     const [selectedRequest, setSelectedRequest] = useState<getRequestInterface | null>(null);
     const [showModal, setShowModal] = useState(false);
 
@@ -40,8 +40,9 @@ export default function OrderRequest({ request }: { request: getRequestInterface
     const mutation = useMutation({
         mutationFn: (data : { id: string }) =>
           axiosInstance.patch(`/request/completed`, data ),
-        onSuccess: () => {
+        onSuccess: (response) => {
             successAlert("Status Changed")
+            setRequest(response.data)
         },
         onError : () => {
             errorAlert("error")

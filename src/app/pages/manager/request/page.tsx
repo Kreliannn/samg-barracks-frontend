@@ -28,14 +28,14 @@ export default function Page() {
     <div className="h-dvh w-full grid grid-cols-2 p-5 gap-2">
       {/* First column */}
       <div className=" ">
-        <RequestItem />
+        <RequestItem setRequest={setRequest} />
       </div>
 
       {/* Second column with 2 rows */}
       <div className="grid grid-rows-2 gap-[1%]">
 
         <div className="">
-         <OrderRequest request={request}/>
+         <OrderRequest request={request} setRequest={setRequest}/>
         </div>
 
         <div className="">

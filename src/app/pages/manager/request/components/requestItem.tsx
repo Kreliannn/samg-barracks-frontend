@@ -18,6 +18,7 @@ import {
   import { Input } from "@/components/ui/input";
 import useUserStore from "@/app/store/user.store";
 import { confirmAlert } from "@/app/utils/alert";
+import { getRequestInterface } from "@/app/types/request.type";
 
 interface SelectedIngredient {
   _id: string;
@@ -28,7 +29,7 @@ interface SelectedIngredient {
 
 
 
-export default function RequestItem() {
+export default function RequestItem({setRequest} : {setRequest : React.Dispatch<React.SetStateAction<getRequestInterface[]>>}) {
 
     const [ingredients, setIngredients] = useState<getIngredientsInterface[]>([])
     const [selectedIngredients, setSelectedIngredients] = useState<SelectedIngredient[]>([])
@@ -52,6 +53,7 @@ export default function RequestItem() {
         onSuccess: (response) => {
             successAlert("succes")
             setSelectedIngredients([])
+            setRequest(response.data)
         },
         onError: (err) => {
           errorAlert("error")
