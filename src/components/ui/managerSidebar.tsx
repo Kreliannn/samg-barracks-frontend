@@ -24,6 +24,7 @@ import {
   ClipboardList,
   ShoppingCart,
   Table,
+  QrCode
 } from "lucide-react";
 
 // Navigation items
@@ -52,6 +53,11 @@ const navigationItems = [
     title: "Branch Order Request",
     url: "/pages/manager/branchOrderRequest",
     icon: ShoppingCart,
+  },
+  {
+    title: "Qr Code Scanner",
+    url: "/pages/manager/scanner",
+    icon: QrCode,
   },
   {
     title: "Tables",
@@ -103,6 +109,7 @@ export function ManagerSideBar({ className }: AppSidebarProps) {
               {navigationItems.map((item) => {
 
                 if(user?.branch != "Main Branch" && item.title == "Branch") return null
+                if(user?.branch == "Main Branch" && item.title == "Qr Code Scanner") return null
                 if(user?.branch == "Main Branch" && item.title == "Order Request") return null
                 if(user?.branch != "Main Branch" && item.title == "Branch Order Request") return null
 

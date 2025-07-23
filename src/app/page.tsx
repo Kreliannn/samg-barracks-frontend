@@ -6,6 +6,7 @@ import { backendUrl } from "./utils/url";
 import { useRouter } from "next/navigation";
 import useUserStore from "./store/user.store";
 import axiosInstance from "./utils/axios";
+import { errorAlert } from "./utils/alert";
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -24,6 +25,7 @@ export default function Home() {
       setUser({ fullname, role, branch });
       router.push(`/pages/${role}/home`);
     },
+    onError : () => errorAlert("error")
   });
 
   const handleLogin = (e: React.FormEvent) => {

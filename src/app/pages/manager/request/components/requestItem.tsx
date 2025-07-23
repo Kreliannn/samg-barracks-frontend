@@ -105,7 +105,7 @@ export default function RequestItem({setRequest} : {setRequest : React.Dispatch<
 
     const handleSubmit = () => {
         if(!selectedIngredients || !user?.branch) return errorAlert("empty")
-        confirmAlert("are you sure you want to request?", "Reqiest Order", () => {
+        confirmAlert("are you sure you want to request?", "Request Order", () => {
             const formattedDate = new Date().toISOString().split('T')[0];
             const requestData = {
                 branch : user?.branch ,
@@ -172,7 +172,7 @@ export default function RequestItem({setRequest} : {setRequest : React.Dispatch<
                 </div>
             </div>
             
-            <div className="h-[80%] overflow-y-auto p-4">
+            <div className="h-[80%] overflow-y-auto p-4 max-h-[147px]">
                 {selectedIngredients.length === 0 ? (
                     <div className="flex items-center justify-center h-full text-gray-500">
                         No ingredients selected

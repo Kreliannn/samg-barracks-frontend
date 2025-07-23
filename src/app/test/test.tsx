@@ -16,7 +16,30 @@ const ReactQRGenerator: React.FC<ReactQRGeneratorProps> = ({ className = '' }) =
     }
   };
 
-  
+  const handleDownload = () => {
+    const svg = document.getElementById('qr-code-svg');
+    if (!svg) return;
+
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx?.drawImage(img, 0, 0);
+      
+      const pngFile = canvas.toDataURL('image/png');
+      const downloadLink = document.createElement('a');
+      downloadLink.download = 'qrcode.png';
+      downloadLink.href = pngFile;
+      downloadLink.click();
+    };
+
+    img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+  };
+
   return (
     <div className={`p-6 max-w-md mx-auto ${className}`}>
       <h2 className="text-2xl font-bold mb-4">React QR Code Generator</h2>
@@ -40,7 +63,7 @@ const ReactQRGenerator: React.FC<ReactQRGeneratorProps> = ({ className = '' }) =
       </button>
 
       {showQR && text && (
-        <div className="text-center bg-stone-50 flex justify-center items-center">
+        <div className="text-center">
           <div className="mb-4 p-4 bg-white border border-gray-200 rounded inline-block">
             <QRCode
               id="qr-code-svg"
@@ -51,6 +74,13 @@ const ReactQRGenerator: React.FC<ReactQRGeneratorProps> = ({ className = '' }) =
               level="M"
             />
           </div>
+          <br />
+          <button
+            onClick={handleDownload}
+            className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+          >
+            Download QR Code
+          </button>
         </div>
       )}
     </div>

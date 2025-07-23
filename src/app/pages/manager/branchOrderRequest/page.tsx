@@ -6,11 +6,16 @@ import { getRequestInterface } from "@/app/types/request.type";
 import { Eye, Package, X, Calendar, Building2, User, DollarSign } from "lucide-react";
 import { CustomBadge } from "@/components/ui/customBadge";
 import { successAlert, errorAlert } from "@/app/utils/alert";
+import QRCode from 'react-qr-code';
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   const [request, setRequest] = useState<getRequestInterface[]>([]);
   const [selectedRequest, setSelectedRequest] = useState<getRequestInterface | null>(null);
   const [showModal, setShowModal] = useState(false);
+
+  const [qrValue, setQrValue] = useState('');
+  const [showQR, setShowQR] = useState(false);
 
   const { data } = useQuery({
     queryKey: ["request"],
@@ -42,7 +47,12 @@ export default function Page() {
 
   const handleStatusUpdate = (id: string, newStatus: string) => {
     updateStatusMutation.mutate({ id, status: newStatus });
-    // Optimistically update the local state
+    
+    if(newStatus == "to ship"){
+      setShowQR(true)
+      setQrValue(id)
+    }
+
     setRequest(prev => 
       prev.map(req => 
         req._id === id ? { ...req, status: newStatus } : req
@@ -263,6 +273,35 @@ export default function Page() {
           </div>
         </div>
       )}
+
+
+      {showQR && qrValue && (
+        <div
+          className="fixed inset-0 z-50 bg-gray-900/60 flex justify-center items-center"
+          onClick={() => {
+            setShowQR(false);
+            setQrValue("");
+          }}
+        >
+          <div
+            className="relative p-4 bg-stone-100 border border-gray-200 rounded shadow-lg"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+          >
+            <QRCode
+              id="qr-code-svg"
+              value={qrValue}
+              size={256}
+              bgColor="#ffffff"
+              fgColor="#000000"
+              level="M"
+            />
+          </div>
+        </div>
+      )}
+
+
+
+
     </div>
   );
 }
