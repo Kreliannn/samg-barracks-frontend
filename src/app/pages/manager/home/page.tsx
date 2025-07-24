@@ -38,10 +38,6 @@ export default function Page() {
   }, [data])
 
 
-  console.log("data:  console.log(dashboardData)")
-  console.log(dashboardData)
-
-
   const metrics = [
     {
       title: "Total Ingredients",
