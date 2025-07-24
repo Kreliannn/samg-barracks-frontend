@@ -84,8 +84,15 @@ const chartConfig = salesData.reduce((config, item, index) => {
   },
 }) satisfies ChartConfig
 
-export function CategoryPieChart() {
-  const totalSold = salesData.reduce((sum, item) => sum + item.sold, 0)
+export function CategoryPieChart({ data } : { data : {category : string, sold : number}[]}) {
+
+  const chartData = data.map((item, index) => ({
+    category: item.category,
+    sold: item.sold,
+    fill: colors[index % colors.length]
+  }))
+
+  const totalSold = chartData.reduce((sum, item) => sum + item.sold, 0)
   
   return (
     <Card className="h-full flex flex-col">

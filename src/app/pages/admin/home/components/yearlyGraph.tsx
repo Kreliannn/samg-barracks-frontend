@@ -45,7 +45,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function YearlyBarChart() {
+export function YearlyBarChart({ data } : { data : {month : string, sales : number}[]}) {
   return (
     <Card className="h-full w-full flex flex-col">
       <CardHeader className="px-4 pb-1">
@@ -57,7 +57,7 @@ export function YearlyBarChart() {
         <ChartContainer config={chartConfig} className="h-full w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              data={yearlySales}
+              data={data}
               margin={{ top: 10, bottom: 10, left: 0, right: 0 }}
               barSize={40}
             >

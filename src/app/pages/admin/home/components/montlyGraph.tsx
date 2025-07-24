@@ -40,7 +40,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function MonthlyChart() {
+export function MonthlyChart({ data } : { data : {date : string, sales : number}[]}) {
   return (
     <Card className="h-full">
         <CardHeader className="pb-2">
@@ -52,7 +52,7 @@ export function MonthlyChart() {
         <CardContent className="h-[calc(100%-4rem)] p-2">
         <ChartContainer config={chartConfig} className="h-full w-full">
             <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={mockUpData()} margin={{ left: 12, right: 12 }}>
+            <AreaChart data={data} margin={{ left: 12, right: 12 }}>
                 <CartesianGrid vertical={false} />
                 <XAxis
                 dataKey="date"

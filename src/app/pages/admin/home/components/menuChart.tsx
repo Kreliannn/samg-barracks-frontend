@@ -56,7 +56,7 @@ const CustomTooltip = ({
   return null
 }
 
-export default function MenuBarChart() {
+export default function MenuBarChart({ data } : { data : {menu : string, sold : number, img : string}[]}) {
   const dynamicBarSize = Math.max(20, Math.min(60, 400 / sortedData.length))
 
   return (
@@ -71,7 +71,7 @@ export default function MenuBarChart() {
       <CardContent className="px-2 pb-2 pt-1 flex-1">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            data={sortedData}
+            data={data}
             margin={{ top: 10, bottom: 0, left: 0, right: 0 }}
             barCategoryGap={10}
             barSize={dynamicBarSize}
