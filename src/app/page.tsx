@@ -43,7 +43,7 @@ export default function Home() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-stone-50 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-sm space-y-8 shadow-lg p-5 bg-white">
+      <div className="w-full max-w-sm space-y-8 shadow-lg p-5 bg-white rounded-lg">
         {/* Header */}
         <div className="text-center space-y-2 mt-5">
           <div className="mx-auto w-12 h-12 bg-black rounded-full flex items-center justify-center mb-6 ">
