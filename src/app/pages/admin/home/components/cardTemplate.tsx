@@ -15,8 +15,8 @@ export const CardTempalte = ({ title, value } : {  title : string, value : numbe
     return(
         <Card className="w-full h-full">
         <CardHeader>
-          <CardDescription className="text-2xl">{title}</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+          <CardDescription className="text-2xl text-emerald-800">{title}</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-emerald-600">
             ₱{value.toLocaleString()}
           </CardTitle>
           <CardAction>

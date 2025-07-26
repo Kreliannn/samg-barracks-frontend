@@ -36,9 +36,10 @@ const mockUpData = () => {
 const chartConfig = {
   sales: {
     label: "Sales",
-    color: "#9ca3af",
+    color: "#10b981", // Dark green (Tailwind's emerald-800)
   },
 } satisfies ChartConfig
+
 
 export function MonthlyChart({ data } : { data : {date : string, sales : number}[]}) {
   return (

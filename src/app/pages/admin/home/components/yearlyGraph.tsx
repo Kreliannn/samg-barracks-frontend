@@ -79,7 +79,7 @@ export function YearlyBarChart({ data } : { data : {month : string, sales : numb
               />
               <Bar
                 dataKey="sales"
-                fill="var(--color-sales)"
+                 fill="#059669"
                 radius={[6, 6, 0, 0]}
               />
             </BarChart>

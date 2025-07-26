@@ -26,7 +26,16 @@ export default function Home() {
 
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen bg-stone-100 ">
+
+      <div className="h-18 fixed    w-full bg-gradient-to-r from-green-900 to-emerald-900  flex items-center justify-center     px-6">
+          <h1 className="text-2xl font-bold text-stone-100 text-center"> History  </h1>
+      </div>
+
+      <br />
+      <br />
+      <br />
+      
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
           {/* Header */}
@@ -59,7 +68,7 @@ export default function Home() {
                     <div className="font-medium">{transaction.time ||  "10:00 AM"}</div>
                   </div>
                   <div className="text-left">
-                    <span className="inline-flex shadow-sm items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                    <span className="inline-flex shadow-sm items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">
                       {transaction.table}
                     </span>
                   </div>
@@ -126,9 +135,9 @@ export default function Home() {
                           <span className="text-sm font-medium text-stone-900">₱{transaction.vat.toFixed(2)}</span>
                         </div>
                         <div className="border-t border-stone-200 pt-2">
-                          <div className="flex justify-between py-2 px-3 rounded-lg bg-blue-50">
-                            <span className="text-sm font-medium text-blue-900">Total</span>
-                            <span className="text-lg font-bold text-blue-900">₱{transaction.grandTotal.toFixed(2)}</span>
+                          <div className="flex justify-between py-2 px-3 rounded-lg bg-emerald-50">
+                            <span className="text-sm font-medium text-emerald-900">Total</span>
+                            <span className="text-lg font-bold text-emerald-900">₱{transaction.grandTotal.toFixed(2)}</span>
                           </div>
                         </div>
                     

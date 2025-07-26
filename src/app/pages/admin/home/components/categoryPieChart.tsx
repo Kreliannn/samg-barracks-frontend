@@ -50,16 +50,16 @@ const salesData = [
 
 // Color palette for categories
 const colors = [
-  "#f9fafb", // gray-50
-  "#f3f4f6", // gray-100
-  "#e5e7eb", // gray-200
-  "#d1d5db", // gray-300
-  "#9ca3af", // gray-400
-  "#6b7280", // gray-500
-  "#4b5563", // gray-600
-  "#374151", // gray-700
-  "#1f2937", // gray-800
-  "#111827", // gray-900
+  "#064e3b", // emerald-900
+  "#065f46", // emerald-800
+  "#047857", // emerald-700
+  "#059669", // emerald-600
+  "#10b981", // emerald-500
+  "#34d399", // emerald-400
+  "#6ee7b7", // emerald-300
+  "#a7f3d0", // emerald-200
+  "#d1fae5", // emerald-100
+  "#ecfdf5", // emerald-50
 ]
 
 // Transform data and create config dynamically

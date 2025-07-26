@@ -29,16 +29,16 @@ export default function Home() {
 
     return (
                 <div className="h-dvh w-full flex flex-col">
-                    <div className="h-[10%] w-full bg-stone-100 flex items-center justify-center     px-6">
-                        <h1 className="text-2xl font-bold text-gray-800 text-center">Orders</h1>
+                    <div className="h-[10%] w-full bg-gradient-to-r from-green-900 to-emerald-900  flex items-center justify-center     px-6">
+                        <h1 className="text-2xl font-bold text-stone-100 text-center"> Active Tables </h1>
                     </div>
                     
-                    <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
+                    <div className="flex-1 overflow-y-auto p-6 bg-stone-100">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {orders.map((order, index) => (
                                 <div key={index} className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
                                     {/* Header */}
-                                    <div className="bg-stone-900 text-white p-4 flex items-center justify-between">
+                                    <div className="bg-gradient-to-r from-green-900 to-emerald-900  text-white p-4 flex items-center justify-between">
                                         <h2 className="text-xl font-bold">{order.table}</h2>
                                         <RefillButton table={order.table}/>
                                     </div>
@@ -84,7 +84,7 @@ export default function Home() {
                                             {order.orders.map((item, itemIndex) => {
                                                 const discountedTotal = item.total - (item.discount || 0);
                                                 return (
-                                                    <div key={itemIndex} className="bg-gray-50 p-3 rounded-md text-sm">
+                                                    <div key={itemIndex} className="bg-stone-50 shadow p-3 rounded-md text-sm">
                                                         <div className="flex justify-between items-start mb-1">
                                                             <span className="font-medium text-gray-800 flex-1">
                                                                 {item.name}
@@ -115,13 +115,14 @@ export default function Home() {
                                     </div>
                                     
                                     {/* Footer */}
-                                    <div className="p-4 bg-gray-50 border-t flex gap-2">
-                                        <button 
+                                    <div className="p-4 bg-gradient-to-r from-green-900 to-emerald-900  border-t flex gap-2">
+                                        <Button 
+                                            variant={"outline"}
                                             onClick={() => print2ndReceipt(order)}
-                                            className="w-[30%] bg-stone-800 hover:bg-stone-900 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200"
+                                            className="w-[30%]   font-semibold py-2 px-4 rounded-md transition-colors duration-200"
                                         >
                                             Bill Out 
-                                        </button>
+                                        </Button>
                                        <PaymentButton order={order} setOrders={setOrders} />
                                     </div>
                                 </div>

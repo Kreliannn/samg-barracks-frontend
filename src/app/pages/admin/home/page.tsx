@@ -96,11 +96,11 @@ export default function Home() {
   if (!analytics || isFetching) return <LoadingState />;
 
   return (
-    <div className="w-full h-dvh space-y-6 p-4">
+    <div className="w-full h-dvh space-y-6 p-4 ">
 
       {user?.branch == "Main Branch" && (
         <div className="w-full h-10 items-center top-0 left-0 flex justify-between">
-          <h1 className="text-2xl font-bold text-stone-700">
+          <h1 className="md:text-2xl text-lg font-bold text-green-700">
             {selectedBranch} Dashboard
           </h1>
           <Select value={selectedBranch} onValueChange={setSelectedBranch}>
@@ -119,32 +119,32 @@ export default function Home() {
       )}
      
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="h-32 bg-gray-100 rounded">
+      <div className="grid md:grid-cols-3  grid-cols-1 gap-4">
+        <div className="h-32  rounded">
           <CardTempalte title={"Total Sales"} value={analytics.totalSales} />
         </div>
-        <div className="h-32 bg-gray-100 rounded">
+        <div className="h-32  rounded">
           <CardTempalte title={"July Sales"} value={analytics.thisMonthSales} />
         </div>
-        <div className="h-32 bg-gray-100 rounded">
+        <div className="h-32  rounded">
           <CardTempalte title={"Today Sales"} value={analytics.todaySales} />
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
-        <div className="col-span-3 h-64 bg-gray-100 rounded">
+      <div className="grid   md:grid-cols-4  grid-cols-1 gap-4">
+        <div className="col-span-3 h-64  rounded">
           <MonthlyChart data={analytics.last30days} />
         </div>
-        <div className="col-span-1 h-64 bg-gray-100 rounded">
+        <div className="col-span-1 h-64  rounded">
           <CategoryPieChart data={analytics.topCategory} />
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
-        <div className="col-span-2 h-64 bg-gray-100 rounded">
+      <div className="grid  md:grid-cols-4  grid-cols-1 gap-4">
+        <div className="col-span-2 h-64  rounded">
           <YearlyBarChart data={analytics.yearlySales} />
         </div>
-        <div className="col-span-2 h-64 bg-gray-100 rounded">
+        <div className="col-span-2 h-64  rounded">
           <MenuBarChart data={analytics.topMenu} />
         </div>
       </div>

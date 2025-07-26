@@ -60,12 +60,13 @@ export function PaymentButton({ order, setOrders }: { order: getOrdersInterface,
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button 
+        <Button 
            onClick={() => print3rdReceipt(order, 5000)}
-           className="w-[70%] bg-green-700 hover:bg-green-800 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200"
+           variant={"outline"}
+           className="w-[70%]  font-semibold py-2 px-4 rounded-md transition-colors duration-200"
         >
             Proceed to Payment
-        </button>
+        </Button>
       </DialogTrigger>
       <DialogHeader>
           <DialogTitle></DialogTitle>
@@ -92,7 +93,7 @@ export function PaymentButton({ order, setOrders }: { order: getOrdersInterface,
 
             <h1 className="mb-2"> Customer Cash:  </h1>
             <Input type="number" className="mb-4 p-5 text-2xl font-bold  text-green-500"  value={payment} onChange={(e) => setPayment(Number(e.target.value))} /> 
-            <Button className="w-full " onClick={completeOrder}> Pay </Button>
+            <Button className="w-full " size={"lg"} onClick={completeOrder}> Pay </Button>
         </div>
 
      

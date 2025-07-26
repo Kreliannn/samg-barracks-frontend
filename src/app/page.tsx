@@ -60,7 +60,7 @@ export default function Home() {
           <form onSubmit={handleLogin} className="space-y-6">
             {/* Username Field */}
             <div className="space-y-2">
-              <label className="block text-xs font-medium text-black uppercase tracking-wide">
+              <label className="block text-xs font-medium text-green-800 uppercase tracking-wide">
                 Username
               </label>
               <div className="relative">
@@ -73,14 +73,14 @@ export default function Home() {
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Enter username"
                   required
-                  className="block w-full pl-10 pr-3 py-3 border-0 border-b-2 border-gray-200 bg-transparent placeholder-gray-400 focus:outline-none focus:border-black focus:ring-0 transition-colors duration-200 text-sm"
+                  className="block w-full pl-10 pr-3 py-3 border-0 border-b-2 border-gray-200 bg-transparent placeholder-gray-400 focus:outline-none focus:border-green-600 focus:ring-0 transition-colors duration-200 text-sm"
                 />
               </div>
             </div>
 
             {/* Password Field */}
             <div className="space-y-2">
-              <label className="block text-xs font-medium text-black uppercase tracking-wide">
+              <label className="block text-xs font-medium text-green-800 uppercase tracking-wide">
                 Password
               </label>
               <div className="relative">
@@ -93,7 +93,7 @@ export default function Home() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
                   required
-                  className="block w-full pl-10 pr-10 py-3 border-0 border-b-2 border-gray-200 bg-transparent placeholder-gray-400 focus:outline-none focus:border-black focus:ring-0 transition-colors duration-200 text-sm"
+                  className="block w-full pl-10 pr-10 py-3 border-0 border-b-2 border-gray-200 bg-transparent placeholder-gray-400 focus:outline-none focus:border-green-600  focus:ring-0 transition-colors duration-200 text-sm"
                 />
                 <button
                   type="button"
@@ -101,9 +101,9 @@ export default function Home() {
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
                   {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-gray-400 hover:text-black transition-colors" />
+                    <EyeOff className="h-4 w-4 text-gray-400 hover:text-green-800  transition-colors" />
                   ) : (
-                    <Eye className="h-4 w-4 text-gray-400 hover:text-black transition-colors" />
+                    <Eye className="h-4 w-4 text-gray-400 hover:text-green-800  transition-colors" />
                   )}
                 </button>
               </div>
@@ -114,7 +114,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-black text-white py-3 px-4 text-sm font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[0.98] active:scale-95"
+                className="w-full bg-gradient-to-r from-green-700 to-green-800 text-white py-3 px-4 text-sm font-medium hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[0.98] active:scale-95"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center gap-2">

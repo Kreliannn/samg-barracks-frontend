@@ -55,9 +55,9 @@ export default function Page() {
 
   return (
     <div className="h-dvh w-full bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto mt-10">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <h1 className="text-3xl font-bold text-green-800">Dashboard</h1>
           <p className="text-gray-600 mt-2">Overview of your restaurant operations</p>
         </div>
         
@@ -65,15 +65,15 @@ export default function Page() {
           {metrics.map((metric, index) => {
             const IconComponent = metric.icon;
             return (
-              <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
+              <Card key={index} className="hover:shadow-lg transition-shadow  shadow-lg  duration-200 bg-gradient-to-r from-green-700 to-green-800 ">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-600">
+                  <CardTitle className="text-sm font-medium text-stone-100">
                     {metric.title}
                   </CardTitle>
                   <IconComponent className={`h-5 w-5 ${metric.color}`} />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-gray-900">
+                  <div className="text-2xl font-bold text-white">
                     {metric.value}
                   </div>
                 </CardContent>

@@ -49,7 +49,7 @@ export default function POS() {
         <div className="h-dvh w-full flex">
           <div className="h-full w-4/6 bg-stone-100">
 
-                <div className="h-[10%] w-full bg-stone-800 shadow-lg flex items-center relative px-4">
+                <div className="h-[10%] w-full bg-gradient-to-r from-green-900 to-emerald-900  shadow-lg flex items-center relative px-4">
                     <h1 className="absolute left-1/2 -translate-x-1/2 text-3xl font-bold text-white">
                         {table}
                     </h1>
@@ -61,7 +61,7 @@ export default function POS() {
 
 
                 <div className="w-full h-[80%] bg-gray-100 overflow-auto p-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
         
                     {menu.map((item) => (
                         <div
@@ -69,7 +69,7 @@ export default function POS() {
                         className="bg-white relative  rounded-2xl shadow hover:shadow-lg border border-gray-200 overflow-hidden transition-all duration-200 group"
                         >
                         {/* Image Section */}
-                        <div className="h-62 bg-gray-100   overflow-hidden">
+                        <div className="h-42 lg:h-62 bg-gray-100   overflow-hidden">
                             {item.img ? (
                             <img
                                 src={item.img}
@@ -95,7 +95,6 @@ export default function POS() {
                             {item.name}
                             </h3>
                             <p className="text-sm text-gray-500">₱ {item.variants[0].price}</p>
-                            <p className="text-sm text-gray-500">{item.type}</p>
                             <AddCart menu={item} />
                         </div>
 
@@ -116,7 +115,7 @@ export default function POS() {
               </div>
 
 
-                <div className="h-[10%] w-full bg-stone-800  flex justify-center items-center gap-5">
+                <div className="h-[10%] w-full bg-gradient-to-r from-green-900 to-emerald-900  flex justify-center items-center gap-5">
                     {types.map((type) => (
                         <Button className="bg-white text-stone-800  hover:bg-stone-200 hover:text-black"  key={type} size={"lg"} onClick={() => filterHandler(type)}> {type} </Button>
                     ))}

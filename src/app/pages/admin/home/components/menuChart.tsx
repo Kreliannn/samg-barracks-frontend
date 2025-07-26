@@ -95,7 +95,7 @@ export default function MenuBarChart({ data } : { data : {menu : string, sold : 
             />
             <Bar
               dataKey="sold"
-              fill="#9ca3af"
+              fill="#064e3b"
               radius={[6, 6, 0, 0]}
               isAnimationActive={false}
             />

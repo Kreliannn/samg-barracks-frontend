@@ -67,45 +67,41 @@ export default function Home() {
   };
 
  
-return (
-
-
-      <div className="flex gap-5 w-full">
-          {/* Employee Form */}
-        <div className="bg-white rounded-lg shadow p-6 max-w-md space-y-4 mb-10 w-[50%]">
-
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">Add New Employee</h1>
-          <p className="text-sm text-gray-500">Fill in the details to add a new staff member.</p>
+  return (
+    <div className="flex flex-col md:flex-row gap-6 w-full">
+      {/* Employee Form */}
+      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-1/2 space-y-5">
+        <div className="mb-4">
+          <h1 className="text-2xl font-semibold text-emerald-800 dark:text-stone-100">Add New Employee</h1>
+          <p className="text-sm text-stone-500">Fill in the details to add a new staff member.</p>
         </div>
-
+  
         <input
           type="text"
           placeholder="Full Name"
           value={fullname}
           onChange={(e) => setFullname(e.target.value)}
-          className="border px-3 py-2 rounded w-full text-sm"
+          className="border border-stone-300 focus:ring-2 focus:ring-emerald-500 px-4 py-2 rounded-lg w-full text-sm outline-none"
         />
-
+  
         <input
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="border px-3 py-2 rounded w-full text-sm"
+          className="border border-stone-300 focus:ring-2 focus:ring-emerald-500 px-4 py-2 rounded-lg w-full text-sm outline-none"
         />
-
+  
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border px-3 py-2 rounded w-full text-sm"
+          className="border border-stone-300 focus:ring-2 focus:ring-emerald-500 px-4 py-2 rounded-lg w-full text-sm outline-none"
         />
-
-        {/* Role Selector */}
+  
         <Select value={role} onValueChange={setRole}>
-          <SelectTrigger className="border px-3 py-2 rounded text-sm">
+          <SelectTrigger className="border border-stone-300 px-4 py-2 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500">
             <SelectValue placeholder="Select Role" />
           </SelectTrigger>
           <SelectContent>
@@ -113,17 +109,19 @@ return (
             <SelectItem value="manager">Manager</SelectItem>
           </SelectContent>
         </Select>
-
-        {/* Submit Button */}
-        <Button onClick={handleSubmit} className="w-full">
+  
+        <Button
+          onClick={handleSubmit}
+          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-sm font-semibold"
+        >
           Add Employee
         </Button>
-        </div>
-
-        {/* Employee List Table */}
-        <div className="bg-white rounded-lg shadow p-6  w-[50%]">
-        <h2 className="text-xl font-semibold mb-4">Employee List</h2>
-
+      </div>
+  
+      {/* Employee List Table */}
+      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-1/2">
+        <h2 className="text-xl font-semibold mb-4 text-emerald-800 dark:text-stone-100">Employee List</h2>
+  
         <Table>
           <TableHeader>
             <TableRow>
@@ -135,7 +133,7 @@ return (
           </TableHeader>
           <TableBody>
             {employee?.map((emp) => (
-              <TableRow key={emp._id}>
+              <TableRow key={emp._id} className="hover:bg-stone-100 dark:hover:bg-stone-800">
                 <TableCell>{emp.fullname}</TableCell>
                 <TableCell>{emp.username}</TableCell>
                 <TableCell className="capitalize">{emp.role}</TableCell>
@@ -144,14 +142,12 @@ return (
             ))}
           </TableBody>
         </Table>
-
+  
         {employee.length === 0 && (
-          <p className="text-center text-sm text-gray-500 mt-4">No employees found.</p>
+          <p className="text-center text-sm text-stone-500 mt-4">No employees found.</p>
         )}
-        </div>
       </div>
-     
+    </div>
+  )
 
-
-);
 }
