@@ -46,12 +46,17 @@ export default function Page() {
   );
 
   const handleStatusUpdate = (id: string, newStatus: string) => {
-    updateStatusMutation.mutate({ id, status: newStatus });
-    
+
     if(newStatus == "to ship"){
       setShowQR(true)
       setQrValue(id)
     }
+
+
+
+    updateStatusMutation.mutate({ id, status: newStatus });
+    
+   
 
     setRequest(prev => 
       prev.map(req => 
@@ -123,13 +128,13 @@ export default function Page() {
               </div>
 
               <div className="flex gap-2">
-                <button
+                <Button
                   onClick={() => handleViewOrder(order)}
-                  className="flex items-center px-3 py-1 text-sm bg-gray-100  hover:bg-gray-200 rounded-md transition-colors"
+                  className="flex items-center px-3 py-1 text-sm bg-gray-100 shadow text-stone-800 hover:bg-gray-200 rounded-md transition-colors"
                 >
                   <Eye className="w-4 h-4 mr-1" />
-                  View
-                </button>
+                  <span className="hidden lg:inline">  View </span>
+                </Button>
                 
                 {order.status === "pending" && (
                   <button
@@ -148,7 +153,8 @@ export default function Page() {
                   className="flex items-center px-3 py-1 text-sm bg-red-100 hover:bg-red-200 text-red-800 rounded-md transition-colors"
                 >
                   <X className="w-4 h-4 mr-1" />
-                  Reject
+                  <span className="hidden lg:inline">  Reject </span>
+                  
                 </button>
                 )}
                 
@@ -220,7 +226,7 @@ export default function Page() {
 
       {/* Modal for viewing order details */}
       {showModal && selectedRequest && (
-        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50 bg-stone-900/60 ">
           <div className=" bg-stone-50 shadow-lg  rounded-lg max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-start mb-4">
@@ -277,7 +283,7 @@ export default function Page() {
 
       {showQR && qrValue && (
         <div
-          className="fixed inset-0 z-50 bg-gray-900/60 flex justify-center items-center"
+          className="fixed inset-0 z-50 bg-stone-900/60 flex justify-center items-center"
           onClick={() => {
             setShowQR(false);
             setQrValue("");

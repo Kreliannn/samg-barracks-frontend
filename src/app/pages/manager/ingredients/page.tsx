@@ -63,14 +63,14 @@ export default function Home() {
                     </div>
 
                     <div className="w-full h-5/6 bg-stone-50 overflow-auto p-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {ingredients.map((ingredient) => (
                                 <div 
                                     key={ingredient._id} 
                                     className="bg-white relative rounded-lg shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-200"
                                 >
                                     {/* Image Section */}
-                                    <div className="h-62 bg-gray-100 relative overflow-hidden">
+                                    <div className="h-42 lg:h-62 bg-gray-100 relative overflow-hidden">
                                         {ingredient.img ? (
                                             <img 
                                                 src={ingredient.img} 

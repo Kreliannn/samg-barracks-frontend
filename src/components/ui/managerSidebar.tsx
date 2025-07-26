@@ -83,17 +83,17 @@ export function ManagerSideBar({ className }: AppSidebarProps) {
     
   return (
     <Sidebar className={className}>
-      <SidebarHeader>
+      <SidebarHeader className="bg-green-900">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href="/" className="font-semibold">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Building2 className="size-4" />
+            <SidebarMenuButton size="lg" asChild className="hover:bg-green-900">
+            <a href="/" className="font-semibold ">
+                <div className="aspect-square size-8 overflow-hidden rounded-lg w-30 h-30">
+                  <img src="/web/logo.jpg" alt="Logo" className="object-cover w-full h-full rounded-lg" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">The Barracks</span>
-                  <span className="truncate text-xs text-sidebar-foreground/70">{user?.branch}</span>
+                  <span className="truncate font-semibold text-white">Manager</span>
+                  <span className="truncate text-xs  text-stone-100 ">{user?.branch}</span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -101,9 +101,9 @@ export function ManagerSideBar({ className }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="bg-gradient-to-r from-green-800 to-green-900">
         <SidebarGroup>
-          <SidebarGroupLabel>Section</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-stone-100">Section</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navigationItems.map((item) => {
@@ -114,7 +114,7 @@ export function ManagerSideBar({ className }: AppSidebarProps) {
                 if(user?.branch != "Main Branch" && item.title == "Branch Order Request") return null
 
                 return(
-                    <SidebarMenuItem key={item.title}>
+                    <SidebarMenuItem key={item.title} className="text-stone-100">
                       <SidebarMenuButton asChild>
                         <Link href={item.url}>
                           <item.icon />
@@ -129,11 +129,11 @@ export function ManagerSideBar({ className }: AppSidebarProps) {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter className="bg-gradient-to-r from-green-800 to-green-900">
         <SidebarMenu>
           {accountItems.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild className="text-stone-100">
                 <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>

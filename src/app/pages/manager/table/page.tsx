@@ -9,6 +9,8 @@ import {
     useSensor,
     useSensors,
     PointerSensor,
+    TouchSensor,
+    MouseSensor,
   } from "@dnd-kit/core";
   import { useEffect, useState } from "react";
   import { Button } from "@/components/ui/button";
@@ -46,13 +48,26 @@ import {
       alignItems: "center",
       justifyContent: "center",
       cursor: "move",
+      // Add touch-action for better mobile performance
+      touchAction: "none",
     };
   
     return (
         <>
           
-            <div ref={setNodeRef} style={style} {...listeners} {...attributes} className="relative   shadow-lg rounded"  >
-                <X onClick={() => remove(id)} className="absolute top-[-20px] left-[-20px] hover:text-red-500 "  onPointerDown={(e) => e.stopPropagation()} />
+            <div 
+              ref={setNodeRef} 
+              style={style} 
+              {...listeners} 
+              {...attributes} 
+              className="relative shadow-lg rounded select-none"
+            >
+                <X 
+                  onClick={() => remove(id)} 
+                  className="absolute top-[-20px] left-[-20px] hover:text-red-500 z-10" 
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => e.stopPropagation()}
+                />
                 {id}
             </div>
         </>      
@@ -64,7 +79,27 @@ import {
 export default function RestoLayout() {
     const [positions, setPositions] = useState<TableData[]>([]);
   
-    const sensors = useSensors(useSensor(PointerSensor));
+    // Configure sensors for both desktop and mobile
+    const sensors = useSensors(
+      useSensor(MouseSensor, {
+        // Require the mouse to move by 10 pixels before activating
+        activationConstraint: {
+          distance: 10,
+        },
+      }),
+      useSensor(TouchSensor, {
+        // Press delay of 250ms, with tolerance of 5px of movement
+        activationConstraint: {
+          delay: 250,
+          tolerance: 5,
+        },
+      }),
+      useSensor(PointerSensor, {
+        activationConstraint: {
+          distance: 8,
+        },
+      })
+    );
 
     const { data } = useQuery({
         queryKey: ["tables"],
@@ -131,7 +166,7 @@ export default function RestoLayout() {
     }
   
     return (
-      <div style={{ width: "100%", height: "100vh", position: "relative" }}>
+      <div className="w-full h-full relative" style={{ touchAction: "pan-y" }}>
 
         <div className="flex justify-end gap-2 p-5">
           <Button onClick={addTable}>Add Table</Button>

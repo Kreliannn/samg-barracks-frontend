@@ -25,7 +25,7 @@ export default function Page() {
 
     
   return (
-    <div className="h-dvh w-full grid grid-cols-2 p-5 gap-2">
+    <div className="h-dvh w-full grid grid-cols-1 lg:grid-cols-2 p-5 gap-2 overflow-auto">
       {/* First column */}
       <div className=" ">
         <RequestItem setRequest={setRequest} />

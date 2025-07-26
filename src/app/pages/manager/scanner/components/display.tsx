@@ -70,7 +70,7 @@ export default function Display({setShowModal, request} : {setShowModal : React.
                             <h4 className="font-medium text-gray-900 mb-2">Items:</h4>
                             <div className="space-y-2">
                             {request?.request.map((item) => (
-                                <div key={item._id} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                                <div key={item._id} className="flex justify-between items-center p-2 bg-stone-100 shadow rounded">
                                 <span className="font-medium">{item.name}</span>
                                 <span className="text-sm text-gray-600">Quantity: {item.quantity}</span>
                                 </div>
@@ -80,7 +80,9 @@ export default function Display({setShowModal, request} : {setShowModal : React.
 
                       
                         <div>
-                            <Button onClick={addToInventory} className="w-full" disabled={request.status == "completed" || request.branch != user?.branch}> add To Inventory </Button>
+                            <Button onClick={addToInventory} className="w-full" disabled={request.status == "completed" || request.branch != user?.branch}> 
+                                 {request.status == "completed" ? "Scanned Completed" : "add To Inventory"}
+                            </Button>
                         </div>
 
                         </div>

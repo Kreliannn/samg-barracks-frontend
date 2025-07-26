@@ -10,10 +10,10 @@ export default function ManagerLayout({ children }: { children: React.ReactNode 
                 <ManagerSideBar />
         
                 {/* Main content area */}
-                <main className="w-full">
+                <main className="w-full h-dvh overflow-hidden">
                     {children}
                 </main>
-          </SidebarProvider>
+          </SidebarProvider> 
        
       </div>
     );

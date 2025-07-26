@@ -43,31 +43,31 @@ export default function Page() {
       title: "Total Ingredients",
       value: dashboardData.totalIngredients,
       icon: Package,
-      color: "text-blue-600"
+      color: "text-white"
     },
     {
       title: "Total Menus",
       value: dashboardData.totalMenus,
       icon: Menu,
-      color: "text-green-600"
+      color: "text-white"
     },
     {
       title: "Sales Today",
       value: dashboardData.salesToday,
       icon: DollarSign,
-      color: "text-emerald-600"
+      color: "text-white"
     },
     {
       title: "Pending Requests",
       value: dashboardData.pendingRequests,
       icon: Clock,
-      color: "text-orange-600"
+      color: "text-white"
     },
     {
       title: "To Ship Requests",
       value: dashboardData.toShipRequests,
       icon: Truck,
-      color: "text-purple-600"
+      color: "text-white"
     }
   ];
 
@@ -83,15 +83,15 @@ export default function Page() {
           {metrics.map((metric, index) => {
             const IconComponent = metric.icon;
             return (
-              <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
+              <Card key={index} className="hover:shadow-lg transition-shadow duration-200 bg-gradient-to-r shadow-lg from-green-700 to-green-800 ">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-600">
+                  <CardTitle className="text-sm font-medium text-stone-100">
                     {metric.title}
                   </CardTitle>
                   <IconComponent className={`h-5 w-5 ${metric.color}`} />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-gray-900">
+                  <div className="text-2xl font-bold text-white">
                     {metric.value}
                   </div>
                 </CardContent>
