@@ -43,98 +43,98 @@ export default function Home() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-stone-50 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-sm space-y-8 shadow-lg p-5 bg-white rounded-lg">
-        {/* Header */}
-        <div className="text-center space-y-2 mt-5">
-          <div className="mx-auto w-12 h-12 bg-black rounded-full flex items-center justify-center mb-6 ">
-            <User className="w-6 h-6 text-white" />
-          </div>
-          <h1 className="text-2xl font-light text-black tracking-tight">
-            Welcome back
-          </h1>
-          <p className="text-sm text-gray-500 font-light">
-            Sign in to continue
-          </p>
+      <div className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 shadow-lg bg-white rounded-lg overflow-hidden">
+        {/* Left: Logo Image */}
+        <div className="relative bg-gray-100 p-0 h-full w-full">
+          <img
+            src="/web/logo.jpg"
+            alt="Logo"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         </div>
+        {/* Right: Login Form */}
+        <div className="flex flex-col justify-center p-10">
 
-        {/* Form */}
-        <form onSubmit={handleLogin} className="space-y-6">
-          {/* Username Field */}
-          <div className="space-y-2">
-            <label className="block text-xs font-medium text-black uppercase tracking-wide">
-              Username
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <User className="h-4 w-4 text-gray-400" />
+        
+          {/* Form */}
+          <form onSubmit={handleLogin} className="space-y-6">
+            {/* Username Field */}
+            <div className="space-y-2">
+              <label className="block text-xs font-medium text-black uppercase tracking-wide">
+                Username
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <User className="h-4 w-4 text-gray-400" />
+                </div>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Enter username"
+                  required
+                  className="block w-full pl-10 pr-3 py-3 border-0 border-b-2 border-gray-200 bg-transparent placeholder-gray-400 focus:outline-none focus:border-black focus:ring-0 transition-colors duration-200 text-sm"
+                />
               </div>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter username"
-                required
-                className="block w-full pl-10 pr-3 py-3 border-0 border-b-2 border-gray-200 bg-transparent placeholder-gray-400 focus:outline-none focus:border-black focus:ring-0 transition-colors duration-200 text-sm"
-              />
             </div>
-          </div>
 
-          {/* Password Field */}
-          <div className="space-y-2">
-            <label className="block text-xs font-medium text-black uppercase tracking-wide">
-              Password
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-4 w-4 text-gray-400" />
+            {/* Password Field */}
+            <div className="space-y-2">
+              <label className="block text-xs font-medium text-black uppercase tracking-wide">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-4 w-4 text-gray-400" />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  required
+                  className="block w-full pl-10 pr-10 py-3 border-0 border-b-2 border-gray-200 bg-transparent placeholder-gray-400 focus:outline-none focus:border-black focus:ring-0 transition-colors duration-200 text-sm"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4 text-gray-400 hover:text-black transition-colors" />
+                  ) : (
+                    <Eye className="h-4 w-4 text-gray-400 hover:text-black transition-colors" />
+                  )}
+                </button>
               </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                required
-                className="block w-full pl-10 pr-10 py-3 border-0 border-b-2 border-gray-200 bg-transparent placeholder-gray-400 focus:outline-none focus:border-black focus:ring-0 transition-colors duration-200 text-sm"
-              />
+            </div>
+
+            {/* Submit Button */}
+            <div className="pt-4">
               <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-black text-white py-3 px-4 text-sm font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[0.98] active:scale-95"
               >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4 text-gray-400 hover:text-black transition-colors" />
+                {isLoading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <LoaderCircle className="h-4 w-4 animate-spin" />
+                    <span>Signing in...</span>
+                  </div>
                 ) : (
-                  <Eye className="h-4 w-4 text-gray-400 hover:text-black transition-colors" />
+                  "Sign in"
                 )}
               </button>
             </div>
-          </div>
+          </form>
 
-          {/* Submit Button */}
-          <div className="pt-4">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-black text-white py-3 px-4 text-sm font-medium hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[0.98] active:scale-95"
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <LoaderCircle className="h-4 w-4 animate-spin" />
-                  <span>Signing in...</span>
-                </div>
-              ) : (
-                "Sign in"
-              )}
-            </button>
+          {/* Footer */}
+          <div className="text-center mt-6">
+            <div className="h-px bg-gray-200 w-full mb-4"></div>
+            <p className="text-xs text-gray-400">
+              Secure login powered by your credentials
+            </p>
           </div>
-        </form>
-
-        {/* Footer */}
-        <div className="text-center">
-          <div className="h-px bg-gray-200 w-full mb-4"></div>
-          <p className="text-xs text-gray-400">
-            Secure login powered by your credentials
-          </p>
         </div>
       </div>
     </div>
