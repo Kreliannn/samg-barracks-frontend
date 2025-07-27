@@ -1,5 +1,5 @@
 "use client";
-
+import UnauthorizedPage from '@/components/ui/unauthorizedPage';
 import { CashierSideBar } from "@/components/ui/cashierSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { getOrdersInterface } from "@/app/types/orders.type";

@@ -57,7 +57,7 @@ interface AppSidebarProps {
 }
 
 export function CashierSideBar({ className }: AppSidebarProps) {
-  const { user } = useUserStore()
+  const { user , clearUser} = useUserStore()
   const [isOpen, setIsOpen] = useState(false)
 
   
@@ -149,7 +149,7 @@ export function CashierSideBar({ className }: AppSidebarProps) {
           <SidebarMenu>
             {accountItems.map((item) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild   onClick={() => clearUser()} > 
                   <Link href={item.url} onClick={() => setIsOpen(false)}>
                     <item.icon />
                     <span>{item.title}</span>

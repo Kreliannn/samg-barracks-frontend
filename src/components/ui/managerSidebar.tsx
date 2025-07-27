@@ -79,7 +79,7 @@ interface AppSidebarProps {
 }
 
 export function ManagerSideBar({ className }: AppSidebarProps) {
-  const { user } = useUserStore()
+  const { user, clearUser } = useUserStore()
     
   return (
     <Sidebar className={className}>
@@ -133,10 +133,10 @@ export function ManagerSideBar({ className }: AppSidebarProps) {
         <SidebarMenu>
           {accountItems.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild className="text-stone-100">
+              <SidebarMenuButton asChild className="text-stone-100" onClick={() => clearUser()}>
                 <Link href={item.url}>
                   <item.icon />
-                  <span>{item.title}</span>
+                  <span >{item.title}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

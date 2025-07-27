@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 import axiosInstance from '@/app/utils/axios';
 import { useQuery } from '@tanstack/react-query';
 import useUserStore from '@/app/store/user.store';
-
+import UnauthorizedPage from '@/components/ui/unauthorizedPage';
 
 
 export default function Page() {
