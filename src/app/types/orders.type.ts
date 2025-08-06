@@ -1,6 +1,7 @@
 import { menuInterface , menuIngredientsInterface} from "./menu.type";
 
 export interface orderInterface  {
+    item_id : string,
     _id : string,
     name : string,
     type : string,

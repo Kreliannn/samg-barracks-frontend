@@ -4,15 +4,24 @@ import { CashierSideBar } from "@/components/ui/cashierSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { getOrdersInterface } from "@/app/types/orders.type";
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/app/utils/axios";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 import { RefillButton } from "./components/refillButton";
 import { print2ndReceipt, print3rdReceipt } from "@/app/utils/receiptConsole";
 import { PaymentButton } from "./components/paymentButton";
+import { RotateCw } from 'lucide-react';
+import { confirmAlert } from '@/app/utils/alert';
+import { orderInterface } from '@/app/types/orders.type';
+import { successAlert, errorAlert } from '@/app/utils/alert';
+import useUserStore from '@/app/store/user.store';
+
+
 
 export default function Home() {
+
+    const { user } = useUserStore()
     const [orders, setOrders] = useState<getOrdersInterface[]>([]);
 
     const { data } = useQuery({
@@ -25,6 +34,23 @@ export default function Home() {
     }, [data]);
 
 
+    const mutation = useMutation({
+        mutationFn: (data: { branch : string,  order_id : string,  item_id : string,}) => axiosInstance.patch("/order/refund", data),
+        onSuccess: (response) => {
+          successAlert("success")
+          setOrders(response.data)
+        },
+        onError: (err) => {
+          errorAlert("error")
+        },
+      })
+
+    const refundHandler = (item : orderInterface, table : string, order_id : string) => {
+        if(!user) return
+        confirmAlert(`you want to refund ${item.qty}x ${item.name} from ${table}`, "refund", () => {
+            mutation.mutate({branch : user.branch, order_id : order_id, item_id : item.item_id})
+        })
+    }
       
 
     return (
@@ -40,7 +66,7 @@ export default function Home() {
                                     {/* Header */}
                                     <div className="bg-gradient-to-r from-green-900 to-emerald-900  text-white p-4 flex items-center justify-between">
                                         <h2 className="text-xl font-bold">{order.table}</h2>
-                                        <RefillButton table={order.table}/>
+                                        <RefillButton table={order.table}  orders={order.orders}/>
                                     </div>
 
                                     
@@ -57,6 +83,21 @@ export default function Home() {
                                             <span className="text-sm font-medium text-gray-600">Grand Total:</span>
                                             <span className="text-lg font-bold text-green-600">
                                                 ₱{order.grandTotal.toFixed(2)}
+                                            </span>
+                                        </div>
+
+
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-sm font-medium text-gray-600">refund hindi pa tapos  </span>
+                                            <span className="text-lg font-bold text-red-600">
+                                                ₱{-100000}
+                                            </span>
+                                        </div>
+
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-sm font-medium text-gray-600">Discount Total:</span>
+                                            <span className="text-lg font-bold text-red-600">
+                                                ₱{order.totalDiscount.toFixed(2)}
                                             </span>
                                         </div>
                                         
@@ -84,31 +125,41 @@ export default function Home() {
                                             {order.orders.map((item, itemIndex) => {
                                                 const discountedTotal = item.total - (item.discount || 0);
                                                 return (
-                                                    <div key={itemIndex} className="bg-stone-50 shadow p-3 rounded-md text-sm">
-                                                        <div className="flex justify-between items-start mb-1">
-                                                            <span className="font-medium text-gray-800 flex-1">
-                                                                {item.name}
-                                                            </span>
-                                                            <span className="text-gray-600 ml-2">
-                                                                x{item.qty}
-                                                            </span>
+                                                    <div key={itemIndex} className='flex bg-stone-100 rounded-md shadow'>
+
+                                                        <div  className="  p-3  text-sm w-[90%] ">
+                                                            <div className="flex justify-between items-start mb-1">
+                                                                <span className="font-medium text-gray-800 flex-1">
+                                                                    {item.name}
+                                                                </span>
+                                                                <span className="text-gray-600 ml-2">
+                                                                    x{item.qty}
+                                                                </span>
+                                                            </div>
+                                                            
+                                                            <div className="flex justify-between items-center text-xs text-gray-600">
+                                                                <span>
+                                                                    {item.discountType && item.discount > 0 ? (
+                                                                        <span className="text-red-600">
+                                                                            {item.discountType}: -₱{item.discount.toFixed(2)}
+                                                                        </span>
+                                                                    ) : (
+                                                                        <span>No discount</span>
+                                                                    )}
+                                                                </span>
+                                                                <span className="font-semibold text-gray-800">
+                                                                    ₱{discountedTotal.toFixed(2)}
+                                                                </span>
+                                                                
+                                                            </div>
                                                         </div>
-                                                        
-                                                        <div className="flex justify-between items-center text-xs text-gray-600">
-                                                            <span>
-                                                                {item.discountType && item.discount > 0 ? (
-                                                                    <span className="text-red-600">
-                                                                        {item.discountType}: -₱{item.discount.toFixed(2)}
-                                                                    </span>
-                                                                ) : (
-                                                                    <span>No discount</span>
-                                                                )}
-                                                            </span>
-                                                            <span className="font-semibold text-gray-800">
-                                                                ₱{discountedTotal.toFixed(2)}
-                                                            </span>
+
+                                                        <div className='w-[10%] flex justify-center items-center'>
+                                                            <RotateCw className='text-stone-600 hover:text-red-500' onClick={() =>refundHandler(item, order.table, order._id)}/>
                                                         </div>
+
                                                     </div>
+                                                    
                                                 );
                                             })}
                                         </div>

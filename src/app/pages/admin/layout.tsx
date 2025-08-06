@@ -1,4 +1,5 @@
 // app/pages/manager/layout.tsx
+"use client"
 import Link from "next/link";
 import { AdminSideBar } from "@/components/ui/adminSidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";

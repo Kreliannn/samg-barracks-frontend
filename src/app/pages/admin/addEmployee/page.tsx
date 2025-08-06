@@ -14,6 +14,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getAccountInterface, AccountInterface } from "@/app/types/employee.type";
 import { AxiosResponse } from "axios";
 import { errorAlert, successAlert } from "@/app/utils/alert";
+import { Trash } from "lucide-react";
+import { confirmAlert } from "@/app/utils/alert";
 
 export default function Home() {
 
@@ -51,6 +53,18 @@ export default function Home() {
     }
   });
 
+
+  const mutationDelete = useMutation({
+    mutationFn: async (id : string) => axiosInstance.delete("/account/" + id),
+    onSuccess: (response) => {
+      setEmployee(response.data)
+      successAlert("Employee deleted successfully!")
+    },
+    onError : (err : { response : { data : string }}) => {
+        errorAlert(err.response.data)      
+    }
+  });
+
   const handleSubmit = () => {
     if (!role || !user?.branch || !username || !password || !fullname) {
       errorAlert("empty");
@@ -65,6 +79,12 @@ export default function Home() {
     };
     mutation.mutate(account);
   };
+
+  const removeEmployee = (id  :string) => {
+    confirmAlert("you want to delete this account?", "delete", () => {
+      mutationDelete.mutate(id)
+    })
+  }
 
  
   return (
@@ -129,6 +149,7 @@ export default function Home() {
               <TableHead className="text-left">Username</TableHead>
               <TableHead className="text-left">Role</TableHead>
               <TableHead className="text-left">Branch</TableHead>
+              <TableHead className="text-left">Remove</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -138,6 +159,9 @@ export default function Home() {
                 <TableCell>{emp.username}</TableCell>
                 <TableCell className="capitalize">{emp.role}</TableCell>
                 <TableCell>{emp.branch}</TableCell>
+                <TableCell>
+                    <Button variant={"destructive"} size={"sm"} onClick={() => removeEmployee(emp._id)}> <Trash /> </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

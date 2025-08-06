@@ -17,6 +17,7 @@ import { getMenuInterface } from "@/app/types/menu.type";
 import { Plus, Minus } from "lucide-react";
 import { orderInterface } from "@/app/types/orders.type";
 import useOrderStore from "@/app/store/cart.store";
+import { generateId } from "@/app/utils/customFunction";
 
 
 export function AddCart({ menu }: { menu: getMenuInterface }) {
@@ -35,7 +36,7 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
   // PIN configuration - Change this value to update the required PIN
   const DISCOUNT_PIN = "1234"; // Change this PIN as needed
 
-  const {addOrder} = useOrderStore()
+  const { orders,addOrder, updateOrder} = useOrderStore()
 
   useEffect(() => {
     menu.variants.forEach((item, index) => {
@@ -44,9 +45,11 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
   }, [variant])
 
   const addCartHandler = () => {
+
         const discountTemp = (discount != "none") ? 20 : 0
 
         const order : orderInterface = {
+            item_id : generateId(),
              _id : menu._id,
             name : menu.name,
             type : menu.type,

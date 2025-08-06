@@ -22,8 +22,10 @@ import { getMenuInterface, menuIngredientsInterface } from "@/app/types/menu.typ
 import { getIngredientsInterface, ingredientsInterface } from "@/app/types/ingredient.type"
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { errorAlert, successAlert } from "@/app/utils/alert";
+import { checkIfHasUnli } from "@/app/utils/customFunction"
+import { orderInterface } from "@/app/types/orders.type"
 
-export function RefillButton({ table } : { table : string}) {
+export function RefillButton({ table, orders } : { table : string, orders : orderInterface[]}) {
  
   const [open, setOpen] = useState(false)
 
@@ -105,7 +107,7 @@ export function RefillButton({ table } : { table : string}) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger onClick={() => setOpen(true)} asChild>
-            <Button variant="outline" className="text-black">Refill</Button>
+            <Button variant="outline" className="text-black" hidden={checkIfHasUnli(orders)}>Refill</Button>
       </SheetTrigger>
   
       <SheetContent className="sm:max-w-md">
@@ -190,7 +192,7 @@ export function RefillButton({ table } : { table : string}) {
             disabled={mutation.isPending}
             className="w-full"
           >
-            {mutation.isPending ? "Saving..." : "Save Menu"}
+            {mutation.isPending ? "loading..." : "Submit"}
           </Button>
         </SheetFooter>
       </SheetContent>

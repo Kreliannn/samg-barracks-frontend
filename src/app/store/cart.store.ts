@@ -5,6 +5,7 @@ interface OrderStore {
   orders: orderInterface[];
   addOrder: (order: orderInterface) => void;
   removeOrder: (index: number) => void;
+  updateOrder: (index: number, updatedOrder : orderInterface ) => void;
   clearOrders: () => void;
 }
 
@@ -20,6 +21,14 @@ const useOrderStore = create<OrderStore>((set) => ({
     set((state) => ({
       orders: state.orders.filter((_, i) => i !== index),
     })),
+
+  updateOrder: (index, updatedOrder) =>
+      set((state) => ({
+        orders: state.orders.map((order, i) =>
+          i === index ? updatedOrder : order
+        ),
+      })),
+    
 
   clearOrders: () => set({ orders: [] }),
 }));
