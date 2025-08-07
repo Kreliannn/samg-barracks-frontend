@@ -24,6 +24,7 @@ import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/app/utils/axios";
 import useActiveTableStore from "@/app/store/activeTable.store";
 
+
 const money = [20, 50, 100, 200, 500, 1000]
 
 export function PaymentButton({ order, setOrders }: { order: getOrdersInterface, setOrders :  React.Dispatch<React.SetStateAction<getOrdersInterface[]>> }) {
@@ -31,10 +32,12 @@ export function PaymentButton({ order, setOrders }: { order: getOrdersInterface,
 
     const [payment, setPayment] = useState(0);
 
+    const [paymentMethod, setPaymentMethod] = useState("cash")
+
     const {removeTable} = useActiveTableStore()
     
   const mutation = useMutation({
-    mutationFn: (data: { id : string }) =>
+    mutationFn: (data: { id : string , paymentMethod : string}) =>
       axiosInstance.put("/order", data),
     onSuccess: (response) => {
       successAlert("success")
@@ -50,7 +53,7 @@ export function PaymentButton({ order, setOrders }: { order: getOrdersInterface,
     const completeOrder = () => {
         if(payment < order.grandTotal) return errorAlert("too low")
         removeTable(order.table)
-        mutation.mutate({ id : order._id })
+        mutation.mutate({ id : order._id , paymentMethod})
     }
 
     const addMoney = (amount : number) => {
@@ -91,8 +94,28 @@ export function PaymentButton({ order, setOrders }: { order: getOrdersInterface,
                 ))}
             </div>
 
-            <h1 className="mb-2"> Customer Cash:  </h1>
-            <Input type="number" className="mb-4 p-5 text-2xl font-bold  text-green-500"  value={payment} onChange={(e) => setPayment(Number(e.target.value))} /> 
+            <div className="flex gap-2 w-full mb-2 mt-5">
+              <h1 className="w-[30%]"> Payment Method: </h1>
+              <h1 className="w-[70%]"> Customer Payment: </h1>
+            </div>
+            
+            <div className="flex gap-2 w-full">
+              <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                <SelectTrigger className="border rounded bg-white text-sm w-[30%] p-5 ">
+                  <SelectValue placeholder="payment method" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem  value={"cash"}> Cash </SelectItem>
+                    <SelectItem  value={"debitCard"}> Debit Card </SelectItem>
+                    <SelectItem  value={"gcash"}> Gcash </SelectItem>
+                    <SelectItem  value={"payMaya"}> Pay Maya </SelectItem>
+                    <SelectItem  value={"grabPayment"}> Grab Payment </SelectItem>
+                    <SelectItem  value={"chequePayment"}> Cheque Payment </SelectItem>
+                </SelectContent>
+              </Select>
+              <Input type="number" className="mb-4 p-5 text-2xl font-bold  text-green-500 w-[70%]"  value={payment} onChange={(e) => setPayment(Number(e.target.value))} /> 
+            </div>
+           
             <Button className="w-full " size={"lg"} onClick={completeOrder}> Pay </Button>
         </div>
 

@@ -31,6 +31,8 @@ export function PlaceOrder({ orderInfo } : { orderInfo : orderInformation}) {
   const [open, setOpen] = useState(false);
   const [orderType, setOrderType] = useState("dine in")
 
+
+
   const { table, setTable } = useTableStore()
 
 
@@ -76,7 +78,8 @@ export function PlaceOrder({ orderInfo } : { orderInfo : orderInformation}) {
         branch : user.branch ,
         date : formattedDate.toString(),
         time : time,
-        status : "active"
+        status : "active",
+        paymentMethod : "pending"
     }
     addTable(table)
     setTable("")
