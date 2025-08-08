@@ -20,11 +20,10 @@ export default function Page() {
 
 
   const [dashboardData, setDashboardData] = useState({
-    totalIngredients: 0,
-    totalMenus: 0,
     salesToday: 0,
     pendingRequests:0,
-    toShipRequests: 0
+    toShipRequests: 0,
+    discountToday : 0
   })
 
 
@@ -40,15 +39,9 @@ export default function Page() {
 
   const metrics = [
     {
-      title: "Total Ingredients",
-      value: dashboardData.totalIngredients,
-      icon: Package,
-      color: "text-white"
-    },
-    {
-      title: "Total Menus",
-      value: dashboardData.totalMenus,
-      icon: Menu,
+      title: "Today Discount Order",
+      value: "not complete",
+      icon: DollarSign,
       color: "text-white"
     },
     {
@@ -79,7 +72,7 @@ export default function Page() {
           <p className="text-gray-600 mt-2">Overview of your restaurant operations</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6">
           {metrics.map((metric, index) => {
             const IconComponent = metric.icon;
             return (

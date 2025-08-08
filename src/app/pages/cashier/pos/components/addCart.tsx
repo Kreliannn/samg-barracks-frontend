@@ -27,14 +27,8 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
   const [variant, setVariant] = useState("regular");
   const [index, setIndex] = useState(0);
 
-  // OTP related states
-  const [otpOpen, setOtpOpen] = useState(false);
-  const [otpValue, setOtpValue] = useState("");
-  const [pendingDiscount, setPendingDiscount] = useState("");
-  const [otpError, setOtpError] = useState("");
 
-  // PIN configuration - Change this value to update the required PIN
-  const DISCOUNT_PIN = "1234"; // Change this PIN as needed
+
 
   const { orders,addOrder, updateOrder} = useOrderStore()
 
@@ -81,42 +75,6 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
     setQuantity(value > 0 ? value : 1);
   };
 
-  // Handle discount selection - trigger OTP if discount is selected
-  const handleDiscountChange = (value: string) => {
-    if (value === "none") {
-      setDiscount(value);
-    } else {
-      // Show OTP dialog for discount verification
-      setPendingDiscount(value);
-      setOtpOpen(true);
-      setOtpValue("");
-      setOtpError("");
-    }
-  };
-
-  // Handle OTP verification
-  const handleOtpVerification = () => {
-    if (otpValue === DISCOUNT_PIN) {
-      // PIN is correct, apply the discount
-      setDiscount(pendingDiscount);
-      setOtpOpen(false);
-      setOtpError("");
-      setOtpValue("");
-      setPendingDiscount("");
-    } else {
-      // PIN is incorrect
-      setOtpError("Incorrect PIN. Please try again.");
-      setOtpValue("");
-    }
-  };
-
-  // Handle OTP dialog close
-  const handleOtpClose = () => {
-    setOtpOpen(false);
-    setOtpValue("");
-    setOtpError("");
-    setPendingDiscount("");
-  };
 
   return (
     <>
@@ -175,7 +133,7 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
                   <label htmlFor="menu-type" className="text-sm font-medium text-gray-700">
                     Discount
                   </label>
-                  <Select value={discount} onValueChange={handleDiscountChange}>
+                  <Select value={discount} onValueChange={setDiscount}>
                       <SelectTrigger className="border px-3 py-2 rounded bg-white text-sm w-full">
                         <SelectValue placeholder="Select Discount" />
                       </SelectTrigger>
@@ -228,51 +186,7 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
         </DialogContent>
       </Dialog>
 
-      {/* OTP Verification Dialog */}
-      <Dialog open={otpOpen} onOpenChange={handleOtpClose}>
-        <DialogContent className="sm:max-w-[400px]">
-          <DialogHeader>
-            <DialogTitle>Discount Verification</DialogTitle>
-            <DialogDescription>
-              Please enter the PIN to apply {pendingDiscount === "senior" ? "Senior" : "PWD"} discount.
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="flex flex-col items-center space-y-4 py-4">
-            <InputOTP
-              maxLength={4}
-              value={otpValue}
-              onChange={(value) => {
-                setOtpValue(value);
-                setOtpError("");
-              }}
-            >
-              <InputOTPGroup>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-                <InputOTPSlot index={3} />
-              </InputOTPGroup>
-            </InputOTP>
-            
-            {otpError && (
-              <p className="text-sm text-red-500">{otpError}</p>
-            )}
-          </div>
-
-          <DialogFooter className="flex gap-2">
-            <Button variant="outline" onClick={handleOtpClose}>
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleOtpVerification}
-              disabled={otpValue.length !== 4}
-            >
-              Verify
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+     
     </>
   );
 }
