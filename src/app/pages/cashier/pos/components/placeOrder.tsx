@@ -116,9 +116,9 @@ export function PlaceOrder({ orderInfo } : { orderInfo : orderInformation}) {
             <DialogTitle>Order Details</DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-4 mb-6">
+          <div className="space-y-4 mb-6 ">
             {/* Order Type Select */}
-            <div className="space-y-2">
+            <div className="space-y-2 " >
               <label className="text-sm font-medium">Order Type</label>
               <Select defaultValue="dine_in" value={orderType} onValueChange={setOrderType}>
                 <SelectTrigger className="w-full">

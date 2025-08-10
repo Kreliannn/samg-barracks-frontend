@@ -16,11 +16,13 @@ import { confirmAlert } from '@/app/utils/alert';
 import { orderInterface } from '@/app/types/orders.type';
 import { successAlert, errorAlert } from '@/app/utils/alert';
 import useUserStore from '@/app/store/user.store';
-
+import useActiveTableStore from '@/app/store/activeTable.store';
 
 
 export default function Home() {
 
+    const {removeTable} = useActiveTableStore()
+    
     const { user } = useUserStore()
     const [orders, setOrders] = useState<getOrdersInterface[]>([]);
 
@@ -38,7 +40,10 @@ export default function Home() {
         mutationFn: (data: { branch : string,  order_id : string,  item_id : string,}) => axiosInstance.patch("/order/refund", data),
         onSuccess: (response) => {
           successAlert("success")
-          setOrders(response.data)
+          setOrders(response.data.orders)
+          if(response.data.table != "none"){
+            removeTable(response.data.table)
+          }
         },
         onError: (err) => {
           errorAlert("error")
@@ -86,13 +91,22 @@ export default function Home() {
                                             </span>
                                         </div>
 
-
                                         <div className="flex justify-between items-center">
-                                            <span className="text-sm font-medium text-gray-600">refund hindi pa tapos  </span>
-                                            <span className="text-lg font-bold text-red-600">
-                                                ₱{-100000}
+                                            <span className="text-sm font-medium text-gray-600">Service Fee:</span>
+                                            <span className="text-lg font-bold text-gray-600 ">
+                                                ₱{order.serviceFee.toFixed(2)}
                                             </span>
                                         </div>
+
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-sm font-medium text-gray-600">Total Vat:</span>
+                                            <span className="text-lg font-bold text-gray-600 ">
+                                                ₱{order.vat.toFixed(2)}
+                                            </span>
+                                        </div>
+
+
+                              
 
                                         <div className="flex justify-between items-center">
                                             <span className="text-sm font-medium text-gray-600">Discount Total:</span>
@@ -123,7 +137,7 @@ export default function Home() {
                                         </h3>
                                         <div className="space-y-2 h-48 overflow-y-auto">
                                             {order.orders.map((item, itemIndex) => {
-                                                const discountedTotal = item.total - (item.discount || 0);
+                           
                                                 return (
                                                     <div key={itemIndex} className='flex bg-stone-100 rounded-md shadow'>
 
@@ -148,7 +162,7 @@ export default function Home() {
                                                                     )}
                                                                 </span>
                                                                 <span className="font-semibold text-gray-800">
-                                                                    ₱{discountedTotal.toFixed(2)}
+                                                                    ₱{item.total.toFixed(2)}
                                                                 </span>
                                                                 
                                                             </div>

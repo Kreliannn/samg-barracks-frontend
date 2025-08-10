@@ -5,10 +5,14 @@ import { ShoppingCart, Package, X } from "lucide-react";
 import useOrderStore from "@/app/store/cart.store";
 import { PlaceOrder } from "./placeOrder";
 import { orderInformation } from "@/app/types/orders.type";
+import { getTotalWithVat, getTotaldiscount , getTotalVat} from "@/app/utils/customFunction";
+
+
+
 
 export function Cart({ table } : { table : string}) {
   const { orders: cartItems , removeOrder} = useOrderStore();
-  
+  /*
   const vatRate = 0.12;
 
   // 1. Compute total VAT-exclusive subtotal (before discount)
@@ -39,10 +43,14 @@ export function Cart({ table } : { table : string}) {
   
   // 6. For display, you can still show:
   const totalWithVat = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+  */
 
-
-  
-  
+  const totalWithVat = getTotalWithVat(cartItems)
+  const subTotal = getTotalWithVat(cartItems)
+  const totalDiscount = getTotaldiscount(cartItems)
+  const vat = getTotalVat(cartItems)
+  const serviceFee = subTotal * 0.10
+  const discountedTotal = (totalWithVat - totalDiscount) + serviceFee
 
   const orderInfo : orderInformation = {
     totalWithVat,
@@ -99,7 +107,7 @@ export function Cart({ table } : { table : string}) {
                   {/* Discount Info */}
                   {item.discount > 0 && (
                     <p className="text-xs text-green-600">
-                      {item.discount}% discount applied
+                      {20}% discount applied
                     </p>
                   )}
                 </div>
@@ -134,13 +142,8 @@ export function Cart({ table } : { table : string}) {
           <div className="space-y-2">
 
             <div className="flex justify-between text-sm">
-              <span>total (VAT included):</span>
-              <span>₱{totalWithVat.toFixed(2)}</span>
-            </div>
-
-            <div className="flex justify-between text-sm">
-              <span>Service Fee (10%):</span>
-              <span>₱{serviceFee.toFixed(2)}</span>
+              <span>Sub total :</span>
+              <span>₱{subTotal.toFixed(2)}</span>
             </div>
 
             {totalDiscount > 0 && (
@@ -150,7 +153,11 @@ export function Cart({ table } : { table : string}) {
               </div>
             )}
 
-           
+            <div className="flex justify-between text-sm">
+              <span>Service Fee (10%):</span>
+              <span>₱{serviceFee.toFixed(2)}</span>
+            </div>
+
         
             <div className="border-t pt-2">
               <div className="flex justify-between font-bold text-lg">

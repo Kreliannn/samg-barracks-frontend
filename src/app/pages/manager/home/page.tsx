@@ -17,8 +17,6 @@ import useUserStore from '@/app/store/user.store';
 
 export default function Page() {
 
-
-
   const [dashboardData, setDashboardData] = useState({
     salesToday: 0,
     pendingRequests:0,

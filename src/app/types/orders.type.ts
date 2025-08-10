@@ -13,6 +13,7 @@ export interface orderInterface  {
     qty : number,
     total : number,
     branch : string,
+    vat : number
 }
 
 export interface ordersInterface {

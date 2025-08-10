@@ -27,9 +27,6 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
   const [variant, setVariant] = useState("regular");
   const [index, setIndex] = useState(0);
 
-
-
-
   const { orders,addOrder, updateOrder} = useOrderStore()
 
   useEffect(() => {
@@ -38,9 +35,24 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
     })
   }, [variant])
 
+
+  useEffect(() => {
+    if(discount != "none") setQuantity(1)
+  }, [discount])
+
   const addCartHandler = () => {
 
-        const discountTemp = (discount != "none") ? 20 : 0
+        let discountAmmount = 0 
+        let vat = menu.variants[index].price * 0.12
+        let itemPrice = menu.variants[index].price
+        
+        if(discount != "none"){
+          const itemWithoutVat = itemPrice - vat
+          discountAmmount = (itemWithoutVat * 0.20) + vat
+          console.log(discountAmmount)
+          itemPrice = itemWithoutVat - discountAmmount
+          vat = 0
+        }
 
         const order : orderInterface = {
             item_id : generateId(),
@@ -52,9 +64,10 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
             ingredients : menu.variants[index].ingredients,
             price :  menu.variants[index].price,
             qty : quantity,
-            discount : discountTemp,
+            discount : discountAmmount,
             discountType : discount,
-            total : menu.variants[index].price * quantity
+            total : itemPrice * quantity,
+            vat : vat
         }
         addOrder(order)
         setOpen(false)
@@ -156,12 +169,14 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
                     size="sm"
                     onClick={decrementQuantity}
                     className="w-1/6 h-8 p-0 bg-red-500 text-white hover:bg-red-600 hover:text-white"
+                    disabled={discount != "none"}
                   >
                       <Minus />
                   </Button>
                   <Input
                     type="number"
                     value={quantity}
+                    disabled={discount != "none"}
                     onChange={handleQuantityChange}
                     min={1}
                     className="w-4/6 text-center"
@@ -171,6 +186,7 @@ export function AddCart({ menu }: { menu: getMenuInterface }) {
                     size="sm"
                     onClick={incrementQuantity}
                     className="w-1/6 h-8 p-0 bg-green-500 text-white hover:bg-green-600 hover:text-white"
+                    disabled={discount != "none"}
                   >
                     <Plus />
                   </Button>
