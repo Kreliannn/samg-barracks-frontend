@@ -40,7 +40,7 @@ export default function Page() {
   const metrics = [
     {
       title: "Today Discount Order",
-      value: "not complete",
+      value: dashboardData.discountToday,
       icon: DollarSign,
       color: "text-white"
     },
