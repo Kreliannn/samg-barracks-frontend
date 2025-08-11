@@ -41,6 +41,7 @@ export function PaymentButton({ order, setOrders }: { order: getOrdersInterface,
       axiosInstance.put("/order", data),
     onSuccess: (response) => {
       successAlert("success")
+      setPaymentMethod("cash")
       setOrders(response.data)
       setPayment(0)
       setOpen(false)

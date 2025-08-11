@@ -9,6 +9,7 @@ import {
   import { ordersInterface, getOrdersInterface } from "@/app/types/orders.type";
   import { useQuery } from "@tanstack/react-query";
   import axiosInstance from "@/app/utils/axios";
+  import { Button } from "@/components/ui/button";
   
 
 export default function Home() {
@@ -23,6 +24,32 @@ export default function Home() {
     useEffect(() => {
         if(data?.data) setOrders(data?.data.reverse());
     }, [data]);
+
+
+    const printXreading = () => {
+      const sales = {
+        cash : 0,
+        debitCard : 0,
+        gcash : 0,
+        payMaya : 0,
+        grabPayment : 0,
+        chequePayment : 0,
+        totalSales : 0
+      }
+      orders.forEach((order) => {
+        switch(order.paymentMethod){
+          case "cash": sales.cash += order.grandTotal; break;
+          case "debitCard": sales.debitCard += order.grandTotal; break;
+          case "gcash": sales.gcash += order.grandTotal; break;
+          case "payMaya": sales.payMaya += order.grandTotal; break;
+          case "grabPayment": sales.grabPayment += order.grandTotal; break;
+          case "chequePayment": sales.chequePayment += order.grandTotal; break;
+        }
+        sales.totalSales += order.grandTotal
+      })
+
+      console.log(sales)
+    }
 
 
 
@@ -40,9 +67,14 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-stone-200 bg-white">
-            <h1 className="text-xl font-semibold text-stone-900">Transaction History</h1>
-            <p className="text-sm text-stone-600 mt-1">View detailed records of all transactions</p>
+          <div className="px-6 py-4 border-b border-stone-200 bg-white flex ">
+            <div className="w-[80%]">
+              <h1 className="text-xl font-semibold text-stone-900">Transaction History</h1>
+              <p className="text-sm text-stone-600 mt-1">View detailed records of all transactions</p>
+            </div>
+            <div className="w-[20%] flex justify-center items-center">
+              <Button onClick={printXreading}> X Reading </Button>
+            </div>
           </div>
 
           {/* Table Header */}
@@ -51,7 +83,7 @@ export default function Home() {
             <div>Time</div>
             <div>Table</div>
             <div>Cashier</div>
-            <div>Items</div>
+            <div>Payment </div>
             <div>Type</div>
             <div>Total</div>
             <div></div>
@@ -78,7 +110,7 @@ export default function Home() {
                   </div>
                   <div className="text-left">
                     <span className="">
-                      {transaction.orders.length} Orders
+                      {transaction.paymentMethod}
                     </span>
                   </div>
                   <div className="text-left">
