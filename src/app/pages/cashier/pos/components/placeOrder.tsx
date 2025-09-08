@@ -113,28 +113,21 @@ export function PlaceOrder({ orderInfo } : { orderInfo : orderInformation}) {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Order Details</DialogTitle>
+            <DialogTitle>Place Order</DialogTitle>
           </DialogHeader>
-
+    
           <div className="space-y-4 mb-6 ">
-            {/* Order Type Select */}
-            <div className="space-y-2 " >
-              <label className="text-sm font-medium">Order Type</label>
-              <Select defaultValue="dine_in" value={orderType} onValueChange={setOrderType}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select order type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="dine in">Dine In</SelectItem>
-                  <SelectItem value="take out">Take Out</SelectItem>
-                  <SelectItem value="grab">Grab</SelectItem>
-                </SelectContent>
-              </Select>
+         
+
+            <div className="grid  grid-cols-3 gap-5   ">
+              <Button variant={(orderType == "dine in") ? "default" : "outline"} onClick={() => setOrderType("dine in")} className="w-full"> Dine In </Button>
+              <Button variant={(orderType == "take out") ? "default" : "outline" } onClick={() => setOrderType("take out")} className="w-full"> Take Out </Button>
+              <Button variant={(orderType == "grab") ? "default" : "outline" } onClick={() => setOrderType("grab")} className="w-full"> Grab </Button>
             </div>
 
           
           
-            <Button onClick={handlePlaceOrder} className="w-full">Place Order</Button>
+            <Button onClick={handlePlaceOrder} className="w-full bg-green-500 hover:bg-green-600 shadow">Place Order</Button>
           </div>
         </DialogContent>
       </Dialog>

@@ -90,7 +90,7 @@ export default function Home() {
   return (
     <div className="flex flex-col md:flex-row gap-6 w-full">
       {/* Employee Form */}
-      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-1/2 space-y-5">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-1/2 space-y-5 m-5">
         <div className="mb-4">
           <h1 className="text-2xl font-semibold text-emerald-800 dark:text-stone-100">Add New Employee</h1>
           <p className="text-sm text-stone-500">Fill in the details to add a new staff member.</p>
@@ -139,7 +139,7 @@ export default function Home() {
       </div>
   
       {/* Employee List Table */}
-      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-1/2">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-1/2  m-5">
         <h2 className="text-xl font-semibold mb-4 text-emerald-800 dark:text-stone-100">Employee List</h2>
   
         <Table>

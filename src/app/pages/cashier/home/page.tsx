@@ -54,7 +54,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="h-dvh w-full bg-gray-50 p-6">
+    <div className="h-dvh w-full bg-gray-50 p-6 overflow-auto">
       <div className="max-w-7xl mx-auto mt-10">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-green-800">Dashboard</h1>

@@ -94,7 +94,7 @@ export default function Page() {
   };
 
   return (
-    <div className="h-dvh w-full grid grid-cols-2 p-5 gap-6">
+    <div className="h-dvh w-full grid grid-cols-1 md:grid-cols-2  p-5 gap-6 overflow-auto">
       {/* Pending/To Ship Orders Column */}
       <div className="bg-white rounded-lg shadow-sm border">
         <div className="p-4 border-b">

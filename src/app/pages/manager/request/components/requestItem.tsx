@@ -129,7 +129,7 @@ export default function RequestItem({setRequest} : {setRequest : React.Dispatch<
         </div>
 
         {/* Grid of ingredients */}
-        <div className="h-[85%] grid grid-cols-5 gap-4 overflow-y-auto p-4">
+        <div className="h-[85%] grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-y-auto p-4">
             {ingredients.map((ingredient) => (
             <div
                 key={ingredient._id}
@@ -155,8 +155,8 @@ export default function RequestItem({setRequest} : {setRequest : React.Dispatch<
 
                 {/* Info */}
                 <div className="h-[40%] px-2 py-1 flex flex-col justify-center">
-                <h1 className="text-sm font-medium text-gray-700 truncate">Name: {ingredient.name}</h1>
-                <h1 className="text-sm text-gray-500">Price: ₱{ingredient.price}</h1>
+                <h1 className="text-sm font-medium text-gray-700 truncate">{ingredient.name}</h1>
+                <h1 className="text-sm text-gray-500"> ₱{ingredient.price}</h1>
                 </div>
             </div>
             ))}

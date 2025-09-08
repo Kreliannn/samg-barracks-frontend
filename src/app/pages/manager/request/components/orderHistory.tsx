@@ -46,50 +46,100 @@ export default function OrderRequest({request} : {request : getRequestInterface[
     };
 
 
-  return (
-    <div className="h-full w-full bg-stone-100">
-        <div className="h-[15%] flex justify-center items-center border-b border-gray-300">
-            <h1 className="text-2xl font-bold text-gray-800"> Order Request History </h1>
-        </div>
-
-        <div className="h-[85%] overflow-auto max-h-[300px]">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Request By</TableHead>
-                        <TableHead>Orders</TableHead>
-                        <TableHead>Total</TableHead>
-                        <TableHead className="text-center">Status</TableHead>
-                        <TableHead className="text-center"> View orders </TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
+    return (
+        <div className="h-full w-full bg-stone-100 rounded shadow">
+            <div className="h-[15%] flex justify-center items-center border-b border-gray-300 p-4">
+                <h1 className="text-xl md:text-2xl font-bold text-gray-800 text-center">Order Request History</h1>
+            </div>
+    
+            <div className="h-[85%] overflow-auto max-h-[300px] md:max-h-none">
+                {/* Desktop Table View */}
+                <div className="hidden md:block">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Date</TableHead>
+                                <TableHead>Request By</TableHead>
+                                <TableHead>Orders</TableHead>
+                                <TableHead>Total</TableHead>
+                                <TableHead className="text-center">Status</TableHead>
+                                <TableHead className="text-center">View orders</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {filteredData.map((item) => (
+                                <TableRow key={item._id}>
+                                    <TableCell className="font-medium">{item.date}</TableCell>
+                                    <TableCell className="font-medium">{item.manager}</TableCell>
+                                    <TableCell className="font-medium">{item.request.length}</TableCell>
+                                    <TableCell className="font-medium text-green-500">₱{item.total}</TableCell>
+                                    <TableCell className="font-medium text-center">
+                                        <CustomBadge status={item.status} />
+                                    </TableCell>
+                                    <TableCell className="font-medium text-center">
+                                        <Button 
+                                            className="bg-yellow-500 hover:bg-yellow-600" 
+                                            onClick={() => handleViewOrder(item)}
+                                        >
+                                            <Eye className="w-4 h-4 mr-1" /> View
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+    
+                {/* Mobile Card View */}
+                <div className="md:hidden p-4 space-y-4">
                     {filteredData.map((item) => (
-                        <TableRow key={item._id}>
-                            <TableCell className="font-medium">{item.date}</TableCell>
-                            <TableCell className="font-medium">{item.manager}</TableCell>
-                            <TableCell className="font-medium">{item.request.length}</TableCell>
-                            <TableCell className="font-medium text-green-500">₱{item.total}</TableCell>
-                            <TableCell className="font-medium text-center">  <CustomBadge status={item.status} />   </TableCell>
-                            <TableCell className="font-medium text-center">
-                                <Button  className="bg-yellow-500 hover:bg-yellow-600" onClick={() => handleViewOrder(item)}>  <Eye /> View </Button>
-                            </TableCell>
-                        </TableRow>
+                        <div key={item._id} className="bg-white rounded-lg shadow-sm border p-4 space-y-3">
+                            <div className="flex justify-between items-start">
+                                <div className="space-y-1">
+                                    <p className="text-sm text-gray-500">Date</p>
+                                    <p className="font-medium text-gray-900">{item.date}</p>
+                                </div>
+                                <CustomBadge status={item.status} />
+                            </div>
+                            
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <p className="text-sm text-gray-500">Request By</p>
+                                    <p className="font-medium text-gray-900">{item.manager}</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-sm text-gray-500">Orders</p>
+                                    <p className="font-medium text-gray-900">{item.request.length}</p>
+                                </div>
+                            </div>
+    
+                            <div className="space-y-1">
+                                <p className="text-sm text-gray-500">Total</p>
+                                <p className="font-medium text-green-500 text-lg">₱{item.total}</p>
+                            </div>
+    
+                            <div className="pt-2">
+                                <Button 
+                                    className="w-full bg-yellow-500 hover:bg-yellow-600 text-sm" 
+                                    onClick={() => handleViewOrder(item)}
+                                    size="sm"
+                                >
+                                    <Eye className="w-4 h-4 mr-1" /> View Orders
+                                </Button>
+                            </div>
+                        </div>
                     ))}
-                </TableBody>
-            </Table>
-        </div>
-
-
-
-        {showModal && selectedRequest && (
-                <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-stone-50 shadow-lg rounded-lg max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
-                        <div className="p-6">
+                </div>
+            </div>
+    
+            {/* Responsive Modal for viewing order details */}
+            {showModal && selectedRequest && (
+                <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-stone-50 shadow-lg rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                        <div className="p-4 md:p-6">
                             {/* Modal Header */}
-                            <div className="flex justify-between items-start mb-6">
-                                <h3 className="text-xl font-semibold text-gray-900">Order Details</h3>
+                            <div className="flex justify-between items-start mb-4 md:mb-6">
+                                <h3 className="text-lg md:text-xl font-semibold text-gray-900">Order Details</h3>
                                 <button
                                     onClick={() => setShowModal(false)}
                                     className="text-gray-400 hover:text-gray-600 p-1"
@@ -97,10 +147,10 @@ export default function OrderRequest({request} : {request : getRequestInterface[
                                     <X className="w-6 h-6" />
                                 </button>
                             </div>
-
-                            {/* Order Information */}
-                            <div className="grid grid-cols-2 gap-6 mb-6">
-                                <div className="space-y-4">
+    
+                            {/* Order Information - Responsive Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
+                                <div className="space-y-3 md:space-y-4">
                                     <div className="flex items-center space-x-2">
                                         <Building2 className="w-5 h-5 text-gray-500" />
                                         <div>
@@ -116,7 +166,7 @@ export default function OrderRequest({request} : {request : getRequestInterface[
                                         </div>
                                     </div>
                                 </div>
-                                <div className="space-y-4">
+                                <div className="space-y-3 md:space-y-4">
                                     <div className="flex items-center space-x-2">
                                         <Calendar className="w-5 h-5 text-gray-500" />
                                         <div>
@@ -125,7 +175,6 @@ export default function OrderRequest({request} : {request : getRequestInterface[
                                         </div>
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        
                                         <div>
                                             <span className="text-sm text-gray-500">Total:</span>
                                             <p className="font-medium text-green-600">₱{selectedRequest.total}</p>
@@ -133,19 +182,21 @@ export default function OrderRequest({request} : {request : getRequestInterface[
                                     </div>
                                 </div>
                             </div>
-
+    
                             {/* Status */}
-                            <div className="mb-6">
+                            <div className="mb-4 md:mb-6">
                                 <span className="text-sm text-gray-500">Status:</span>
                                 <div className="mt-1">
                                     <CustomBadge status={selectedRequest.status} />
                                 </div>
                             </div>
-
-                            {/* Items Table */}
+    
+                            {/* Items Table/Cards */}
                             <div>
                                 <h4 className="font-medium text-gray-900 mb-4">Ordered Items:</h4>
-                                <div className="border rounded-lg overflow-hidden">
+                                
+                                {/* Desktop Table View */}
+                                <div className="hidden md:block border rounded-lg overflow-hidden">
                                     <Table>
                                         <TableHeader>
                                             <TableRow>
@@ -169,6 +220,26 @@ export default function OrderRequest({request} : {request : getRequestInterface[
                                         </TableBody>
                                     </Table>
                                 </div>
+    
+                                {/* Mobile Card View */}
+                                <div className="md:hidden space-y-3">
+                                    {selectedRequest.request.map((item) => (
+                                        <div key={item._id} className="bg-gray-50 rounded-lg p-3 border">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <h5 className="font-medium text-gray-900 flex-1">{item.name}</h5>
+                                                <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full ml-2">
+                                                    x{item.quantity}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between text-sm">
+                                                <span className="text-gray-500">Price: ₱{item.price.toFixed(2)}</span>
+                                                <span className="font-medium text-gray-900">
+                                                    Subtotal: ₱{(item.quantity * item.price).toFixed(2)}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                                 
                                 {/* Total */}
                                 <div className="mt-4 flex justify-end">
@@ -182,10 +253,8 @@ export default function OrderRequest({request} : {request : getRequestInterface[
                     </div>
                 </div>
             )}
-
-     
-    </div>
-  );
+        </div>
+    );
 }
 
 
