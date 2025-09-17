@@ -29,7 +29,7 @@ const QRScanner: React.FC<QRScannerProps> = ({ onScan }) => {
         if(!response.data) return errorAlert("Not Found")
         setShowModal(true)
         setRequest(response.data)
-        successAlert("data found")
+        
     },
     onError : () => {
         errorAlert("Invalid Qr Code")

@@ -23,7 +23,7 @@ const mockUpData = () => {
   const chartData = [];
 
   for (let day = 1; day <= 30; day++) {
-    const date = new Date(2025, 6, day); // July = 6 (0-based)
+    const date = new Date(2025, 9, day); // July = 6 (0-based)
     const formattedDate = date.toISOString().split("T")[0];
     const sales = parseFloat((Math.random() * 3000).toFixed(2)); // random sales up to 3000
 
@@ -53,7 +53,7 @@ export function MonthlyChart({ data } : { data : {date : string, sales : number}
         <CardContent className="h-[calc(100%-4rem)] p-2">
         <ChartContainer config={chartConfig} className="h-full w-full">
             <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data} margin={{ left: 12, right: 12 }}>
+            <AreaChart data={mockUpData()} margin={{ left: 12, right: 12 }}>
                 <CartesianGrid vertical={false} />
                 <XAxis
                 dataKey="date"

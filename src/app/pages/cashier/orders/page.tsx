@@ -35,7 +35,7 @@ export default function Home() {
         if(data?.data) setOrders(data?.data);
     }, [data]);
 
-
+    /*
     const mutation = useMutation({
         mutationFn: (data: { branch : string,  order_id : string,  item_id : string,}) => axiosInstance.patch("/order/refund", data),
         onSuccess: (response) => {
@@ -48,14 +48,14 @@ export default function Home() {
         onError: (err) => {
           errorAlert("error")
         },
-      })
+      }) 
 
     const refundHandler = (item : orderInterface, table : string, order_id : string) => {
         if(!user) return
         confirmAlert(`you want to refund ${item.qty}x ${item.name} from ${table}`, "refund", () => {
             mutation.mutate({branch : user.branch, order_id : order_id, item_id : item.item_id})
         })
-    }
+    } */
       
 
     return (
@@ -141,7 +141,7 @@ export default function Home() {
                                                 return (
                                                     <div key={itemIndex} className='flex bg-stone-100 rounded-md shadow'>
 
-                                                        <div  className="  p-3  text-sm w-[90%] ">
+                                                        <div  className="  p-3  text-sm w-[100%] ">
                                                             <div className="flex justify-between items-start mb-1">
                                                                 <span className="font-medium text-gray-800 flex-1">
                                                                     {item.name}
@@ -167,11 +167,8 @@ export default function Home() {
                                                                 
                                                             </div>
                                                         </div>
-
-                                                        <div className='w-[10%] flex justify-center items-center'>
-                                                            <RotateCw className='text-stone-600 hover:text-red-500' onClick={() =>refundHandler(item, order.table, order._id)}/>
-                                                        </div>
-
+                                                                
+                                                        
                                                     </div>
                                                     
                                                 );

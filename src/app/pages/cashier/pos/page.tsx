@@ -123,7 +123,7 @@ export default function POS() {
                 </div>
           </div>
           
-          <div className="h-full w-2/6 bg-stone-200">
+           <div className="h-full w-2/6 bg-stone-200">
             <Cart table={table} />
           </div>
 

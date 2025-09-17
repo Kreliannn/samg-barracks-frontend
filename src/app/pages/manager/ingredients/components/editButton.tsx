@@ -45,7 +45,7 @@ export function EditButton({ setIngredients, ingredient, index } : {index : numb
   
 
   const handleSubmit = async () => {
-    if ( !productName || !initialStocks || !price) return errorAlert("empty field")
+    if ( !productName || !price) return errorAlert("empty field")
 
     mutation.mutate({id : ingredient._id, name: productName, stocks: initialStocks, price : price})
 

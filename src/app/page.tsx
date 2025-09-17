@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { backendUrl } from "./utils/url";
 import { useRouter } from "next/navigation";
 import useUserStore from "./store/user.store";
 import axiosInstance from "./utils/axios";
