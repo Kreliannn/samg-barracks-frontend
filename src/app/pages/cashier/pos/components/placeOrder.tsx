@@ -86,23 +86,7 @@ export function PlaceOrder({ orderInfo } : { orderInfo : orderInformation}) {
     mutation.mutate(orderData)
   }
 
-  const printOrder = () => {
-    const printContent = document.getElementById('print-order-content');
-    const originalContent = document.body.innerHTML;
-    
-    if (printContent) {
-      document.body.innerHTML = printContent.innerHTML;
-      window.print();
-      document.body.innerHTML = originalContent;
-      window.location.reload(); // Reload to restore React event handlers
-    }
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-  }
-
+  
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>

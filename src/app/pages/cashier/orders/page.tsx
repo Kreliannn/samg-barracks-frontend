@@ -17,6 +17,7 @@ import { orderInterface } from '@/app/types/orders.type';
 import { successAlert, errorAlert } from '@/app/utils/alert';
 import useUserStore from '@/app/store/user.store';
 import useActiveTableStore from '@/app/store/activeTable.store';
+import { MoveItButton } from './components/moveTable';
 
 
 export default function Home() {
@@ -71,6 +72,7 @@ export default function Home() {
                                     {/* Header */}
                                     <div className="bg-gradient-to-r from-green-900 to-emerald-900  text-white p-4 flex items-center justify-between">
                                         <h2 className="text-xl font-bold">{order.table}</h2>
+                                        <MoveItButton setOrders={setOrders} order={order}/>
                                         <RefillButton table={order.table}  orders={order.orders}/>
                                     </div>
 

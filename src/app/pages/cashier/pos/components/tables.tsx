@@ -35,6 +35,26 @@ export default function TableView() {
       <CashierSideBar />
       <div className=" w-full h-full bg-stone-50 overflow-hidden flex justify-center items-center">
         <div className="w-full h-dvh bg-stone-100 relative">
+        <div
+              style={{
+                position: "absolute",
+                right: 20,
+                top: 20,
+                width: 100,
+                height: 100,
+                
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 8,
+                boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                fontWeight: 600,
+              }}
+              className={` bg-white`}
+              onClick={() => setTable("No Table")}
+            >
+              No Table
+            </div>
           {positions.map((item) => (
             <div
               key={item.table}
