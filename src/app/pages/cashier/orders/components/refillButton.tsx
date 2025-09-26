@@ -24,6 +24,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 import { errorAlert, successAlert } from "@/app/utils/alert";
 import { checkIfHasUnli } from "@/app/utils/customFunction"
 import { orderInterface } from "@/app/types/orders.type"
+import { RefreshCw  } from "lucide-react"
 
 export function RefillButton({ table, orders } : { table : string, orders : orderInterface[]}) {
  
@@ -107,7 +108,7 @@ export function RefillButton({ table, orders } : { table : string, orders : orde
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger onClick={() => setOpen(true)} asChild>
-            <Button variant="outline" className="text-black" hidden={checkIfHasUnli(orders)}>Refill</Button>
+            <Button variant="outline" className="text-black" hidden={checkIfHasUnli(orders)}><RefreshCw /></Button>
       </SheetTrigger>
   
       <SheetContent className="sm:max-w-md">

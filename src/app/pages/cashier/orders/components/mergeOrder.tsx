@@ -16,27 +16,31 @@ import axiosInstance from "@/app/utils/axios";
 import { useEffect, useState } from "react";
 import useTableStore from "@/app/store/table.store";
 import useActiveTableStore from "@/app/store/activeTable.store";
-import {  Merge} from "lucide-react";
+import { MergeIcon} from "lucide-react";
 import { errorAlert } from "@/app/utils/alert";
 
 
 
+export function MergeButton({ id, orders , setOrders }: { id: string,  orders: getOrdersInterface[], setOrders :  React.Dispatch<React.SetStateAction<getOrdersInterface[]>> }) {
 
-
-export function MoveItButton({ id, orders , setOrders }: { id: string,  orders: getOrdersInterface[], setOrders :  React.Dispatch<React.SetStateAction<getOrdersInterface[]>> }) {
     const [open, setOpen] = useState(false);
 
+    const {removeTable} = useActiveTableStore()
+
     const [selectedOrders, setSelectedOrders] = useState<string[]>([])
+    const [selectedTable, setSelectedTable] = useState<string[]>([])
 
     const filteredOrders = orders.filter((order) => order._id != id)
 
 
     const mutation = useMutation({
-        mutationFn: (data: { id : string, table : string, branch : string}) =>
-          axiosInstance.put("/order/move", data),
+        mutationFn: (data: { id : string, ids : string[]}) =>
+          axiosInstance.put("/order/merge", data),
         onSuccess: (response) => {
           setOrders(response.data)
           setOpen(false)
+          setSelectedOrders([])
+          setSelectedTable([])
         },
         onError: (err) => {
           errorAlert("error")
@@ -44,9 +48,24 @@ export function MoveItButton({ id, orders , setOrders }: { id: string,  orders: 
       })
 
 
-    const moveOrderHandler = (table : string) => {
-        
+    const selectHandler = (e : React.ChangeEvent<HTMLInputElement>, id : string, table : string) => {
+        if(e.target.checked){
+            setSelectedOrders((prev) => [...prev, id])
+            setSelectedTable((prev) => [...prev, table])
+        } else {
+            setSelectedOrders((prev) => prev.filter((i) => i != id))
+            setSelectedTable((prev) => prev.filter((i) => i != table))
+        }
     }
+
+    const mergeHandler = () => {
+        if(selectedOrders.length == 0) return errorAlert("no selected tables")
+        selectedTable.forEach((table) => {
+            removeTable(table)
+        })
+        mutation.mutate({id : id, ids: selectedOrders})
+    }
+
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -55,7 +74,7 @@ export function MoveItButton({ id, orders , setOrders }: { id: string,  orders: 
             size={"icon"}
             variant={'outline'}
         >
-           <Merge className="text-green-800" />
+           <MergeIcon className="text-green-800" />
         </Button>
       </DialogTrigger>
       <DialogHeader>
@@ -66,10 +85,30 @@ export function MoveItButton({ id, orders , setOrders }: { id: string,  orders: 
         </DialogHeader>
       <DialogContent className="sm:max-w-[500px]">
 
-        <div className="w-full h-300px overflow-auto">
+        <div className="w-full h-[400px] overflow-auto mt-5 p-2">
             {filteredOrders.map((order) => (
-                <div key={order._id}>
+                <div key={order._id} className="bg-stone-50 shadow w-full mb-3 p-2">
+
+                    <div className="flex justify-between mt-2">
+                         <strong> table: {order.table} </strong>
+                         <input type="checkbox"  onChange={(e) => selectHandler(e, order._id, order.table)} />
+                    </div>
                     
+                    <div className="flex justify-between text-gray-800">
+                        <h1> orders </h1>
+                        <h1> quantity </h1>
+                    </div>
+                         
+                    <ul>
+                        {order.orders.map((item) => (
+                            <li key={item.item_id} className="flex justify-between text-gray-400">
+                                <h1>{item.name}</h1>
+                                <h1>{item.qty}x</h1>
+                            </li>
+                        ))}
+                    </ul>
+                    <br />
+                    <strong className="text-green-500 mt-5"> bill :{order.grandTotal} </strong>
                 </div>
             ))}
         </div>
@@ -77,7 +116,7 @@ export function MoveItButton({ id, orders , setOrders }: { id: string,  orders: 
         
 
         <div className="w-full">
-            <Button className="w-full"> merge </Button>
+            <Button className="w-full" onClick={mergeHandler}> merge </Button>
         </div>
 
       </DialogContent>

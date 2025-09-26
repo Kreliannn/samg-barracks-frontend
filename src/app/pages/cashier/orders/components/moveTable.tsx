@@ -106,7 +106,7 @@ export function MoveItButton({ order, setOrders }: { order: getOrdersInterface, 
                 fontWeight: 600,
               }}
               className={` bg-white`}
-              onClick={() => setTable("No Table")}
+              onClick={() => moveOrderHandler("No Table")}
             >
               No Table
             </div>
