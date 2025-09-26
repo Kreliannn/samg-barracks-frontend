@@ -19,6 +19,7 @@ import useUserStore from '@/app/store/user.store';
 import useActiveTableStore from '@/app/store/activeTable.store';
 import { MoveItButton } from './components/moveTable';
 import { MergeButton } from './components/mergeOrder';
+import { SplitButton } from './components/splitOrder';
 
 export default function Home() {
 
@@ -76,6 +77,7 @@ export default function Home() {
                                         <div className='flex gap-1'>
                                             <MoveItButton setOrders={setOrders} order={order}/>
                                             <MergeButton setOrders={setOrders} orders={orders} id={order._id}/>
+                                            <SplitButton setOrders={setOrders}   order={order}/>
                                             <RefillButton table={order.table}  orders={order.orders}/>
                                         </div>
                                       
@@ -99,18 +101,20 @@ export default function Home() {
                                         </div>
 
                                         <div className="flex justify-between items-center">
+                                            <span className="text-sm font-medium text-gray-600">Sub Total:</span>
+                                            <span className="text-lg font-bold text-gray-600 ">
+                                                ₱{order.subTotal.toFixed(2)}
+                                            </span>
+                                        </div>
+
+                                        <div className="flex justify-between items-center">
                                             <span className="text-sm font-medium text-gray-600">Service Fee:</span>
                                             <span className="text-lg font-bold text-gray-600 ">
                                                 ₱{order.serviceFee.toFixed(2)}
                                             </span>
                                         </div>
 
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-sm font-medium text-gray-600">Total Vat:</span>
-                                            <span className="text-lg font-bold text-gray-600 ">
-                                                ₱{order.vat.toFixed(2)}
-                                            </span>
-                                        </div>
+                                     
 
 
                               
@@ -119,6 +123,14 @@ export default function Home() {
                                             <span className="text-sm font-medium text-gray-600">Discount Total:</span>
                                             <span className="text-lg font-bold text-red-600">
                                                 ₱{order.totalDiscount.toFixed(2)}
+                                            </span>
+                                        </div>
+
+
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-sm font-medium text-gray-600">Total Vat:</span>
+                                            <span className="text-lg font-bold text-gray-600 ">
+                                                ₱{order.vat.toFixed(2)}
                                             </span>
                                         </div>
                                         
