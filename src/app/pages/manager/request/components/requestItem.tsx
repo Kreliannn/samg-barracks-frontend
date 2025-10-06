@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/app/utils/axios";
-import { getIngredientsInterface } from "@/app/types/ingredient.type";
+import { getIngredientsInterface, ingredientsInterface } from "@/app/types/ingredient.type";
 import { successAlert, errorAlert } from "@/app/utils/alert";
 import {
     Table,
@@ -19,6 +19,7 @@ import {
 import useUserStore from "@/app/store/user.store";
 import { confirmAlert } from "@/app/utils/alert";
 import { getRequestInterface } from "@/app/types/request.type";
+import { AlertTriangle, AlertCircle } from "lucide-react";
 
 interface SelectedIngredient {
   _id: string;
@@ -119,6 +120,13 @@ export default function RequestItem({setRequest} : {setRequest : React.Dispatch<
         })
     }
 
+
+    const getBranchStocks = (ingredient : ingredientsInterface) => {
+        const branchIngredient = ingredient.stocks.filter((item) => item.branch == user?.branch)
+        const stocks = branchIngredient[0].stock
+        return stocks
+    }
+
   return (
     <div className="h-full w-full flex flex-col gap-[1%]">
 
@@ -130,36 +138,71 @@ export default function RequestItem({setRequest} : {setRequest : React.Dispatch<
 
         {/* Grid of ingredients */}
         <div className="h-[85%] grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-y-auto p-4">
-            {ingredients.map((ingredient) => (
-            <div
-                key={ingredient._id}
-                className="h-32 bg-white rounded-xl shadow hover:shadow-md transition duration-200 flex flex-col overflow-hidden cursor-pointer"
-                onClick={() => handleIngredientClick(ingredient)}
-            >
-                {/* Image */}
-                <div className="h-[60%] bg-gray-100">
-                <img
-                    src={ingredient.img}
-                    alt={ingredient.name}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    target.nextElementSibling?.classList.remove('hidden');
-                    }}
-                />
-                <div className="hidden w-full h-full flex items-center justify-center text-sm text-gray-500 bg-gray-200">
-                    No Image
-                </div>
-                </div>
+            {ingredients.map((ingredient) => {
 
-                {/* Info */}
-                <div className="h-[40%] px-2 py-1 flex flex-col justify-center">
-                <h1 className="text-sm font-medium text-gray-700 truncate">{ingredient.name}</h1>
-                <h1 className="text-sm text-gray-500"> ₱{ingredient.price}</h1>
-                </div>
-            </div>
-            ))}
+                const stocks = getBranchStocks(ingredient)
+
+                return(
+                    <div
+                        key={ingredient._id}
+                        className={`h-32 bg-white rounded-xl shadow hover:shadow-md transition duration-200 flex flex-col overflow-hidden cursor-pointer relative `}
+                        onClick={() => handleIngredientClick(ingredient)}
+                    >
+
+                        {(stocks <= 50 && stocks > 20) && (                
+                            <div className="absolute top-1.5 right-1.5 rounded-full bg-yellow-200 shadow-sm group cursor-pointer w-5 h-5 flex items-center justify-center">
+                                <AlertTriangle className="text-yellow-500 w-3.5 h-3.5 group-hover:hidden transition" />
+
+                                <span className="hidden group-hover:inline text-yellow-600 text-xs font-semibold leading-none">
+                                    {stocks}
+                                </span>
+                            </div>
+                        )}
+
+                        {(stocks <= 20) && (                 
+                            <div className="absolute top-1.5 right-1.5 rounded-full bg-red-200 shadow-sm group cursor-pointer w-5 h-5 flex items-center justify-center">
+                                <AlertCircle className="text-red-500 w-3.5 h-3.5 group-hover:hidden transition" />
+
+                                <span className="hidden group-hover:inline text-red-600 text-xs font-semibold leading-none">
+                                    {stocks}
+                                </span>
+                            </div>
+                        )}
+
+
+        
+        
+
+
+        
+        
+                    
+        
+        
+                        <div className="h-[60%] bg-gray-100">
+                        <img
+                            src={ingredient.img}
+                            alt={ingredient.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                            target.nextElementSibling?.classList.remove('hidden');
+                            }}
+                        />
+                        <div className="hidden w-full h-full flex items-center justify-center text-sm text-gray-500 bg-gray-200">
+                            No Image
+                        </div>
+                        </div>
+        
+                        {/* Info */}
+                        <div className="h-[40%] px-2 py-1 flex flex-col justify-center">
+                        <h1 className="text-sm font-medium text-gray-700 truncate">{ingredient.name}</h1>
+                        <h1 className="text-sm text-gray-500"> ₱{ingredient.price}</h1>
+                        </div>
+                    </div>
+                    )
+            })}
         </div>
         </div>
 

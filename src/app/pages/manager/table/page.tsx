@@ -166,25 +166,34 @@ export default function RestoLayout() {
     }
   
     return (
-      <div className="w-full h-full relative" style={{ touchAction: "pan-y" }}>
+<div
+  className="w-full h-full relative bg-white"
+  style={{
+    backgroundImage: `
+      linear-gradient(to right, rgba(0,0,0,0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0,0,0,0.08) 1px, transparent 1px)
+    `,
+    backgroundSize: "100px 100px",
+    touchAction: "pan-y",
+  }}
+>
+  <div className="flex justify-end gap-2 p-5 absolute top-0 right-0 z-10">
+    <Button onClick={addTable}>Add Table</Button>
+    <Button onClick={saveChanges}>Save Changes</Button>
+  </div>
 
-        <div className="flex justify-end gap-2 p-5">
-          <Button onClick={addTable}>Add Table</Button>
-          <Button onClick={saveChanges}>save changes</Button>
-        </div>
+  <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+    {positions.map((item) => (
+      <DraggableTable
+        key={item.table}
+        id={item.table}
+        position={{ x: item.x, y: item.y }}
+        remove={removeTable}
+      />
+    ))}
+  </DndContext>
+</div>
 
-
-  
-        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-          {positions.map((item) => (
-            <DraggableTable
-              key={item.table}
-              id={item.table}
-              position={{ x: item.x, y: item.y }}
-              remove={removeTable}
-            />
-          ))}
-        </DndContext>
-      </div>
+    
     );
   }

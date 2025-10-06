@@ -11,6 +11,7 @@ import { AddButton } from "./components/addButton";
 import { EditButton } from "./components/editButton";
 import { AddVariant } from "./components/addVariants";
 
+
 export interface getIngredientsInterface {
     _id: string,
     name: string,

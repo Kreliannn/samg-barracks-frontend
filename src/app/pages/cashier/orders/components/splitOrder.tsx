@@ -11,11 +11,9 @@ import {
   DialogClose 
 } from "@/components/ui/dialog";
 import {  getOrdersInterface, orderInterface, ordersInterface} from "@/app/types/orders.type";
-import { useQuery , useMutation} from "@tanstack/react-query";
+import { useMutation} from "@tanstack/react-query";
 import axiosInstance from "@/app/utils/axios";
 import { useEffect, useState } from "react";
-import useTableStore from "@/app/store/table.store";
-import useActiveTableStore from "@/app/store/activeTable.store";
 import { SplitIcon} from "lucide-react";
 import { errorAlert, successAlert } from "@/app/utils/alert";
 import { getTotalVat, getTotaldiscount, getTotalWithVat } from "@/app/utils/customFunction";
@@ -43,6 +41,7 @@ export function SplitButton({  order , setOrders }: { order: getOrdersInterface,
           setOrders(response.data)
           setOpen(false)
           setSecondOrder([])
+          successAlert("split order")
         },
         onError: (err) => {
           errorAlert("error")
