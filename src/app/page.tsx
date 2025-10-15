@@ -23,6 +23,7 @@ export default function Home() {
       axiosInstance.post("/login", data),
     onSuccess: (res) => {
       const { fullname, role, branch, token } = res.data;
+      if(role == "cashier") return errorAlert("cashier account not allowed")
       localStorage.setItem("token", token);
       setUser({ fullname, role, branch });
       router.push(`/pages/${role}/home`);

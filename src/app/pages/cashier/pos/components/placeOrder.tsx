@@ -79,7 +79,8 @@ export function PlaceOrder({ orderInfo } : { orderInfo : orderInformation}) {
         date : formattedDate.toString(),
         time : time,
         status : "active",
-        paymentMethod : "pending"
+        paymentMethod : "pending",
+        orderNumber : 0
     }
     addTable(table)
     setTable("")

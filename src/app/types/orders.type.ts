@@ -30,7 +30,8 @@ export interface ordersInterface {
     time : string;
     status : string;
     serviceFee : number;
-    paymentMethod : string
+    paymentMethod : string;
+    orderNumber : number
   }
 
 
@@ -51,6 +52,7 @@ export interface getOrdersInterface {
   status : string;
   serviceFee : number;
   paymentMethod : string,
+  orderNumber : number
 }
 
 
