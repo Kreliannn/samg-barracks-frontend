@@ -106,6 +106,7 @@ export default function RequestItem({setRequest} : {setRequest : React.Dispatch<
 
     const handleSubmit = () => {
         if(!selectedIngredients || !user?.branch) return errorAlert("empty")
+        if(selectedIngredients.length == 0) return errorAlert("empty order")
         confirmAlert("are you sure you want to request?", "Request Order", () => {
             const formattedDate = new Date().toISOString().split('T')[0];
             const requestData = {

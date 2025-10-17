@@ -20,9 +20,7 @@ export const CardTempalte = ({ title, value } : {  title : string, value : numbe
             ₱{value.toLocaleString()}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              +12.5%
-            </Badge>
+           
           </CardAction>
         </CardHeader>
        

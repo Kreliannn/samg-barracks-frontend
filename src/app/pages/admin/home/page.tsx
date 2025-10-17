@@ -135,9 +135,13 @@ export default function Home() {
         <div className="col-span-3 h-64  rounded">
           <MonthlyChart data={analytics.last30days} />
         </div>
-        <div className="col-span-1 h-64  rounded">
+        <div className="col-span-1 h-64  rounded hidden md:block">
           <CategoryPieChart data={analytics.topCategory} />
         </div>
+      </div>
+
+      <div className="col-span-1  h-92  md:hidden rounded">
+          <CategoryPieChart data={analytics.topCategory} />
       </div>
 
       <div className="grid  md:grid-cols-4  grid-cols-1 gap-4">

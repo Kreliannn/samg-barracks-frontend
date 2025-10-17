@@ -7,8 +7,8 @@ import { useMutation } from "@tanstack/react-query";
 import { AccountInterface } from "@/app/types/employee.type";
 import axiosInstance from "@/app/utils/axios";
 import { useQuery } from "@tanstack/react-query";
-import { errorAlert, successAlert } from "@/app/utils/alert";
-
+import { errorAlert, successAlert , confirmAlert} from "@/app/utils/alert";
+import { X } from "lucide-react";
 
 
 export default function Home() {
@@ -28,7 +28,6 @@ export default function Home() {
       if(data?.data) setAllBranch(data?.data)
   }, [data])
 
-  console.log(allBranch)
 
   const mutation = useMutation({
     mutationFn: (data : AccountInterface) => axiosInstance.post("/branch", data),
@@ -40,9 +39,21 @@ export default function Home() {
       setUsername("");
       setPassword("");
     },
+    onError: (err : { response : { data : string}}) => {
+      errorAlert(err.response.data);
+    }
+  });
+
+
+  const mutationDelete = useMutation({
+    mutationFn: (branch : string) => axiosInstance.delete("/branch/" + branch),
+    onSuccess: (response) => {
+      successAlert("Branch Deleted successfully!");
+      setAllBranch(response.data)
+    },
     onError: (err) => {
       console.log(err);
-      errorAlert("Error creating branch");
+      errorAlert("Error deleting branch");
     }
   });
 
@@ -59,6 +70,13 @@ export default function Home() {
     };
     mutation.mutate(account);
   };
+
+
+  const deleteHandler = (branch : string) => {
+    confirmAlert(`delete ${branch} ?`, "delete", () => {
+      mutationDelete.mutate(branch)
+    })
+  }
 
   return (
     <div className="flex-1 p-6 bg-stone-50 min-h-screen"> 
@@ -172,8 +190,9 @@ export default function Home() {
               allBranch.map((branch) => (
                 <div
                   key={branch._id}
-                  className="bg-gradient-to-r from-green-700 to-green-800  hover:bg-green-800 text-white transition shadow-sm rounded-xl flex items-center justify-center h-28 text-base font-medium"
+                  className=" relative bg-gradient-to-r from-green-700 to-green-800  hover:bg-green-800 text-white transition shadow-sm rounded-xl flex items-center justify-center h-28 text-base font-medium"
                 >
+                  <X className={`absolute top-2 right-2 text-green-900 hover:text-red-900 ${branch.branch == "Main Branch" && "hidden"}`} onClick={() => deleteHandler( branch.branch)}/>
                   {branch.branch}
                 </div>
               ))

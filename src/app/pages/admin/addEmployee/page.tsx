@@ -14,7 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAccountInterface, AccountInterface } from "@/app/types/employee.type";
 import { AxiosResponse } from "axios";
 import { errorAlert, successAlert } from "@/app/utils/alert";
-import { Trash } from "lucide-react";
+import { EyeOff, Eye, Trash } from "lucide-react";
 import { confirmAlert } from "@/app/utils/alert";
 
 export default function Home() {
@@ -27,6 +27,7 @@ export default function Home() {
   const [role, setRole] = useState("");  
   const [employee, setEmployee] = useState<getAccountInterface[]>([])
 
+  const [showPassword, setShowPassword] = useState(false);
 
   const { data } = useQuery({
     queryKey: ["account"],
@@ -88,9 +89,9 @@ export default function Home() {
 
  
   return (
-    <div className="flex flex-col md:flex-row gap-6 w-full">
+    <div className="flex flex-col md:flex-row  w-full">
       {/* Employee Form */}
-      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-1/2 space-y-5 m-5">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-1/2 space-y-5 m-5 max-h-[350px]">
         <div className="mb-4">
           <h1 className="text-2xl font-semibold text-emerald-800 dark:text-stone-100">Add New Employee</h1>
           <p className="text-sm text-stone-500">Fill in the details to add a new staff member.</p>
@@ -111,24 +112,47 @@ export default function Home() {
           onChange={(e) => setUsername(e.target.value)}
           className="border border-stone-300 focus:ring-2 focus:ring-emerald-500 px-4 py-2 rounded-lg w-full text-sm outline-none"
         />
+
+        <div className="flex gap-2">
+          <div className="w-full relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border border-stone-300 focus:ring-2 focus:ring-emerald-500 px-4 py-2 rounded-lg w-full text-sm outline-none"
+            />
+
+            <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4 text-gray-400 hover:text-green-800  transition-colors" />
+                  ) : (
+                    <Eye className="h-4 w-4 text-gray-400 hover:text-green-800  transition-colors" />
+                  )}
+            </button>
+          </div>
+         
+
+          <Select value={role} onValueChange={setRole}>
+            <SelectTrigger className="border border-stone-300 px-4 py-2 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500">
+              <SelectValue placeholder="Select Role" />
+            </SelectTrigger>
+            <SelectContent>
+              {user?.branch == "Main Branch" && (<SelectItem value="admin">Admin</SelectItem>)}
+              <SelectItem value="cashier">Cashier</SelectItem>
+              <SelectItem value="manager">Manager</SelectItem>
+            </SelectContent>
+          </Select>
+
+        </div>
   
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="border border-stone-300 focus:ring-2 focus:ring-emerald-500 px-4 py-2 rounded-lg w-full text-sm outline-none"
-        />
+      
   
-        <Select value={role} onValueChange={setRole}>
-          <SelectTrigger className="border border-stone-300 px-4 py-2 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500">
-            <SelectValue placeholder="Select Role" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="cashier">Cashier</SelectItem>
-            <SelectItem value="manager">Manager</SelectItem>
-          </SelectContent>
-        </Select>
+   
   
         <Button
           onClick={handleSubmit}

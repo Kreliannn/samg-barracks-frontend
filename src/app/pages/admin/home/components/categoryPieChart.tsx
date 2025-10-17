@@ -98,7 +98,7 @@ export function CategoryPieChart({ data } : { data : {category : string, sold : 
     <Card className="h-full flex flex-col">
       <CardHeader className="items-center pb-">
         <CardTitle className="text-sm">Sales by Category</CardTitle>
-        <CardDescription className="text-xs">
+        <CardDescription className="text-xs md:hidden lg:flex">
           Total items sold: {totalSold}
         </CardDescription>
       </CardHeader>

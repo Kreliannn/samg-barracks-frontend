@@ -1,9 +1,10 @@
 import axios from "axios";
 
 const localhost = "http://localhost:5000"
+const live = "https://barracks-test-code.onrender.com"
 
 const axiosInstance = axios.create({
-  baseURL: "https://barracks-test-code.onrender.com",  
+  baseURL: live,  
 });
 
 axiosInstance.interceptors.request.use((config) => {
