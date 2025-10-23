@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// CHOICES
 const localhost = "http://localhost:5000"
 const live = "https://barracks-test-code.onrender.com"
 
