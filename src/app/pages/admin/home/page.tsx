@@ -2,7 +2,9 @@
 import { CardTempalte } from "./components/cardTemplate";
 import { CategoryPieChart } from "./components/categoryPieChart";
 import { MonthlyChart } from "./components/montlyGraph";
+import { WeeklyChart } from "./components/weeklyGraph";
 import { YearlyBarChart } from "./components/yearlyGraph";
+import { TodaySalesChart } from "./components/todaySalesChart";
 import MenuBarChart from "./components/menuChart";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
@@ -17,12 +19,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { errorAlert } from "@/app/utils/alert";
+import {Button} from "@/components/ui/button";
 
 interface dataType {
-  todaySales: number;
+  totalTransaction : number;
   totalSales: number;
-  thisMonthSales: number;
-  last30days: {
+  totalTax: number;
+  thisMonthSales: {
+    date: string;
+    sales: number;
+  }[];
+  thisWeekSales :{
+    date: string;
+    sales: number;
+  }[];
+  todaySales :{
     date: string;
     sales: number;
   }[];
@@ -45,6 +56,8 @@ export default function Home() {
   const [allBranch, setAllBranch] = useState<{ _id: string; branch: string }[]>(
     []
   );
+
+  const [type, setType] = useState<"month" | "week" | "today">("month");
 
   const { user } = useUserStore();
   const [selectedBranch, setSelectedBranch] = useState("");
@@ -69,7 +82,7 @@ export default function Home() {
   // Fetch analytics based on selectedBranch
   const { data, isFetching } = useQuery({
     queryKey: ["analytics", selectedBranch],
-    queryFn: () => axiosInstance.get("/order/sales/" + selectedBranch),
+    queryFn: () => axiosInstance.get(`/order/sales/${selectedBranch}/${type}`),
     enabled: !!selectedBranch, // Wait until selectedBranch is set
   });
 
@@ -81,7 +94,7 @@ export default function Home() {
 
 
   const mutation = useMutation({
-    mutationFn : () => axiosInstance.get("/order/sales/" + selectedBranch),
+    mutationFn : () => axiosInstance.get(`/order/sales/${selectedBranch}/${type}`),
     onSuccess : (response) => {
       setAnalytics(response.data)
     }, onError : () => errorAlert("error accour")
@@ -93,30 +106,44 @@ export default function Home() {
     mutation.mutate()
   }
 
+  const changeType = (value : "month" | "week" | "today") => {
+    setType(value)
+    mutation.mutate()
+  }
+
   if (!analytics || isFetching) return <LoadingState />;
 
   return (
     <div className="w-full h-dvh space-y-6 p-4 ">
 
-      {user?.branch == "Main Branch" && (
+      
         <div className="w-full h-10 items-center top-0 left-0 flex justify-between">
           <h1 className="md:text-2xl text-lg font-bold text-green-700">
             {selectedBranch} Dashboard
           </h1>
-          <Select value={selectedBranch} onValueChange={setSelectedBranch}>
-            <SelectTrigger className="border px-3 py-2 rounded text-sm z-99">
-              <SelectValue placeholder="Select Branch" />
-            </SelectTrigger>
-            <SelectContent>
-              {allBranch?.map((item, index) => (
-                <SelectItem key={index} value={item.branch}>
-                  {item.branch}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+
+          <div className="flex gap-2">
+            <Button variant="outline"  className={`${type === "month" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() => changeType("month")}>Month</Button>
+            <Button variant="outline"  className={`${type === "week" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() => changeType("week")}>Week</Button>
+            <Button variant="outline"  className={`${type === "today" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() => changeType("today")}>Today</Button>
+
+            {user?.branch == "Main Branch" && (
+              <Select value={selectedBranch} onValueChange={setSelectedBranch}>
+                <SelectTrigger className="border px-3 py-2 rounded text-sm z-99">
+                  <SelectValue placeholder="Select Branch" />
+                </SelectTrigger>
+                <SelectContent>
+                  {allBranch?.map((item, index) => (
+                    <SelectItem key={index} value={item.branch}>
+                      {item.branch}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          </div>
         </div>
-      )}
+      
      
 
       <div className="grid md:grid-cols-3  grid-cols-1 gap-4">
@@ -124,17 +151,28 @@ export default function Home() {
           <CardTempalte title={"Total Sales"} value={analytics.totalSales} />
         </div>
         <div className="h-32  rounded">
-          <CardTempalte title={"July Sales"} value={analytics.thisMonthSales} />
+          <CardTempalte title={"Total Transactions"} value={analytics.totalTransaction} />
         </div>
         <div className="h-32  rounded">
-          <CardTempalte title={"Today Sales"} value={analytics.todaySales} />
+          <CardTempalte title={"Total Vat"} value={analytics.totalTax} />
         </div>
       </div>
 
       <div className="grid   md:grid-cols-4  grid-cols-1 gap-4">
+        
         <div className="col-span-3 h-64  rounded">
-          <MonthlyChart data={analytics.last30days} />
+          {type === "month" && (
+            <MonthlyChart data={analytics.thisMonthSales} />
+          )}
+          {type === "week" && (
+            <WeeklyChart data={analytics.thisWeekSales} />
+          )}
+          {type === "today" && (
+            <TodaySalesChart data={analytics.todaySales} />
+          )}
         </div>
+
+
         <div className="col-span-1 h-64  rounded hidden md:block">
           <CategoryPieChart data={analytics.topCategory} />
         </div>

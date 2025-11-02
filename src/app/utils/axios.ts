@@ -5,7 +5,7 @@ const localhost = "http://localhost:5000"
 const live = "https://barracks-test-code.onrender.com"
 
 const axiosInstance = axios.create({
-  baseURL: live,  
+  baseURL: localhost,  
 });
 
 axiosInstance.interceptors.request.use((config) => {
