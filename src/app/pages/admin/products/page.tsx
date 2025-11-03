@@ -1,39 +1,77 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileBarChart2, Search , LoaderCircle} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Value } from "@radix-ui/react-select";
+import axiosInstance from "@/app/utils/axios";
+import { errorAlert } from "@/app/utils/alert";
+
+interface dataInterface {
+      name : string,
+      productId : string,
+      category : string,
+      sold : number,
+      sales : number,
+      discount : number
+}
 
 export default function Page() {
 
-   const [products, setProducts] = useState([ 
-      { name: "Wireless Mouse", category: "Electronics", itemSold: 120, discount: "10%",  price : 100 ,totalSales: "₱48,000" },
-      { name: "Gaming Keyboard", category: "Electronics", itemSold: 85, discount: "5%",  price : 100 ,totalSales: "₱42,500" },
-      { name: "Office Chair", category: "Furniture", itemSold: 40, discount: "15%",  price : 100 ,totalSales: "₱80,000" },
-      { name: "Water Bottle", category: "Accessories", itemSold: 200, discount: "0%",  price : 100 ,totalSales: "₱20,000" },
-      { name: "Bluetooth Speaker", category: "Electronics", itemSold: 60, discount: "8%",  price : 100 ,totalSales: "₱54,000" },
-     
-    ]);
+    const [products, setProducts] = useState<dataInterface[]>([]);
 
-   const [isLoading, setIsloading] = useState(false)
+    const [type, setType] = useState("overAll")
+    const [top, setTop] = useState("sold")
+
+    const { data } = useQuery({
+        queryKey: ["productReport", type],
+        queryFn: () => axiosInstance.get(`/menu/productReport/${type}`),
+    });
+
+    useEffect(() => {
+        if (data?.data && type != "custom"){
+            const fetchedData : dataInterface[] = data.data
+            setProducts(fetchedData.sort((a, b) => b.sold - a.sold));
+            setIsloading(false)
+        } 
+    }, [data]);
+
+   const mutation = useMutation({
+    mutationFn: async (customDate : {start : string, end  :string}) => axiosInstance.post("/menu/productReport/", {customDate}),
+    onSuccess: (response) => {
+      const fetchedData : dataInterface[]  = response.data
+      setProducts(type == "sold" ? fetchedData.sort((a, b) => b.sold - a.sold) : fetchedData.sort((a, b) => b.sales - a.sales) )
+      setIsloading(false)
+    },
+    onError : (err : { response : { data : string }}) => {
+        errorAlert(err.response.data)      
+    }
+  });
+
+
+   const [isLoading, setIsloading] = useState(true)
 
    const [customDate, setCustomDate] = useState<{start : string | null, end : string | null}>({
     start : null,
     end : null
    })
 
-   const [type, setType] = useState("overAll")
-   const [top, setTop] = useState("sold")
-
-   const fetchData = (value : string) => {
+    const fetchData = (value : string) => {
+        setIsloading(true)
         setType(value)
-   }
+   } 
 
    const fetchCustomDate = () => {
-        console.log(customDate)
+        if(!customDate.start || !customDate.end) return errorAlert("empty date")
+        if(customDate.start > customDate.end) return errorAlert("start is greater than end date")
+        setIsloading(true)
+        mutation.mutate({
+            start: customDate.start,
+            end: customDate.end,
+        } as { start: string; end: string });
    }
 
    const selectCustomDate = () => {
@@ -45,6 +83,10 @@ export default function Page() {
 
    const changeRanking = (value : string) => {
         setTop(value)
+        switch(value){
+            case "sold": setProducts((prev) => prev.sort((a, b) => b.sold - a.sold)); break;
+            case "sales": setProducts((prev) => prev.sort((a, b) => b.sales - a.sales)); break;
+        }
    }
 
 
@@ -128,7 +170,6 @@ export default function Page() {
                 <TableRow>
                     <TableHead className="font-semibold">Top</TableHead>
                     <TableHead className="font-semibold">Name</TableHead>
-                    <TableHead className="font-semibold">Price</TableHead>
                     <TableHead className="font-semibold">Category</TableHead>
                     <TableHead className="font-semibold">Item Sold</TableHead>
                     <TableHead className="font-semibold">Discount</TableHead>
@@ -140,11 +181,10 @@ export default function Page() {
                     <TableRow key={index} className="hover:bg-gray-100">
                     <TableCell className="font-bold text-stone-600">#{index + 1}</TableCell>
                     <TableCell>{product.name}</TableCell>
-                    <TableCell>₱{product.price}</TableCell>
                     <TableCell>{product.category}</TableCell>
-                    <TableCell>{product.itemSold}</TableCell>
-                    <TableCell>{product.discount}</TableCell>
-                    <TableCell>{product.totalSales}</TableCell>
+                    <TableCell>{product.sold}  </TableCell>
+                    <TableCell>₱{product.discount.toLocaleString()}</TableCell>
+                    <TableCell>₱{product.sales.toLocaleString()}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>
