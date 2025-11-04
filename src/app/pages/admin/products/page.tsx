@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { FileBarChart2, Search , LoaderCircle} from "lucide-react";
+import { FileBarChart2, Search , LoaderCircle, Download} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Value } from "@radix-ui/react-select";
 import axiosInstance from "@/app/utils/axios";
 import { errorAlert } from "@/app/utils/alert";
+import { getTodayHeader, getThisWeekHeader, getThisMonthHeader, convertYmdToMdy} from "@/app/utils/customFunction";
 
 interface dataInterface {
       name : string,
@@ -19,16 +20,21 @@ interface dataInterface {
       discount : number
 }
 
+
+
 export default function Page() {
 
     const [products, setProducts] = useState<dataInterface[]>([]);
 
+    const [reportType, setReportType] = useState("product")
     const [type, setType] = useState("overAll")
     const [top, setTop] = useState("sold")
 
+    const [header, setHeader] = useState("Over All")
+
     const { data } = useQuery({
-        queryKey: ["productReport", type],
-        queryFn: () => axiosInstance.get(`/menu/productReport/${type}`),
+        queryKey: ["productReport", type, reportType],
+        queryFn: () => axiosInstance.get(`/menu/productReport/${reportType}/${type}`),
     });
 
     useEffect(() => {
@@ -36,11 +42,12 @@ export default function Page() {
             const fetchedData : dataInterface[] = data.data
             setProducts(fetchedData.sort((a, b) => b.sold - a.sold));
             setIsloading(false)
+            changeDisplayHeader()
         } 
     }, [data]);
 
    const mutation = useMutation({
-    mutationFn: async (customDate : {start : string, end  :string}) => axiosInstance.post("/menu/productReport/", {customDate}),
+    mutationFn: async (customDate : {start : string, end  :string}) => axiosInstance.post("/menu/productReport/", {customDate, reportType}),
     onSuccess: (response) => {
       const fetchedData : dataInterface[]  = response.data
       setProducts(type == "sold" ? fetchedData.sort((a, b) => b.sold - a.sold) : fetchedData.sort((a, b) => b.sales - a.sales) )
@@ -60,6 +67,7 @@ export default function Page() {
    })
 
     const fetchData = (value : string) => {
+        if(type == value) return
         setIsloading(true)
         setType(value)
    } 
@@ -68,6 +76,7 @@ export default function Page() {
         if(!customDate.start || !customDate.end) return errorAlert("empty date")
         if(customDate.start > customDate.end) return errorAlert("start is greater than end date")
         setIsloading(true)
+        changeDisplayHeader()
         mutation.mutate({
             start: customDate.start,
             end: customDate.end,
@@ -77,9 +86,8 @@ export default function Page() {
    const selectCustomDate = () => {
         setType("custom")
         setProducts([])
+        setHeader("")
    }
-
-   
 
    const changeRanking = (value : string) => {
         setTop(value)
@@ -90,6 +98,29 @@ export default function Page() {
    }
 
 
+   const changeDisplayHeader = () => {
+        switch(type)
+        {
+            case "overAll": setHeader("Over All");  break;
+            case "today": setHeader(getTodayHeader());  break;
+            case "week": setHeader(getThisWeekHeader());  break;
+            case "month": setHeader(getThisMonthHeader());  break;
+            case "custom": setHeader(`from ${convertYmdToMdy(customDate.start)} to ${convertYmdToMdy(customDate.end)}`);  break;
+        }
+   }
+
+
+    const handleDownloadPDF = () => {
+        const buttons = document.querySelectorAll("button");
+        buttons.forEach(btn => (btn.style.display = "none"));
+
+        window.print(); 
+
+        setTimeout(() => {
+            buttons.forEach(btn => (btn.style.display = "inline-flex"));
+        }, 100); 
+    };
+
 
 
   return (
@@ -99,9 +130,9 @@ export default function Page() {
             <div className="flex gap-2 ">
                 <Button variant="outline"  className={`${type === "overAll" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() =>  fetchData("overAll")  }>OverAll</Button>
                 <Button variant="outline"  className={`${type === "today" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() =>  fetchData("today")  }>Today</Button>
-                <Button variant="outline"  className={`${type === "week" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() =>  fetchData("week")  }>This Week</Button>
-                <Button variant="outline"  className={`${type === "month" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() => fetchData("month") }>This Month</Button>
-                <Button variant="outline"  className={`${type === "custom" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() =>  selectCustomDate()  }>Custom Date</Button>
+                <Button variant="outline"  className={`${type === "week" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() =>  fetchData("week")  }>Week</Button>
+                <Button variant="outline"  className={`${type === "month" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() => fetchData("month") }>Month</Button>
+                <Button variant="outline"  className={`${type === "custom" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() =>  selectCustomDate()  }>Custom</Button>
             </div>
 
 
@@ -139,10 +170,9 @@ export default function Page() {
                 
             </div>
 
-
             <div className="flex gap-2 ">
-                <Button variant="outline"  className={`${top === "sold" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() => changeRanking("sold") }>Top Sold</Button>
-                <Button variant="outline"  className={`${top === "sales" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() =>  changeRanking("sales")  }>Top Sales</Button>
+                <Button variant="outline"  className={`${reportType === "product" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() => setReportType("product") }>Product</Button>
+                <Button variant="outline"  className={`${reportType === "category" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() =>  setReportType("category")  }>Category</Button>
             </div>
         </div>
 
@@ -150,10 +180,21 @@ export default function Page() {
 
       <Card className="shadow-md rounded-2xl h-[550px] overflow-auto">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-2xl font-semibold flex items-center gap-2">
-            <FileBarChart2 className="w-6 h-6 text-green-600" />
-            Product Report
+          <CardTitle className="text-2xl font-semibold  gap-2">
+            <div className="flex gap-2">
+                <FileBarChart2 className="w-6 h-6 text-green-600" />
+                Product Report
+            </div>
+            <h1 className="text-sm text-stone-600"> - {header} </h1>   
           </CardTitle>
+
+           
+           <div className="flex gap-2 ">
+                <Button variant="outline"  className={`${top === "sold" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() => changeRanking("sold") }>Top Sold</Button>
+                <Button variant="outline"  className={`${top === "sales" ? "bg-green-700 text-white hover:text-white hover:bg-green-600" : ""}`} onClick={() =>  changeRanking("sales")  }>Top Sales</Button>
+                <Button variant="outline" className="ms-5"  onClick={ handleDownloadPDF  }> <Download /> Download</Button>
+            </div>
+
         </CardHeader>
        <CardContent>
         <div className="overflow-x-auto">
@@ -169,7 +210,7 @@ export default function Page() {
                 <TableHeader>
                 <TableRow>
                     <TableHead className="font-semibold">Top</TableHead>
-                    <TableHead className="font-semibold">Name</TableHead>
+                    <TableHead className={`font-semibold ${reportType != "product" && "hidden"}`}>Name</TableHead>
                     <TableHead className="font-semibold">Category</TableHead>
                     <TableHead className="font-semibold">Item Sold</TableHead>
                     <TableHead className="font-semibold">Discount</TableHead>
@@ -180,7 +221,7 @@ export default function Page() {
                 {products.map((product, index) => (
                     <TableRow key={index} className="hover:bg-gray-100">
                     <TableCell className="font-bold text-stone-600">#{index + 1}</TableCell>
-                    <TableCell>{product.name}</TableCell>
+                    <TableCell className={`${reportType != "product" && "hidden"}`}>{product.name}</TableCell>
                     <TableCell>{product.category}</TableCell>
                     <TableCell>{product.sold}  </TableCell>
                     <TableCell>₱{product.discount.toLocaleString()}</TableCell>

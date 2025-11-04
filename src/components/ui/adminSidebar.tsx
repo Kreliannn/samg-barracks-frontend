@@ -39,11 +39,6 @@ const navigationItems = [
     url: "/pages/admin/products",
     icon: Building,
   },
-  {
-    title: "Products Category",
-    url: "/pages/admin/category",
-    icon: Building,
-  },
 ]
 
 const accountItems = [

@@ -44,4 +44,60 @@ export function generateId() {
         return Math.floor(Math.random() * 16).toString(16);
       })
     ).toLowerCase();
-  }
+}
+
+
+
+export function getTodayHeader() {
+  const today = new Date();
+  const options: Intl.DateTimeFormatOptions = { month: "short", day: "numeric", year: "numeric" };
+  const formatted = today.toLocaleDateString("en-US", options);
+  return `Today ${formatted}`;
+}
+
+
+export function getThisWeekHeader() {
+  const today = new Date();
+
+  // Find Monday (start of the week)
+  const dayOfWeek = today.getDay() === 0 ? 7 : today.getDay(); // treat Sunday as 7
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - (dayOfWeek - 1));
+
+  // Find Sunday (end of the week)
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+
+  const options: Intl.DateTimeFormatOptions = { month: "short", day: "numeric", year: "numeric" };
+  const start = monday.toLocaleDateString("en-US", options);
+  const end = sunday.toLocaleDateString("en-US", options);
+
+  return `This week ${start} - ${end}`;
+}
+
+
+export function getThisMonthHeader() {
+  const today = new Date();
+
+  const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+  const monthName = today.toLocaleString("en-US", { month: "long" });
+  const start = firstDay.getDate();
+  const end = lastDay.getDate();
+
+
+  return `${monthName} ${start} to ${end}`;
+}
+
+
+export function convertYmdToMdy(ymd  :string | null) {
+  if(!ymd) return
+  const date = new Date(ymd);
+  const mdy = date.toLocaleDateString("en-US"); 
+  return  mdy; 
+;
+}
+
+
+
