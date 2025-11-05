@@ -10,7 +10,7 @@ export default function ManagerLayout({ children }: { children: React.ReactNode 
 
     const {user} = useUserStore()
 
-    if(!user || user?.role != "cashier") return <UnauthorizedPage />
+    if(!user || !user?.role.isCashier) return <UnauthorizedPage />
 
     return (
       <div className="flex min-h-screen">

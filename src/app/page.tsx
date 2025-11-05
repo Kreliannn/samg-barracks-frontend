@@ -12,6 +12,8 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const [loginType, setLoginType] = useState("admin");
+
   const [isLoading, setIsLoading] = useState(false)
 
   const { setUser } = useUserStore();
@@ -23,14 +25,34 @@ export default function Home() {
       axiosInstance.post("/login", data),
     onSuccess: (res) => {
       const { fullname, role, branch, token } = res.data;
-      if(role == "cashier"){
-        errorAlert("cashier account not allowed")
-        setIsLoading(false)
-        return 
-      } 
-      localStorage.setItem("token", token);
-      setUser({ fullname, role, branch });
-      router.push(`/pages/${role}/home`);
+
+      switch(loginType){
+        case "admin":
+          if(role.isAdmin){
+            localStorage.setItem("token", token);
+            setUser({ fullname, role, branch });
+            router.push(`/pages/admin/home`);
+           
+          } else {
+            errorAlert("Account Not Authorized")
+            setIsLoading(false)
+            return 
+          }
+        break;
+
+        case "manager":
+          if(role.isManager){
+            localStorage.setItem("token", token);
+            setUser({ fullname, role, branch });
+            router.push(`/pages/manager/home`);
+           
+          } else {
+            errorAlert("Account Not Authorized")
+            setIsLoading(false)
+            return 
+          }
+        break;
+      }
     },
     onError : () => {
       errorAlert("user not found")
@@ -56,7 +78,17 @@ export default function Home() {
           />
         </div>
         {/* Right: Login Form */}
-        <div className="flex flex-col justify-center p-10">
+        <div className="flex flex-col justify-center p-10 ">
+
+          <div className="m-auto bg-red-500 flex mb-5 w-full">
+              <div className={`${loginType == "admin" ? " bg-green-500 text-white" : " bg-stone-100"} shadow text-center font-bold p-2 w-full`} onClick={() => setLoginType("admin")}>
+                  Admin
+              </div>
+
+              <div className={`${loginType == "manager" ? " bg-green-500 text-white" : " bg-stone-100"} shadow text-center font-bold p-2 w-full`} onClick={() => setLoginType("manager")}>
+                  Manager
+              </div>
+          </div>
 
         
           {/* Form */}

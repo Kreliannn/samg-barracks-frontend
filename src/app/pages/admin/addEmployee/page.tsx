@@ -14,7 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAccountInterface, AccountInterface } from "@/app/types/employee.type";
 import { AxiosResponse } from "axios";
 import { errorAlert, successAlert } from "@/app/utils/alert";
-import { EyeOff, Eye, Trash } from "lucide-react";
+import { EyeOff, Eye, Trash, Edit } from "lucide-react";
 import { confirmAlert } from "@/app/utils/alert";
 
 export default function Home() {
@@ -24,7 +24,12 @@ export default function Home() {
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");  
+  const [role, setRole] = useState({
+      isAdmin : false,
+      isCashier : false,
+      isManager : false,
+  },);  
+
   const [employee, setEmployee] = useState<getAccountInterface[]>([])
 
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +52,11 @@ export default function Home() {
       setFullname("");
       setUsername("");
       setPassword("");
-      setRole("");
+      setRole({
+        isAdmin : false,
+        isCashier : false,
+        isManager : false,
+      });
     },
     onError : (err : { response : { data : string }}) => {
         errorAlert(err.response.data)      
@@ -66,9 +75,25 @@ export default function Home() {
     }
   });
 
+
+  const mutationUpdateRole = useMutation({
+    mutationFn: async (data : {id : string, role : string}) => axiosInstance.patch("/account/role", data),
+    onSuccess: (response) => {
+      setEmployee(response.data)
+      successAlert("Employee Role Updated successfully!")
+    },
+    onError : (err : { response : { data : string }}) => {
+        errorAlert(err.response.data)      
+    }
+  });
+
   const handleSubmit = () => {
-    if (!role || !user?.branch || !username || !password || !fullname) {
-      errorAlert("empty");
+    if(!role.isAdmin && !role.isManager && !role.isCashier){
+      errorAlert("role is required");
+      return;
+    }
+    if (!user?.branch || !username || !password || !fullname) {
+      errorAlert("empty filed");
       return;
     }
     const account = {
@@ -87,11 +112,17 @@ export default function Home() {
     })
   }
 
+
+  const toggleRole = (id : string, role : string) => {
+    confirmAlert("you want to update role", "update", () => { 
+      mutationUpdateRole.mutate({id, role})
+    })
+  }
  
   return (
     <div className="flex flex-col md:flex-row  w-full">
       {/* Employee Form */}
-      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-1/2 space-y-5 m-5 max-h-[350px]">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-2/6 space-y-5 m-5 max-h-[350px]">
         <div className="mb-4">
           <h1 className="text-2xl font-semibold text-emerald-800 dark:text-stone-100">Add New Employee</h1>
           <p className="text-sm text-stone-500">Fill in the details to add a new staff member.</p>
@@ -137,22 +168,52 @@ export default function Home() {
           </div>
          
 
-          <Select value={role} onValueChange={setRole}>
-            <SelectTrigger className="border border-stone-300 px-4 py-2 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500">
-              <SelectValue placeholder="Select Role" />
-            </SelectTrigger>
-            <SelectContent>
-              {user?.branch == "Main Branch" && (<SelectItem value="admin">Admin</SelectItem>)}
-              <SelectItem value="cashier">Cashier</SelectItem>
-              <SelectItem value="manager">Manager</SelectItem>
-            </SelectContent>
-          </Select>
+           <div className="flex gap-4 items-center justify-center ">
+              <div
+                onClick={() => setRole((prev) => ({...prev, isAdmin : !prev.isAdmin}))}
+                className="flex flex-col items-center cursor-pointer select-none"
+              >
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+                    role.isAdmin
+                      ? "bg-green-500 border-green-600"
+                      : "bg-gray-200 border-gray-400"
+                  }`}
+                ></div>
+                <span className="text-xs mt-2"> Admin </span>
+              </div>
+
+              <div
+                onClick={() => setRole((prev) => ({...prev, isManager : !prev.isManager}))}
+                className="flex flex-col items-center cursor-pointer select-none"
+              >
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+                    role.isManager
+                      ? "bg-green-500 border-green-600"
+                      : "bg-gray-200 border-gray-400"
+                  }`}
+                ></div>
+                <span className="text-xs mt-2"> Manager </span>
+              </div>
+
+              <div
+                onClick={() => setRole((prev) => ({...prev, isCashier : !prev.isCashier}))}
+                className="flex flex-col items-center cursor-pointer select-none"
+              >
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+                    role.isCashier
+                      ? "bg-green-500 border-green-600"
+                      : "bg-gray-200 border-gray-400"
+                  }`}
+                ></div>
+                <span className="text-xs mt-2"> Cashier </span>
+              </div>
+          </div>
 
         </div>
   
-      
-  
-   
   
         <Button
           onClick={handleSubmit}
@@ -163,7 +224,7 @@ export default function Home() {
       </div>
   
       {/* Employee List Table */}
-      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-1/2  m-5">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl shadow-lg p-6 md:w-4/6  m-5">
         <h2 className="text-xl font-semibold mb-4 text-emerald-800 dark:text-stone-100">Employee List</h2>
   
         <Table>
@@ -171,8 +232,10 @@ export default function Home() {
             <TableRow>
               <TableHead className="text-left">Name</TableHead>
               <TableHead className="text-left">Username</TableHead>
-              <TableHead className="text-left">Role</TableHead>
               <TableHead className="text-left">Branch</TableHead>
+              <TableHead className="text-left">Admin</TableHead>
+              <TableHead className="text-left">Manager</TableHead>
+              <TableHead className="text-left">Cashier</TableHead>
               <TableHead className="text-left">Remove</TableHead>
             </TableRow>
           </TableHeader>
@@ -181,8 +244,47 @@ export default function Home() {
               <TableRow key={emp._id} className="hover:bg-stone-100 dark:hover:bg-stone-800">
                 <TableCell>{emp.fullname}</TableCell>
                 <TableCell>{emp.username}</TableCell>
-                <TableCell className="capitalize">{emp.role}</TableCell>
                 <TableCell>{emp.branch}</TableCell>
+
+                <TableCell>
+                  <div className="flex justify-center items-center w-full">
+                    <div
+                      className={`w-5 h-5 rounded-full border-2 transition-all duration-200 ${
+                        emp.role.isAdmin
+                          ? "bg-green-500 border-green-600 hover:bg-red-500"
+                          : "bg-gray-200 border-gray-400 hover:bg-green-100"
+                      }`}
+                      onClick = {() => toggleRole(emp._id, "admin")}
+                    ></div>
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className="flex justify-center items-center w-full">
+                    <div
+                      className={`w-5 h-5 rounded-full border-2 transition-all duration-200 ${
+                        emp.role.isManager
+                          ? "bg-green-500 border-green-600 hover:bg-red-500"
+                          : "bg-gray-200 border-gray-400 hover:bg-green-100"
+                      }`}
+                      onClick = {() => toggleRole(emp._id, "manager")}
+                    ></div>
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className="flex justify-center items-center w-full">
+                    <div
+                      className={`w-5 h-5 rounded-full border-2 transition-all duration-200 ${
+                        emp.role.isCashier
+                          ? "bg-green-500 border-green-600 hover:bg-red-500"
+                          : "bg-gray-200 border-gray-400 hover:bg-green-100"
+                      }`}
+                      onClick = {() => toggleRole(emp._id, "cashier")}
+                    ></div>
+                  </div>
+                </TableCell>
+
                 <TableCell>
                     <Button variant={"destructive"} size={"sm"} onClick={() => removeEmployee(emp._id)}> <Trash /> </Button>
                 </TableCell>

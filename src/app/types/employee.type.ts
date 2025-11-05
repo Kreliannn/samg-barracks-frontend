@@ -3,7 +3,11 @@ export interface AccountInterface {
     fullname: string,
     username: string,
     password: string,
-    role: string,
+    role: {
+        isAdmin : boolean,
+        isCashier : boolean,
+        isManager : boolean,
+    },
     branch: string,
 }
 
@@ -12,6 +16,10 @@ export interface getAccountInterface {
     fullname: string,
     username: string,
     password: string,
-    role: string,
+    role: {
+        isAdmin : boolean,
+        isCashier : boolean,
+        isManager : boolean,
+    },
     branch: string,
 }
