@@ -63,7 +63,11 @@ export default function Home() {
     }
     const account = {
       branch: branchName,
-      role : "admin",
+      role : {
+        isAdmin : true,
+        isCashier : false,
+        isManager : false
+      },
       fullname,
       username,
       password,

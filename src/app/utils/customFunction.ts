@@ -101,3 +101,36 @@ export function convertYmdToMdy(ymd  :string | null) {
 
 
 
+export function isTime1To3am(time: string) {
+  const [hourStr, minutePart] = time.split(':');
+  const hour = parseInt(hourStr);
+
+  const isPM = minutePart.toLowerCase().includes('pm');
+
+  let hour24 = hour % 12 + (isPM ? 12 : 0);
+
+  return hour24 >= 1 && hour24 < 3;
+}
+
+
+export function getDate(time: string) {
+  if (!isTime1To3am(time)) {
+    return new Date().toLocaleDateString('en-CA');
+  } else {
+    const date = new Date();
+    date.setDate(date.getDate() - 1);
+    return date.toLocaleDateString('en-CA');
+  }
+}
+
+export function plus1Day(date: string) {
+  const d = new Date(date);
+  d.setDate(d.getDate() + 1);
+  return d.toLocaleDateString('en-CA');
+}
+
+export function minus1Day(date: string) {
+  const d = new Date(date);
+  d.setDate(d.getDate() - 1);
+  return d.toLocaleDateString('en-CA');
+}

@@ -39,6 +39,16 @@ const navigationItems = [
     url: "/pages/admin/products",
     icon: Building,
   },
+  {
+    title: "Transactions",
+    url: "/pages/admin/transactions",
+    icon: Building,
+  },
+  {
+    title: "Activities",
+    url: "/pages/admin/activities",
+    icon: Building,
+  },
 ]
 
 const accountItems = [
