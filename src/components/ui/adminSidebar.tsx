@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { Calendar, Home, Building, Search, UserPlus2, User, FileText, BarChart3, Building2, LogOut, Menu, X } from "lucide-react"
+import { Calendar, Home, Building, Search, UserPlus2, User, FileText, BarChart3, Building2, LogOut, Menu, X, MenuIcon, Receipt, Recycle, Activity } from "lucide-react"
 import { useState, useEffect } from "react"
 import useUserStore from "@/app/store/user.store"
 import {
@@ -37,17 +37,22 @@ const navigationItems = [
   {
     title: "Products",
     url: "/pages/admin/products",
-    icon: Building,
+    icon: MenuIcon,
   },
   {
     title: "Transactions",
     url: "/pages/admin/transactions",
-    icon: Building,
+    icon: Receipt,
   },
   {
     title: "Activities",
     url: "/pages/admin/activities",
-    icon: Building,
+    icon: Activity,
+  },
+  {
+    title: "Waste",
+    url: "/pages/admin/waste",
+    icon: Recycle,
   },
 ]
 
