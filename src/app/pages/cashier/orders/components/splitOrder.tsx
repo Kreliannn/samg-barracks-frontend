@@ -84,7 +84,8 @@ export function SplitButton({  order , setOrders }: { order: getOrdersInterface,
             time : order.date,
             status : "active",
             paymentMethod : "pending",
-            orderNumber : order.orderNumber
+            orderNumber : order.orderNumber,
+            unliTimer : order.unliTimer
         }
 
         

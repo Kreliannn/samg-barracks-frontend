@@ -198,6 +198,7 @@ export default function Page() {
                 <TableHeader>
                 <TableRow>
                     <TableHead className="font-semibold">Date</TableHead>
+                    <TableHead className="font-semibold">Type</TableHead>
                     <TableHead className="font-semibold">time</TableHead>
                     <TableHead className="font-semibold">Employee</TableHead>
                     <TableHead className="font-semibold">subTotal</TableHead>
@@ -212,6 +213,7 @@ export default function Page() {
                     <TableRow key={index} className="hover:bg-gray-100">
                         <TableCell className="font-bold text-stone-600">  { (isTime1To3am(transaction.time) ? plus1Day(transaction.date) : transaction.date) } </TableCell>
                         <TableCell>{transaction.time}</TableCell>
+                        <TableCell>{transaction.orderType}</TableCell>
                         <TableCell>{transaction.cashier}</TableCell>
                         <TableCell>{transaction.subTotal}  </TableCell>
                         <TableCell>₱{transaction.totalDiscount.toLocaleString()}</TableCell>

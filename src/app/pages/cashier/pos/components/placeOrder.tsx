@@ -80,7 +80,8 @@ export function PlaceOrder({ orderInfo } : { orderInfo : orderInformation}) {
         time : time,
         status : "active",
         paymentMethod : "pending",
-        orderNumber : 0
+        orderNumber : 0,
+        unliTimer : "waiting"
     }
     addTable(table)
     setTable("")
