@@ -15,3 +15,14 @@ export interface getChangeInterface {
     end : string
 }
 
+export interface shiftInterface {
+    date : string,
+    start : string, 
+    end : string,
+    change : number,
+    sales : number,
+    discount : number,
+    vat : number,
+    transaction : number,
+    serviceFee : number
+  }

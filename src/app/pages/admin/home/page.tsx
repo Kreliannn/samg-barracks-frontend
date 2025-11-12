@@ -148,13 +148,13 @@ export default function Home() {
 
       <div className="grid md:grid-cols-3  grid-cols-1 gap-4">
         <div className="h-32  rounded">
-          <CardTempalte title={"Total Sales"} value={analytics.totalSales} />
+          <CardTempalte hasPhp={true} title={"Total Sales"} value={analytics.totalSales} />
         </div>
         <div className="h-32  rounded">
-          <CardTempalte title={"Total Transactions"} value={analytics.totalTransaction} />
+          <CardTempalte hasPhp={false} title={"Total Transactions"} value={analytics.totalTransaction} />
         </div>
         <div className="h-32  rounded">
-          <CardTempalte title={"Total Vat"} value={analytics.totalTax} />
+          <CardTempalte hasPhp={true} title={"Total Vat"} value={analytics.totalTax} />
         </div>
       </div>
 

@@ -7,14 +7,8 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import axiosInstance from "@/app/utils/axios";
 import { useQuery } from "@tanstack/react-query";
+import { shiftInterface } from "@/app/types/change.type";
 
-export interface shiftInterface {
-  date : string,
-  start : string, 
-  end : string,
-  change : string,
-  sales : string,
-}
 
 export default function Home() {
 
@@ -48,6 +42,10 @@ export default function Home() {
                 <TableHead>Start</TableHead>
                 <TableHead>End</TableHead>
                 <TableHead>Change</TableHead>
+                <TableHead>Discount</TableHead>
+                <TableHead>Vat</TableHead>
+                <TableHead>ServiceFee</TableHead>
+                <TableHead>Transaction</TableHead>
                 <TableHead>Sales</TableHead>
               </TableRow>
             </TableHeader>
@@ -57,8 +55,12 @@ export default function Home() {
                   <TableCell>{a.date}</TableCell>
                   <TableCell>{a.start}</TableCell>
                   <TableCell>{a.end}</TableCell>
-                  <TableCell>{a.change}</TableCell>
-                  <TableCell>{a.sales}</TableCell>
+                  <TableCell>₱{a.change}</TableCell>
+                  <TableCell>₱{a.discount.toLocaleString()}</TableCell>
+                  <TableCell>₱{a.vat.toLocaleString()}</TableCell>
+                  <TableCell>₱{a.serviceFee.toLocaleString()}</TableCell>
+                  <TableCell>{a.transaction}</TableCell>
+                  <TableCell>₱{a.sales.toLocaleString()}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

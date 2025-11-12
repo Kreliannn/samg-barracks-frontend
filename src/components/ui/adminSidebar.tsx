@@ -53,6 +53,11 @@ const navigationItems = [
     title: "Waste",
     url: "/pages/admin/waste",
     icon: Recycle,
+  }, 
+  {
+    title: "Shift",
+    url: "/pages/admin/shift",
+    icon: Calendar,
   },
 ]
 
