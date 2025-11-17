@@ -212,8 +212,8 @@ export default function Page() {
                 {transactions.map((transaction, index) => (
                     <TableRow key={index} className="hover:bg-gray-100">
                         <TableCell className="font-bold text-stone-600">  { (isTime1To3am(transaction.time) ? plus1Day(transaction.date) : transaction.date) } </TableCell>
-                        <TableCell>{transaction.time}</TableCell>
                         <TableCell>{transaction.orderType}</TableCell>
+                        <TableCell>{transaction.time}</TableCell>
                         <TableCell>{transaction.cashier}</TableCell>
                         <TableCell>{transaction.subTotal}  </TableCell>
                         <TableCell>₱{transaction.totalDiscount.toLocaleString()}</TableCell>
