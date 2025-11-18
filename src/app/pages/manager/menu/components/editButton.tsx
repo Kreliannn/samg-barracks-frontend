@@ -22,7 +22,7 @@ import { getMenuInterface, menuIngredientsInterface } from "@/app/types/menu.typ
 import { getIngredientsInterface } from "@/app/types/ingredient.type"
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Item } from "@radix-ui/react-select"
-import { errorAlert, successAlert } from "@/app/utils/alert";
+import { confirmAlert, errorAlert, successAlert } from "@/app/utils/alert";
 import useUserStore from "@/app/store/user.store"
 
 interface dataType  {
@@ -85,6 +85,19 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
     },
   })
 
+  const mutationDelete = useMutation({
+    mutationFn: () =>
+      axiosInstance.delete("/menu/" + menu._id),
+    onSuccess: (response) => {
+      successAlert("menu deleted")
+      setMenu(response.data)
+      setOpen(false)
+    },
+    onError: (err) => {
+      errorAlert("error")
+    },
+  })
+
   const addIngredientHandler = () => {
 
     let extraqty = 0
@@ -124,6 +137,13 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
         index : index
     }
     mutation.mutate(data)
+  }
+
+  const deleteMenuHandler = () => {
+    setOpen(false)
+    confirmAlert(`you want to delete ${menu.name}?`, "delete", () => {
+      mutationDelete.mutate()
+    })
   }
 
 
@@ -237,7 +257,14 @@ export function EditButton({ setMenu, menu } : { menu : getMenuInterface, setMen
                 );
               })}
             </div>
+
+            <div className="flex justify-end  mt-2">
+              <Button variant={"destructive"} className="w-full" onClick={deleteMenuHandler}> Delete Menu </Button>
+            </div>
+
           </div>
+
+         
         </div>
   
         {/* Footer Buttons */}

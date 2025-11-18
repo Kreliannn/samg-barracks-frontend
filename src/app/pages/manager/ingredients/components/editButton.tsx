@@ -14,12 +14,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axiosInstance from "@/app/utils/axios"
 import { backendUrl } from "@/app/utils/url"
 import { ImageIcon, Upload } from "lucide-react"
 import { getIngredientsInterface } from "@/app/types/ingredient.type"
-import { errorAlert, successAlert } from "@/app/utils/alert";
+import { errorAlert, successAlert, confirmAlert } from "@/app/utils/alert";
 import useUserStore from "@/app/store/user.store"
 
 export function EditButton({ setIngredients, ingredient, index } : {index : number,  ingredient : getIngredientsInterface, setIngredients : React.Dispatch<React.SetStateAction<getIngredientsInterface[]>>}) {
@@ -29,6 +29,7 @@ export function EditButton({ setIngredients, ingredient, index } : {index : numb
   const [price, setPrice] = useState<number>(ingredient.price)
   const { user } = useUserStore()
 
+  const queryClient = useQueryClient()
 
   const mutation = useMutation({
     mutationFn: (data: {id : string, name: string, stocks: number, price : number}) => axiosInstance.put("/ingredients", data),
@@ -42,6 +43,27 @@ export function EditButton({ setIngredients, ingredient, index } : {index : numb
     },
   })
 
+  const mutationDelete = useMutation({
+    mutationFn: () =>
+      axiosInstance.delete("/ingredients/" + ingredient._id),
+    onSuccess: (response) => {
+      successAlert("ingredients deleted")
+      setIngredients(response.data)
+      queryClient.refetchQueries({ queryKey: ["menu"] });
+      setOpen(false)
+    },
+    onError: (err) => {
+      errorAlert("error")
+    },
+  })
+
+
+  const deleteMenuHandler = () => {
+    setOpen(false)
+    confirmAlert(`you want to delete ${ingredient.name}?`, "delete", () => {
+      mutationDelete.mutate()
+    })
+  }
   
 
   const handleSubmit = async () => {
@@ -112,6 +134,10 @@ export function EditButton({ setIngredients, ingredient, index } : {index : numb
               min="0"
             />
           </div>
+
+          <div className="flex justify-end  mt-2">
+              <Button variant={"destructive"} className="w-full" onClick={deleteMenuHandler}> Delete Menu </Button>
+            </div>
     
         </div>
 
