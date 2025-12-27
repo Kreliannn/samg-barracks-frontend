@@ -86,7 +86,7 @@ export default function Home() {
               </div>
 
               <div className={`${loginType == "manager" ? " bg-green-500 text-white" : " bg-stone-100"} shadow text-center font-bold p-2 w-full`} onClick={() => setLoginType("manager")}>
-                  Manager
+                  Managers
               </div>
           </div>
 
