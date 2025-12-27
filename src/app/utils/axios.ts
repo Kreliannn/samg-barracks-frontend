@@ -2,7 +2,7 @@ import axios from "axios";
 
 // CHOICES
 const localhost = "http://localhost:5000"
-const live = "https://barracks-backend.onrender.com"
+const live = "https://barracks-server.onrender.com"
 
 const axiosInstance = axios.create({
   baseURL: live,  
